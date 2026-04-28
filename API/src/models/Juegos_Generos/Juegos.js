@@ -1,7 +1,7 @@
 import { DataTypes, DATEONLY } from "sequelize";
 import { sequelize } from "../../../db.js";
 
-export const Juego = sequelize.define("juego", {
+export const Juegos = sequelize.define("Juegos", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -32,24 +32,16 @@ export const Juego = sequelize.define("juego", {
             min: 0
         }
     },
-    juego_genero_FK: {
-        type: DataTypes.INTEGER
-    }
 }, { timestamps: false })
 
 /* Datos Juego:
-    id INT PRIMARY KEY AUTOINCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     distribuidor VARCHAR (100),
     synopsis TEXT,
     poster VARCHAR(255),
     launch DATE DEFAULT (CURRENT_DATE()),
     precio DECIMAL(10,2) NOT NULL CHECK (precio > 0),
-    juego_genero_FK INT,
-
-    FOREIGN KEY (juego_genero_FK) REFERENCES Juego_Genero()
-        ON DELETE CASCADE
-
 */
 
 // timestamps: esto es para que no se agregue las columnas de fecha_actualizacion y fecha_creacion

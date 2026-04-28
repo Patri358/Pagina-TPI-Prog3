@@ -1,19 +1,19 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../../db";
-import { Genero } from "./Genero";
-import { Juego } from "./Juego";
+import { Generos } from "./Generos";
+import { Juegos } from "./Juegos";
 
-// Tabla intermedia para poner mas de 1 genero a un juego
-export const Juego_Genero = sequelize.define("juego_genero", {
+// Tabla intermedia para poner mas de 1 género a un juego
+export const Juegos_Generos = sequelize.define("Juegos_Generos", {
     id_juego_FK: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        references: { model: "juego", key: "id" }
+        references: { model: "Juegos", key: "id" }
     },
     id_genero_FK: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        references: { model: "genero", key: "id" }
+        references: { model: "Generos", key: "id" }
     }
 })
 
@@ -24,7 +24,7 @@ Juego.belongsToMany(Genero, {
 });
 
 Genero.belongsToMany(Juego, {
-    through: Juego_Genero,
+    through: Juegos_Generos,
     foreignKey: "id_genero_FK",
     otherKey: "id_juego_FK"
 });
@@ -36,9 +36,9 @@ Genero.belongsToMany(Juego, {
 
     PRIMARY KEY (id_juego_FK, id_genero_FK),
 
-    FOREIGN KEY (id_juego_FK) REFERENCES Juego(id)
+    FOREIGN KEY (id_juego_FK) REFERENCES Juegos(id)
         ON DELETE CASCADE,
 
-    FOREIGN KEY (id_genero_FK) REFERENCES Genero(id)
+    FOREIGN KEY (id_genero_FK) REFERENCES Generos(id)
         ON DELETE CASCADE,
 */

@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../../db";
 
-export const Compra = sequelize.define("compra", {
+export const Compras = sequelize.define("Compras", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -30,13 +30,12 @@ export const Compra = sequelize.define("compra", {
     }
 })
 
-/* Data Compra:
+/* Data Compras:
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario_FK INT NOT NULL,
-    detalle_compra_FK INT NOT NULL,
     precio DECIMAL(10,2) NOT NULL CHECK (precio >= 0)
     fecha_compra DATE NOT NULL DEFAULT NOW()
 
-    FOREIGN KEY (detalle_compra_FK) REFERENCES DetalleCompra(id)
+    FOREIGN KEY (id_usuario_FK) REFERENCES Users(id)
         ON DELETE RESTRICT
 */

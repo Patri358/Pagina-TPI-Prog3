@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../../db";
 
-export const Genero = sequelize.define("genero", {
+export const Generos = sequelize.define("Generos", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -14,7 +14,7 @@ export const Genero = sequelize.define("genero", {
 }, { timestamps: false })
 
 /* Datos Generos:
-    id INT PRIMARY KEY AUTOINCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(100) NOT NULL
 */
 
