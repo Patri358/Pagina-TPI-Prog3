@@ -1,32 +1,33 @@
 import { useState } from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import './App.css'
-import Principal from './components/Principal'
-import NavBar from './components/NavBar'
-import NewGame from './components/NewGame'
-import { initialGames } from './components/games.js'
-import Biblioteca from './components/Biblioteca.jsx'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Tienda from './components/Tienda/Tienda.jsx'
+import NavBar from './ui/NavBar.jsx'
+import NewGame from './components/GameForm/NewGame.jsx'
+import { initialGames } from './data/games.js'
+import Biblioteca from './components/Biblioteca/Biblioteca.jsx'
 
-function App() {
+const App = () => {
 
-  const[games, setGames] = useState(initialGames)
+  const [games, setGames] = useState(initialGames)
   const [biblioteca, setBiblioteca] = useState([])
 
   const addGame = (newGame) => {
     setGames([...games, newGame]);
   }
-  
+
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Routes>
-        <Route path='/' element={<Principal games={games} setGames={setGames} setBiblioteca={setBiblioteca} />} />
-        <Route path='/new-game' element={<NewGame games={games} onAdd={addGame}/>} />
-        <Route path='/biblioteca' element={<Biblioteca biblioteca={biblioteca}/>}
-/>
-      </Routes>   
-    </BrowserRouter>
+    <div data-bs-theme="dark" className="min-vh-100 bg-body text-body">
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          <Route path='/' element={<Tienda games={games} setGames={setGames} setBiblioteca={setBiblioteca} />} />
+          <Route path='/new-game' element={<NewGame games={games} onAdd={addGame} />} />
+          <Route path='/biblioteca' element={<Biblioteca biblioteca={biblioteca} />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 
-export default App
+export default App;
