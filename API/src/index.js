@@ -1,5 +1,7 @@
 import express from "express";
 
+import { Users } from "./models/Users/Users.js"
+
 import { PORT } from "./config.js";
 import { sequelize } from "../db.js";
 
