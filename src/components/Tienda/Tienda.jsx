@@ -1,4 +1,5 @@
 import React from 'react'
+<<<<<<< HEAD
 import { initialGames } from '../../data/games.js'
 import { useState } from 'react'
 import GameDetail from "../GameDetail/GameDetail.jsx"
@@ -84,6 +85,11 @@ const Tienda = ({ games, setGames, setBiblioteca }) => {
     const totalPrice = carrito.reduce((counter, game) => {
         return counter + game.price
     }, 0)
+=======
+import CardGame from "../Cards/CardTienda/CardTienda.jsx"
+
+const Tienda = ({ games }) => {
+>>>>>>> App
 
     useEffect(() => {
         const cargarJuegos = async () => {
@@ -95,6 +101,7 @@ const Tienda = ({ games, setGames, setBiblioteca }) => {
     }, []);
 
     return (
+<<<<<<< HEAD
         <div>
             <div className="d-flex flex-column align-items-center">
                 {games.map((game) => (
@@ -163,6 +170,12 @@ const Tienda = ({ games, setGames, setBiblioteca }) => {
             ) : (
                 <p></p>
             )}
+=======
+        <div className="d-flex flex-column align-items-center">
+            {games.map((game) => (
+                <CardGame key={game.id} game={game} />
+            ))}
+>>>>>>> App
         </div>
     )
 }

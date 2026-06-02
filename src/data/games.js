@@ -3,7 +3,7 @@ export const initialGames = [
     id: 1,
     title: "Red Dead Redemption 2",
     distributor: "Rockstar Games",
-    rating: "Apto para mayores de 17",
+    rating: "Apto para mayores de 18",
     poster:
       "https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA08519_00/12/i_3da1cf7c41dc7652f9b639e1680d96436773658668c7dc3930c441291095713b/i/icon0.png",
     tags: ["Mundo abierto ", "Multijugador "],
@@ -16,7 +16,7 @@ export const initialGames = [
     id: 2,
     title: "Cyberpunk 2077",
     distributor: "CD PROJEKT RED",
-    rating: "Apto para mayores de 17",
+    rating: "Apto para mayores de 18",
     poster:
       "https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg",
     tags: ["Mundo abierto ", "Rol ", "Un jugador "],
@@ -58,7 +58,7 @@ export const initialGames = [
     rating: "Apto para mayores de 10",
     poster:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Pragmata_cover.jpg/250px-Pragmata_cover.jpg",
-    tags: ["Ciencia ficción ","Accion ","Aventura "],
+    tags: ["Ciencia ficción ", "Accion ", "Aventura "],
     synopsis:
       "Pragmata es un juego de acción y aventura de ciencia ficción de Capcom. Acompaña a Hugh, sobreviviente de una expedición trágica, y a Diana, una androide, mientras avanzan por una instalación lunar dominada por una IA fuera de control para volver a Tierra.",
     launch: "17 ABR 2026",
@@ -68,7 +68,7 @@ export const initialGames = [
     id: 6,
     title: "Hollow Knight",
     distributor: "Team Cherry",
-    rating: "Apto para mayores de 10 años",
+    rating: "Apto para mayores de 10",
     poster:
       "https://upload.wikimedia.org/wikipedia/en/d/de/Hollow_Knight_2026_cover_art.jpg",
     tags: ["Metroidvania ", "Un jugador "],
@@ -81,7 +81,7 @@ export const initialGames = [
     id: 7,
     title: "The Witcher 3",
     distributor: " CD PROJEKT RED",
-    rating: "Para mayores de 17",
+    rating: "Para mayores de 18",
     poster:
       "https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/qezXTVn1ExqBjVjR5Ipm97IK.png",
     tags: ["Mundo abierto ", "Rol "],
