@@ -7,6 +7,7 @@ const NavBar = () => {
       <Link to="/" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Tienda</Link>
       <Link to="/new-game" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Agregar Juego</Link>
       <Link to="/biblioteca" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Biblioteca</Link>
+      <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>Cerrar sesion</Link>
     </nav>
   )
 }
