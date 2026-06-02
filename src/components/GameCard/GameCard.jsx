@@ -1,6 +1,6 @@
 import { Card, Button, Badge } from "react-bootstrap";
 
-const GameCard = ({ id, game }) => {
+const GameCard = ({ game, onDetails, onDelete }) => {
 
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', margin: "30px" }} className='mx-3'>
@@ -32,8 +32,8 @@ const GameCard = ({ id, game }) => {
                 <Card.Footer>
                     {/* botones que ve el admin | superadmin */}
                     <div className="d-flex gap-4 justify-content-center">
-                        <Button variant="primary">Detalles del juego</Button>
-                        <Button variant="danger">Eliminar juego </Button>
+                        <Button variant="primary" onClick={() => onDetails?.(game)}>Detalles del juego</Button>
+                        <Button variant="danger" onClick={() => onDelete?.(game)}>Eliminar juego </Button>
                     </div>
 
                     <Button variant="light" style={{ margin: "10px", width: "100%" }}>Comprar juego</Button>

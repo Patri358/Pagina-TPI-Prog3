@@ -3,6 +3,7 @@ import { initialGames } from '../../data/games.js'
 import { useState } from 'react'
 import GameDetail from "../GameDetail/GameDetail.jsx"
 import GameCard from "../GameCard/GameCard.jsx"
+import { useEffect } from 'react'
 
 
 const Tienda = ({ games, setGames, setBiblioteca }) => {
@@ -35,10 +36,21 @@ const Tienda = ({ games, setGames, setBiblioteca }) => {
         setGameSelEliminar(null)
     }
 
-    const confirmarEliminar = (id) => {
-        setGames(games.filter(game => game.id !== id))
-        cerrarModalEliminar()
+    const confirmarEliminar = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:3001/juegos/${id}`, {
+        method: "DELETE",
+        });
+        if (!response.ok) {
+        throw new Error("No se pudo eliminar el juego");
+        }
+        setGames((prevGames) => prevGames.filter((game) => game.id !== id));
+    } catch (error) {
+        console.error(error);
+    } finally {
+        cerrarModalEliminar();
     }
+    };
 
     // Agregar al carrito
     const [carrito, setCarrito] = useState([])
@@ -73,11 +85,26 @@ const Tienda = ({ games, setGames, setBiblioteca }) => {
         return counter + game.price
     }, 0)
 
+    useEffect(() => {
+        const cargarJuegos = async () => {
+        const res = await fetch("http://localhost:3001/juegos");
+        const data = await res.json();
+        setGames(data);
+    };
+        cargarJuegos();
+    }, []);
+
     return (
         <div>
             <div className="d-flex flex-column align-items-center">
                 {games.map((game) => (
-                    <GameCard key={game.id} id={game.id} game={game} />
+                    <GameCard
+                        key={game.id}
+                        id={game.id}
+                        game={game}
+                        onDetails={abrirModalDetalles}
+                        onDelete={abrirModalEliminar}
+                    />
                 ))}
             </div>
 
