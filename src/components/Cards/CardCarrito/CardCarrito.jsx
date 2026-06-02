@@ -1,7 +1,11 @@
 import { Card, Button, Badge } from "react-bootstrap";
 
-const GameCard = ({ id, game }) => {
+import { CartContext } from "../../../context/CartProvider/CartContext";
+import { useContext } from "react";
 
+const CardCarrito = ({ game }) => {
+
+    const { handleDelete } = useContext(CartContext)
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', margin: "30px" }} className='mx-3'>
             <Card.Img variant="top" src={game.poster} />
@@ -30,32 +34,12 @@ const GameCard = ({ id, game }) => {
                 </Card.Text>
 
                 <Card.Footer>
-                    {/* botones que ve el admin | superadmin */}
-                    <div className="d-flex gap-4 justify-content-center">
-                        <Button variant="primary">Detalles del juego</Button>
-                        <Button variant="danger">Eliminar juego </Button>
-                    </div>
 
-                    <Button variant="light" style={{ margin: "10px", width: "100%" }}>Comprar juego</Button>
+                    <Button onClick={() => handleDelete(game)} variant="danger" style={{ margin: "10px", width: "100%" }}>Eliminar del carrito</Button>
                 </Card.Footer>
             </Card.Body>
         </Card >
     )
 }
 
-export default GameCard;
-
-
-{/* Faltan agregar los handleFunction
-                <button onClick={() => abrirModalDetalles(game)}>
-                Detalles del juego
-                </button>
-
-                <button onClick={() => abrirModalEliminar(game)}>
-                Eliminar juego
-                </button>
-
-                <button onClick={() => handleAgregar(game)}> 
-                Comprar juego
-                </button>
-*/}
+export default CardCarrito;
