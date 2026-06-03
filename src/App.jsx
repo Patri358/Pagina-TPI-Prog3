@@ -23,6 +23,9 @@ import CartProvider from './context/CartProvider/CartProvider.jsx';
 import BibliotecaProvider from './context/BibliotecaProvider/BibliotecaProvider.jsx';
 
 const App = () => {
+  const [games, setGames] = useState(initialGames);
+  const [biblioteca, setBiblioteca] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const [games, setGames] = useState(initialGames);
   let ultimoId = games.at(-1).id;

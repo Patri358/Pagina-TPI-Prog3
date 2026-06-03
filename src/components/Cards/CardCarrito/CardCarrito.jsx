@@ -1,9 +1,6 @@
 import { Card, Button, Badge } from "react-bootstrap";
 
-import { CartContext } from "../../../context/CartProvider/CartContext";
-import { useContext } from "react";
-
-const CardCarrito = ({ game }) => {
+const GameCard = ({ game, onDetails, onDelete }) => {
 
     const { handleDelete } = useContext(CartContext)
     return (
@@ -34,6 +31,11 @@ const CardCarrito = ({ game }) => {
                 </Card.Text>
 
                 <Card.Footer>
+                    {/* botones que ve el admin | superadmin */}
+                    <div className="d-flex gap-4 justify-content-center">
+                        <Button variant="primary" onClick={() => onDetails?.(game)}>Detalles del juego</Button>
+                        <Button variant="danger" onClick={() => onDelete?.(game)}>Eliminar juego </Button>
+                    </div>
 
                     <Button onClick={() => handleDelete(game)} variant="danger" style={{ margin: "10px", width: "100%" }}>Eliminar del carrito</Button>
                 </Card.Footer>
