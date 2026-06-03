@@ -1,6 +1,6 @@
 import { Card, Button, Badge } from "react-bootstrap";
 
-const GameCard = ({ game, onDetails, onDelete }) => {
+const CardCarrito = ({ game, onDetails, onDelete }) => {
 
     const { handleDelete } = useContext(CartContext)
     return (
