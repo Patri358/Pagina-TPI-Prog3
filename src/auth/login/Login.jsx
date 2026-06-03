@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { Button, Form, FormGroup, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AuthContainer from "../authContainer/AuthContainer.jsx";
+import { errorToast } from "../../ui/Toast/Toast.jsx";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -26,43 +27,43 @@ const Login = ({ onLogin }) => {
   };
 
   const handleSubmit = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  if (!email.trim()) {
-    setErrors({ email: true, password: false });
-    alert("¡Email vacío!");
-    emailRef.current?.focus();
-    return;
-  }
-
-  if (!password || password.length < 7) {
-    setErrors({ email: false, password: true });
-    alert("¡Contraseña con caracteres insuficientes!");
-    passwordRef.current?.focus();
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:3001/login", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ message: "Login incorrecto" }));
-      throw new Error(errorData.message || "Login incorrecto");
+    if (!email.trim()) {
+      setErrors({ email: true, password: false });
+      errorToast("¡Email vacío!");
+      emailRef.current?.focus();
+      return;
     }
 
-    await response.json();
-    onLogin();
-    navigate("/");
-  } catch (error) {
-    alert(error.message);
-  }
-};
+    if (!password || password.length < 7) {
+      setErrors({ email: false, password: true });
+      errorToast("¡Contraseña con caracteres insuficientes!");
+      passwordRef.current?.focus();
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/login", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: "Login incorrecto" }));
+        throw new Error(errorData.message || "Login incorrecto");
+      }
+
+      await response.json();
+      onLogin();
+      navigate("/");
+    } catch (error) {
+      errorToast(error.message);
+    }
+  };
 
   return (
     <>

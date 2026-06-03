@@ -1,7 +1,7 @@
 import { Card, Row } from "react-bootstrap"
 
 const AuthContainer = ({ children }) => {
-    return (
+  return (
     <Card
       className="mt-5 mx-auto p-3 px-5 shadow"
       style={{ maxWidth: "400px" }}

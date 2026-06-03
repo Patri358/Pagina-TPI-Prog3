@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AuthContainer from "../authContainer/AuthContainer";
+import { errorToast, successToast } from "../../ui/Toast/Toast";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Register = () => {
     event.preventDefault();
 
     if (!username || !nombreReal || !email || !password) {
-      alert("Completa todos los campos");
+      errorToast("Completa todos los campos");
       return;
     }
 
@@ -37,10 +38,10 @@ const Register = () => {
         throw new Error(errorData.message || "Error en el registro");
       }
 
-      alert("Usuario creado exitosamente");
+      successToast("Usuario creado exitosamente");
       navigate("/login");
     } catch (error) {
-      alert(error.message);
+      errorToast(error.message);
     }
   };
 

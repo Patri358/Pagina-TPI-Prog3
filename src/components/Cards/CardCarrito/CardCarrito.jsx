@@ -1,8 +1,12 @@
 import { Card, Button, Badge } from "react-bootstrap";
+import { useContext } from "react";
+import { CartContext } from "../../../context/CartProvider/CartContext";
 
-const CardCarrito = ({ game, onDetails, onDelete }) => {
+const CardCarrito = ({ game }) => {
 
-    const { handleDelete } = useContext(CartContext)
+    const { handleDelete } = useContext(CartContext);
+
+
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', margin: "30px" }} className='mx-3'>
             <Card.Img variant="top" src={game.poster} />

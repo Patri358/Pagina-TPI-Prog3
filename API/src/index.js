@@ -1,17 +1,15 @@
 import express from "express";
 import authRoutes from "./routes/auth.routes.js";
 import juegosRoutes from "./routes/juegos/juegos.routes.js"
+import usersRoutes from "./routes/users/users.routes.js";
+import generosRoutes from "./routes/generos/generos.routes.js";
 
 import { Users } from "./models/Users/Users.js";
 
 import { PORT } from "./config.js";
 import { sequelize } from "../db.js";
 
-import usersRoutes from "./routes/users/users.routes.js";
-import generosRoutes from "./routes/generos/generos.routes.js";
-
 import cors from "cors";
-
 
 const app = express();
 
@@ -23,7 +21,14 @@ app.use(generosRoutes);
 app.use(juegosRoutes)
 
 try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
+
+    // Opción drástica (Borra TODA la base de datos y la crea de cero)
+    // await sequelize.sync({ force: true });
+
+
+
+
     app.listen(PORT);
 
     console.log(`Servidor escuchando en el puerto ${PORT}`);

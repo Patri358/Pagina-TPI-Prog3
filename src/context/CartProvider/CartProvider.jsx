@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { CartContext } from "./CartContext.js";
 import { BibliotecaContext } from "../../context/BibliotecaProvider/BibliotecaContext";
-import { successToast, errorToast } from "../../ui/Toast.jsx";
+import { successToast, errorToast } from "../../ui/Toast/Toast.jsx";
 
 const CartProvider = ({ children }) => {
 

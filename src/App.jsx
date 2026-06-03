@@ -9,10 +9,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // componentes
 import Tienda from './components/Tienda/Tienda.jsx';
-import NavBar from './ui/NavBar.jsx';
+import NavBar from './ui/NavBar/NavBar.jsx';
 import NewGame from './components/NewGame/NewGame.jsx';
 import Biblioteca from './components/Biblioteca/Biblioteca.jsx';
 import Carrito from "./components/Carrito/Carrito.jsx";
+import Login from "./auth/login/Login.jsx"
+import Register from "./auth/register/Register.jsx"
 
 // toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -47,9 +49,13 @@ const App = () => {
 
           <BrowserRouter>
             <ToastContainer />
-            <NavBar />
+
+            {loggedIn && <NavBar />}
             <Routes>
-              <Route path="/" element={<Tienda games={games} />} />
+              <Route path='/' element={<Navigate to="/login" />} />
+              <Route path='/login' element={< Login />} />
+              <Route path='/register' element={< Register />} />
+              <Route path="/tienda" element={<Tienda games={games} />} />
               <Route path='/carrito' element={<Carrito />} />
               <Route path='/newGame' element={<NewGame games={games} onAdd={addGame} />} />
               <Route path='/biblioteca' element={<Biblioteca />} />

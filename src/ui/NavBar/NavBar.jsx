@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { CartContext } from '../context/CartProvider/CartContext';
+import { CartContext } from '../../context/CartProvider/CartContext';
 import { useContext } from 'react';
+import "./NavBar.css"
 
 const NavBar = () => {
 
@@ -11,10 +12,10 @@ const NavBar = () => {
   return (
     <nav className="d-flex align-items-center" style={{ padding: '20px', backgroundColor: '#333' }}>
 
-      <div style={{ flex: 1 }}></div>
+      <div id='div_izq' style={{ flex: 1 }}></div>
 
       <div className="d-flex gap-4" style={{ flex: 2, justifyContent: "center" }}>
-        <Link to="/" style={{ color: 'white', textDecoration: "none", fontSize: "1.1rem" }}> <i className="bi bi-cart3"></i> Tienda </Link>
+        <Link to="/tienda" style={{ color: 'white', textDecoration: "none", fontSize: "1.1rem" }}> <i className="bi bi-cart3"></i> Tienda </Link>
         <Link to="/newGame" style={{ color: 'white', textDecoration: "none", fontSize: "1.1rem" }}> <i className="bi bi-plus-circle"></i> Agregar Juego</Link>
         <Link to="/biblioteca" style={{ color: 'white', textDecoration: "none", fontSize: "1.1rem" }}> <i className="bi bi-collection"></i> Biblioteca </Link>
       </div>

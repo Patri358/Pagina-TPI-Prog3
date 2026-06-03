@@ -3,8 +3,24 @@ import { sequelize } from "../../../db.js";
 
 export const Biblioteca = sequelize.define("Biblioteca", {
 
-
-
+    id_usuario_FK: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+            model: "Users",
+            key: "id"
+        },
+        onDelete: "RESTRICT"
+    },
+    id_juego_FK: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+            model: "Juegos",
+            key: "id"
+        },
+        onDelete: "RESTRICT"
+    },
 })
 
 

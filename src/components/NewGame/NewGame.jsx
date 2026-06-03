@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import { errorToast } from '../../ui/Toast'
+import { errorToast } from '../../ui/Toast/Toast'
 
 const NewGame = ({ games, onAdd }) => {
 
