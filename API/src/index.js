@@ -21,7 +21,7 @@ app.use(generosRoutes);
 app.use(juegosRoutes)
 
 try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
 
     // Opción drástica (Borra TODA la base de datos y la crea de cero)
     // await sequelize.sync({ force: true });
