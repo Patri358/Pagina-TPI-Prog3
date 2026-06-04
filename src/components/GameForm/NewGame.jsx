@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { errorToast } from '../../ui/Toast'
 
 const NewGame = ({ games, onAdd }) => {
 
@@ -16,213 +17,166 @@ const NewGame = ({ games, onAdd }) => {
     sinopsis: "",
     tags: [],
     launch: "",
-    precio: 0,
+    price: "",
   })
 
-  const [error, setError] = useState({})
-
-  const tagsValidas = ["Mundo abierto ", "Multijugador ", "Un jugador ", "Rol ", "Exploracion ", "Aventura ", "Accion ", "Ciencia ficción ", "Metroidvania "]
-
-  const onChange = (e) => {
-    const { name, value, checked } = e.target;
-
-    if (name === "tags") {
-      if (checked) {
-        setFormData({
-          ...formData,
-          tags: [...formData.tags, value],
-        });
-      } else {
-        setFormData({
-          ...formData,
-          tags: formData.tags.filter(tag => tag !== value),
-        });
-      }
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
+  const tagsValidas = ["Mundo abierto", "Multijugador", "Un jugador", "Rol", "Exploracion", "Aventura", "Accion", "Ciencia ficción", "Metroidvania"]
+  const ratings = ["Apto para todo público", "Apto para mayores de 10", "Apto para mayores de 18"]
 
   const validate = () => {
 
-    const errores = {}
+    const precio = parseFloat(formData.price)
 
-    if (!formData.title.trim()) errores.title = "El titulo es obligatorio"
-    if (!formData.distributor.trim()) errores.distributor = "El distribuidor es obligatorio"
-    if (!formData.poster.trim()) errores.poster = "El poster es obligatorio"
-    if (!formData.rating) errores.rating = "El rating es obligatorio"
-    if (!formData.sinopsis.trim()) errores.sinopsis = "La sinopsis es obligatoria"
-    if (formData.tags.length === 0) errores.tags = "Tenes que seleccionar al menos una etiqueta"
-    if (!formData.launch.trim()) errores.launch = "La fecha de lanzamiento es obligatoria"
-    if (formData.precio < 0) errores.precio = "El precio es obligatorio"
+    const errores = [
+      { error: !formData.title.trim(), mensaje: "El título es obligatorio" },
+      { error: !formData.distributor.trim(), mensaje: "El distribuidor es obligatorio" },
+      { error: !formData.poster.trim(), mensaje: "El poster es obligatorio" },
+      { error: !formData.rating, mensaje: "La clasificación es obligatoria" },
+      { error: !formData.sinopsis, mensaje: "La sinopsis es obligatoria" },
+      { error: !formData.tags.length, mensaje: "Tenes que seleccionar al menos una etiqueta" },
+      { error: !formData.launch.trim(), mensaje: "La fecha de lanzamiento es obligatoria" },
+      { error: precio < 0 || isNaN(precio), mensaje: "El precio es obligatorio y debe ser mayor/igual a 0" }
+    ].find(error => error.error)
 
-    const titleFiltered = games.find(m => m.title.toLowerCase() === formData.title.toLowerCase())
-
-    if (titleFiltered) {
-      errores.title = "El juego ingresado ya esta en la pagina"
+    if (errores) {
+      errorToast(errores.mensaje)
+      return false;
     }
 
-    setError(errores);
+    const EnTienda = games.some((juego) => juego.title.toLowerCase() === formData.title.toLowerCase())
+    if (EnTienda) {
+      errorToast("El juego ingresado ya está en la pagina")
+      return false
+    }
 
-    return Object.values(errores).length === 0;
+    return true
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleChangeForm = (event) => {
+    const { name, value, checked } = event.target;
+
+    // para rating y tags
+    if (name === "tags" || type === "checkbox") {
+      checked ? (
+        setFormData({
+          ...formData,
+          tags: [...formData.tags, value],
+        })
+      ) : (
+        setFormData({
+          ...formData,
+          tags: formData.tags.filter(tag => tag !== value),
+        })
+      )
+    }
+
+    else if (name === "price") {
+      setFormData({
+        ...formData,
+        // si borra todo es para que no quede el 0
+        [name]: value === "" ? "" : value
+      })
+    }
+
+    else {
+      setFormData(
+        {
+          ...formData,
+          [name]: value
+        });
+    }
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
     if (validate()) {
-      const newGame = { id: Date.now(), ...formData }
+      const newGame = {
+        ...formData,
+        price: parseFloat(formData.price)
+      }
       onAdd(newGame);
-      navigate("/");
+      navigate("/tienda");
     }
   }
 
-  const handleChangeForm = () => {
-    console.log("cambio")
-  };
-
+  const handleCancelar = () => {
+    navigate("/tienda")
+  }
 
   return (
-    <div>
-      <Form className="p-4" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Título</Form.Label>
-          <Form.Control onChange={handleChangeForm} name='title' value={formData.title} placeholder="Ingrese el título..." />
-        </Form.Group>
+    <Form className="p-4" onSubmit={handleSubmit}>
+      <Form.Group className="mb-3">
+        <Form.Label>Título</Form.Label>
+        <Form.Control onChange={handleChangeForm} name='title' value={formData.title} placeholder="Ingrese el título..." />
+      </Form.Group>
 
-        <Row>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Distribuidor</Form.Label>
-              <Form.Control onChange={handleChangeForm} name='distribuidor' value={formData.director} placeholder="Ingrese el distribuidor..." />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Precio</Form.Label>
-              <Form.Control onChange={handleChangeForm} name='precio' value={formData.precio} placeholder="Ingrese el precio" />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Clasificación</Form.Label>
-          <div className="d-flex gap-3">
-          </div>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Poster</Form.Label>
-          <Form.Control onChange={handleChangeForm} name='poster' value={formData.poster} placeholder="Ingrese el poster..." />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Etiquetas</Form.Label>
-          <div className="d-flex flex-wrap gap-2">
-            {
-              tagsValidas.map((tag) => {
-                return (
-                  <Form.Check onChange={handleChangeForm} name="tags" label={tag} value="tags" />
-                )
-              })
-            }
-          </div>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Sinopsis</Form.Label>
-          <Form.Control onChange={handleChangeForm} name='synopsis' value={formData.synopsis} as="textarea" rows={2} placeholder="Ingrese la sinopsis" />
-        </Form.Group>
-
-        <Row>
+      <Row>
+        <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label>Fecha Lanzamiento</Form.Label>
-            <Form.Control onChange={handleChangeForm} name='date' value={formData.date} type="date" />
+            <Form.Label>Distribuidor</Form.Label>
+            <Form.Control onChange={handleChangeForm} name='distributor' value={formData.distributor} placeholder="Ingrese el distribuidor..." />
           </Form.Group>
-        </Row>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Precio</Form.Label>
+            <Form.Control onChange={handleChangeForm} name='price' value={formData.price} placeholder="Ingrese el precio" type='text' />
+          </Form.Group>
+        </Col>
+      </Row>
 
-        <Button variant="primary" type="submit" className="w-100 mt-2">
-          Agregar Juego
-        </Button>
-        <Button variant="danger" type="button" className="w-100 mt-2">
-          Cancelar
-        </Button>
-      </Form>
+      <Form.Group className="mb-3">
+        <Form.Label>Clasificación</Form.Label>
+        <div className="d-flex gap-3">
+          {
+            ratings.map((rating) => {
+              return (
+                <Form.Check onChange={handleChangeForm} key={rating} name="rating" label={rating} value={rating} type='radio' checked={formData.rating === rating} />
+              )
+            })
+          }
+        </div>
+      </Form.Group>
 
+      <Form.Group className="mb-3">
+        <Form.Label>Poster</Form.Label>
+        <Form.Control onChange={handleChangeForm} name='poster' value={formData.poster} placeholder="Ingrese el poster..." />
+      </Form.Group>
 
+      <Form.Group className="mb-3">
+        <Form.Label>Etiquetas</Form.Label>
+        <div className="d-flex flex-wrap gap-2">
+          {
+            tagsValidas.map((tag) => {
+              return (
+                <Form.Check onChange={handleChangeForm} key={tag} name="tags" label={tag} value={tag} checked={formData.tags.includes(tag)} />
+              )
+            })
+          }
+        </div>
+      </Form.Group>
 
+      <Form.Group className="mb-3">
+        <Form.Label>Sinopsis</Form.Label>
+        <Form.Control onChange={handleChangeForm} name='sinopsis' value={formData.sinopsis} as="textarea" rows={2} placeholder="Ingrese la sinopsis" />
+      </Form.Group>
 
-      <h1>Cargar un juego nuevo</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Titulo: </label>
-        <input onChange={onChange} type="text" name="title" value={formData.title} placeholder='Ingrese un titulo' />
-        {error.title &&
-          <p style={{ color: 'red' }}>{error.title}</p>}
-        <br />
+      <Row>
+        <Form.Group className="mb-3">
+          <Form.Label>Fecha Lanzamiento</Form.Label>
+          <Form.Control onChange={handleChangeForm} name='launch' value={formData.launch} type="date" />
+        </Form.Group>
+      </Row>
 
-        <label>Distribuidor: </label>
-        <input onChange={onChange} type="text" name="distributor" value={formData.distributor} placeholder='Ingrese un distribuidor' />
-        {error.distributor &&
-          <p style={{ color: 'red' }}>{error.distributor}</p>}
-        <br />
-
-        <label>Poster: </label>
-        <input onChange={onChange} type="text" name="poster" value={formData.poster} placeholder='Ingrese un poster' />
-        {error.poster &&
-          <p style={{ color: 'red' }}>{error.poster}</p>}
-        <br />
-
-        <label>Clasificacion: </label>
-        <select onChange={onChange} name="rating" value={formData.rating}>
-          <option value="elegir">Elija una opcion</option>
-          <option value="Apta para todo Publico">Apta para todo Publico</option>
-          <option value="Apta para mayores de 10 años">Apta para mayores de 10 años</option>
-          <option value="Apta para mayores de 17 años">Apta para mayores de 17 años</option>
-        </select>
-        {error.rating &&
-          <p style={{ color: 'red' }}>{error.rating}</p>}
-        <br />
-
-        <label>Sinopsis: </label>
-        <input onChange={onChange} type="text" name="sinopsis" value={formData.sinopsis} placeholder='Ingrese una sinopsis' />
-        {error.sinopsis &&
-          <p style={{ color: 'red' }}>{error.sinopsis}</p>}
-        <br />
-
-        <label>Etiquetas: </label>
-        {tagsValidas.map((tags) => (
-          <div key={tags}>
-            <input type='checkbox' name="tags" value={tags} checked={formData.tags.includes(tags)} onChange={onChange} />
-            <label>{tags}</label>
-          </div>
-        ))}
-
-        {error.tags &&
-          <p style={{ color: 'red' }}>{error.tags}</p>}
-        <br />
-
-        <label>
-          Lanzamiento:
-        </label>
-        <input onChange={onChange} type="date" name="launch" value={formData.launch} placeholder="completar la fecha" />
-        {error.launch &&
-          <p style={{ color: 'red' }}>{error.launch}</p>}
-        <br />
-
-        <label>
-          Precio:
-        </label>
-        <input onChange={onChange} type="number" name="precio" value={formData.precio} placeholder="Ingresar un precio" />
-        {error.precio &&
-          <p style={{ color: 'red' }}>{error.precio}</p>}
-        <br />
-
-        <button style={{ backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', margin: '10px 5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-          type='submit'>Enviar formulario</button>
-        <button style={{ backgroundColor: '#828282', color: 'white', padding: '10px 20px', margin: '10px 5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-          onClick={() => navigate("/")}>Volver</button>
-      </form>
-    </div>
+      <Button variant="primary" type="submit" className="w-100 mt-2">
+        Agregar Juego
+      </Button>
+      <Button onClick={handleCancelar} variant="danger" type="button" className="w-100 mt-2">
+        Cancelar
+      </Button>
+    </Form>
   )
-}
+};
 
 export default NewGame;

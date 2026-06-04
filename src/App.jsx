@@ -15,6 +15,7 @@ import Biblioteca from './components/Biblioteca/Biblioteca.jsx';
 import Carrito from "./components/Carrito/Carrito.jsx";
 import Login from "./auth/login/Login.jsx"
 import Register from "./auth/register/Register.jsx"
+import CardDetalle from './components/Cards/CardDetalle/CardDetalle.jsx';
 
 // toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -23,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // providers
 import CartProvider from './context/CartProvider/CartProvider.jsx';
 import BibliotecaProvider from './context/BibliotecaProvider/BibliotecaProvider.jsx';
+import CardDetalle from './components/Cards/CardDetalle/CardDetalle.jsx';
 
 const App = () => {
 
@@ -50,13 +52,14 @@ const App = () => {
           <BrowserRouter>
             <ToastContainer />
 
-            {loggedIn && <NavBar />}
+             <NavBar />
             <Routes>
-              <Route path='/' element={<Navigate to="/login" />} />
-              <Route path='/login' element={< Login />} />
-              <Route path='/register' element={< Register />} />
+              <Route path='/' element={<Navigate to="/tienda" />} />
+              {/* <Route path='/login' element={< Login />} />
+              <Route path='/register' element={< Register />} /> */}
               <Route path="/tienda" element={<Tienda games={games} />} />
               <Route path='/carrito' element={<Carrito />} />
+              <Route path='/detalle' element={CardDetalle}/>
               <Route path='/newGame' element={<NewGame games={games} onAdd={addGame} />} />
               <Route path='/biblioteca' element={<Biblioteca />} />
             </Routes>
