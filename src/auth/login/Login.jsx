@@ -59,7 +59,7 @@ const Login = ({ onLogin }) => {
 
       await response.json();
       onLogin();
-      navigate("/");
+      navigate("/tienda");
     } catch (error) {
       errorToast(error.message);
     }

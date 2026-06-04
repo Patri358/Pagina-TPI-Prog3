@@ -55,8 +55,8 @@ const App = () => {
              <NavBar />
             <Routes>
               <Route path='/' element={<Navigate to="/tienda" />} />
-              {/* <Route path='/login' element={< Login />} />
-              <Route path='/register' element={< Register />} /> */}
+              <Route path='/login' element={< Login />} />
+              <Route path='/register' element={< Register />} /> 
               <Route path="/tienda" element={<Tienda games={games} />} />
               <Route path='/carrito' element={<Carrito />} />
               <Route path='/detalle' element={CardDetalle}/>
