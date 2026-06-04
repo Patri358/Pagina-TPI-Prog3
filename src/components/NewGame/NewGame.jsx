@@ -74,7 +74,7 @@ const NewGame = ({ games, onAdd }) => {
       setFormData({
         ...formData,
         // isNaN es para que si escribe una letra no tire el error NaN y lo reemplaza por 0
-        [name]: isNaN(value) ? parseFloat(value, 10) : 0
+        [name]: isNaN(value) ? 0 : parseFloat(value)
       })
     }
 
@@ -89,12 +89,12 @@ const NewGame = ({ games, onAdd }) => {
     if (validate()) {
       const newGame = formData
       onAdd(newGame);
-      navigate("/");
+      navigate("/Tienda");
     }
   }
 
   const handleCancel = () => {
-    navigate("/")
+    navigate("/Tienda")
   }
 
   return (
@@ -114,7 +114,7 @@ const NewGame = ({ games, onAdd }) => {
         <Col md={6}>
           <Form.Group>
             <Form.Label>Precio</Form.Label>
-            <Form.Control onChange={handleChangeForm} name='price' value={formData.price} placeholder="Ingrese el precio" />
+            <Form.Control type="number" onChange={handleChangeForm} name='price' value={formData.price} placeholder="Ingrese el precio" />
           </Form.Group>
         </Col>
       </Row>

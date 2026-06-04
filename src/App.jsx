@@ -53,8 +53,8 @@ const App = () => {
             {loggedIn && <NavBar />}
             <Routes>
               <Route path='/' element={<Navigate to="/login" />} />
-              <Route path='/login' element={< Login />} />
-              <Route path='/register' element={< Register />} />
+              <Route path='/login' element={<Login onLogin={() => setLoggedIn(true)} />} />
+              <Route path='/register' element={<Register />} />
               <Route path="/tienda" element={<Tienda games={games} />} />
               <Route path='/carrito' element={<Carrito />} />
               <Route path='/newGame' element={<NewGame games={games} onAdd={addGame} />} />
