@@ -23,12 +23,6 @@ app.use(juegosRoutes)
 try {
     await sequelize.sync();
 
-    // Opción drástica (Borra TODA la base de datos y la crea de cero)
-    // await sequelize.sync({ force: true });
-
-
-
-
     app.listen(PORT);
 
     console.log(`Servidor escuchando en el puerto ${PORT}`);

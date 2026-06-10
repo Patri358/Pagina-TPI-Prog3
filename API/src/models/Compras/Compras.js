@@ -10,6 +10,9 @@ export const Compras = sequelize.define("Compras", {
     id_usuario_FK: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+            model: "Users", key: "id"
+        }
     },
     detalle_compra_FK: {
         type: DataTypes.INTEGER,

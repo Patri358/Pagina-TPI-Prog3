@@ -38,4 +38,5 @@ export const Users = sequelize.define("Users", {
     nombre_real VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL, 
     email VARCHAR(100) UNIQUE NOT NULL,
+    rol VARCHAR(20) NOT NULL DEFAULT ("user") 
 */

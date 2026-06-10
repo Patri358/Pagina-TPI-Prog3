@@ -24,16 +24,17 @@ import 'react-toastify/dist/ReactToastify.css';
 // providers
 import CartProvider from './context/CartProvider/CartProvider.jsx';
 import BibliotecaProvider from './context/BibliotecaProvider/BibliotecaProvider.jsx';
-import CardDetalle from './components/Cards/CardDetalle/CardDetalle.jsx';
 
 const App = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
 
+  // hacer fetch para traer los juegos
   const [games, setGames] = useState(initialGames);
   let ultimoId = games.at(-1).id;
 
   // para añadir a traves del formulario (no confundir con añadir al cart)
+  // hacer el fetch para que el juego se cargue en la base de datos
   const addGame = (newGame) => {
     const completeGame = ({
       ...newGame,
@@ -41,7 +42,6 @@ const App = () => {
     })
     setGames([completeGame, ...games]);
   }
-
 
   return (
     <div data-bs-theme="dark" className="min-vh-100 bg-body text-body">
@@ -52,14 +52,14 @@ const App = () => {
           <BrowserRouter>
             <ToastContainer />
 
-             <NavBar />
+            <NavBar />
             <Routes>
               <Route path='/' element={<Navigate to="/tienda" />} />
               <Route path='/login' element={< Login />} />
-              <Route path='/register' element={< Register />} /> 
+              <Route path='/register' element={< Register />} />
               <Route path="/tienda" element={<Tienda games={games} />} />
               <Route path='/carrito' element={<Carrito />} />
-              <Route path='/detalle' element={CardDetalle}/>
+              <Route path='/detalle' element={<CardDetalle />} />
               <Route path='/newGame' element={<NewGame games={games} onAdd={addGame} />} />
               <Route path='/biblioteca' element={<Biblioteca />} />
             </Routes>

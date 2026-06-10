@@ -40,7 +40,7 @@ const CardCarrito = ({ game }) => {
 
                 <Card.Footer>
 
-                    <Button variant="primary" onClick={handleDetail}>Detalles del juego</Button>
+                    <Button onClick={handleDetail} variant="primary" style={{ margin: "10px", width: "100%" }}>Detalles del juego</Button>
                     <Button onClick={() => handleDelete(game)} variant="danger" style={{ margin: "10px", width: "100%" }}>Eliminar del carrito</Button>
 
                 </Card.Footer>
