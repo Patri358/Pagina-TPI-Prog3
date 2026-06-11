@@ -1,11 +1,15 @@
 import { CartContext } from "../../context/CartProvider/CartContext";
-import { useContext } from "react";
-
+import { useContext, useState } from "react";
+import GameDetail from "../GameDetail/GameDetail";
 import CardCarrito from "../Cards/CardCarrito/CardCarrito";
 
 const Carrito = () => {
 
     const { cart, total, handleCompra } = useContext(CartContext);
+    const [gameDetail, setGameDetail] = useState(null)
+
+    const openDetails = (game) => setGameDetail(game)
+    const closeDetails = (game) => setGameDetail(null)
 
     return (
         <div>
@@ -13,7 +17,7 @@ const Carrito = () => {
             <div>
                 {cart.map((game) => {
                     return (
-                        <CardCarrito key={game.id} game={game} />
+                        <CardCarrito key={game.id} game={game} onDetails={openDetails}/>
                     )
                 })}
 
@@ -22,6 +26,15 @@ const Carrito = () => {
                 <form onSubmit={handleCompra}>
                     <button style={{ backgroundColor: '#C5A028', color: 'white', padding: '10px 20px', margin: '10px 5px', border: 'none', borderRadius: '5px', cursor: 'pointer' }} type='submit'>Realizar compra</button>
                 </form>
+                {gameDetail && (
+                    <GameDetail
+                        game={gameDetail}
+                        closeModalDetail={closeDetails}/>
+                )
+
+                }
+
+
             </div>
         </div>
     )
