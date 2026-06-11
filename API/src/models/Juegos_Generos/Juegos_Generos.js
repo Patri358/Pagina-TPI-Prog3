@@ -13,7 +13,9 @@ export const Juegos_Generos = sequelize.define("Juegos_Generos", {
     id_genero_FK: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        references: { model: "Generos", key: "id" }
+        references: {
+            model: "Generos", key: "id"
+        }
     }
 })
 

@@ -3,6 +3,12 @@ import { CartContext } from "./CartContext.js";
 import { BibliotecaContext } from "../../context/BibliotecaProvider/BibliotecaContext";
 import { successToast, errorToast } from "../../ui/Toast/Toast.jsx";
 
+export const calcularTotal = (cart) => {
+    return cart.reduce((acc, item) => {
+        return acc + item.price;
+    }, 0)
+}
+
 const CartProvider = ({ children }) => {
 
     const [cart, setCart] = useState([])
@@ -21,8 +27,8 @@ const CartProvider = ({ children }) => {
         successToast(`${game.title} se ha eliminado`)
     }
 
-    const {myGames, setMyGames} = useContext(BibliotecaContext);
-    
+    const { myGames, setMyGames } = useContext(BibliotecaContext);
+
     const handleCompra = (event) => {
         event.preventDefault()
 
@@ -36,10 +42,7 @@ const CartProvider = ({ children }) => {
         setCart([])
     }
 
-
-    const total = cart.reduce((acc, item) => {
-        return acc + item.price;
-    }, 0)
+    const total = calcularTotal(cart)
 
     return (
         <CartContext.Provider value={{ cart, setCart, handleCart, handleDelete, handleCompra, total }}>

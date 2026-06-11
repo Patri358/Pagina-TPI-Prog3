@@ -10,6 +10,7 @@ export const Generos = sequelize.define("Generos", {
     descripcion: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        unique: true
     }
 }, { timestamps: false })
 

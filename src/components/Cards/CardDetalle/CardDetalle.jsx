@@ -1,18 +1,9 @@
-import { Card, Button, Badge } from "react-bootstrap";
-import { useContext } from "react";
-import { CartContext } from "../../../context/CartProvider/CartContext";
-import CardDetalle from "../CardDetalle/CardDetalle";
+import { Card } from "react-bootstrap";
 
-const CardCarrito = ({ game }) => {
-
-    const { handleDelete } = useContext(CartContext);
-
-    const handleDetail = () => {
-        
-    }
+const CardDetalle = ({ game }) => {
 
     return (
-        <Card text="white" key={game.id} style={{ width: '28rem', margin: "30px" }} className='mx-3'>
+        <Card text="white" style={{ width: '28rem', margin: "30px" }} className='mx-3'>
             <Card.Img variant="top" src={game.poster} />
             <Card.Body>
                 <Card.Title className="text-center">{game.title}</Card.Title>
@@ -30,7 +21,7 @@ const CardCarrito = ({ game }) => {
 
                 <Card.Text> Categoría: {game.rating} </Card.Text>
 
-                <hr />
+                <Card.Text> Fecha de lanzamiento: {game.launch} </Card.Text>
 
                 <Card.Text>
                     <Badge >
@@ -39,14 +30,11 @@ const CardCarrito = ({ game }) => {
                 </Card.Text>
 
                 <Card.Footer>
-
-                    <Button onClick={handleDetail} variant="primary" style={{ margin: "10px", width: "100%" }}>Detalles del juego</Button>
-                    <Button onClick={() => handleDelete(game)} variant="danger" style={{ margin: "10px", width: "100%" }}>Eliminar del carrito</Button>
-
+                    <Button>Volver</Button>
                 </Card.Footer>
             </Card.Body>
         </Card >
     )
 }
 
-export default CardCarrito;
+export default CardDetalle;

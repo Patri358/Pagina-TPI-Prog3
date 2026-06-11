@@ -11,20 +11,24 @@ export const Juegos = sequelize.define("Juegos", {
         type: DataTypes.STRING(100),
         allowNull: false,
     },
-    distribuidor: {
+    distributor: {
         type: DataTypes.STRING(100),
     },
-    synopsis: {
+    sinopsis: {
         type: DataTypes.TEXT
     },
     poster: {
         type: DataTypes.STRING(255),
     },
+    rating: {
+        type: DataTypes.ENUM("Apto para todo público", "Apto para mayores de 10", "Apto para mayores de 18"),
+        allowNull: false
+    },
     launch: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         defaultValue: DATEONLY
     },
-    precio: {
+    price: {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0,
         allowNull: false,
@@ -37,11 +41,12 @@ export const Juegos = sequelize.define("Juegos", {
 /* Datos Juego:
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
-    distribuidor VARCHAR (100),
-    synopsis TEXT,
+    distributor VARCHAR (100),
+    sinopsis TEXT,
     poster VARCHAR(255),
+    rating ENUM("Apto para todo público", "Apto para mayores de 10", "Apto para mayores de 18") NOT NULL
     launch DATE DEFAULT (CURRENT_DATE()),
-    precio DECIMAL(10,2) NOT NULL CHECK (precio > 0),
+    price DECIMAL(10,2) NOT NULL CHECK (precio > 0),
 */
 
-// timestamps: esto es para que no se agregue las columnas de fecha_actualizacion y fecha_creacion
+// timestamps: esto es para que no se agregue las columnas de fecha_actualizacion y fecha_creacion}
