@@ -40,6 +40,10 @@ const App = () => {
     setGames([completeGame, ...games]);
   }
 
+  const removeGame = (gameId) => {
+    setGames(games.filter((game) => game.id !== gameId));
+  }
+
 
   return (
     <div data-bs-theme="dark" className="min-vh-100 bg-body text-body">
@@ -55,7 +59,7 @@ const App = () => {
               <Route path='/' element={<Navigate to="/login" />} />
               <Route path='/login' element={<Login onLogin={() => setLoggedIn(true)} />} />
               <Route path='/register' element={<Register />} />
-              <Route path="/tienda" element={<Tienda games={games} />} />
+              <Route path="/tienda" element={<Tienda games={games} onRemoveGame={removeGame}/>} />
               <Route path='/carrito' element={<Carrito />} />
               <Route path='/newGame' element={<NewGame games={games} onAdd={addGame} />} />
               <Route path='/biblioteca' element={<Biblioteca />} />

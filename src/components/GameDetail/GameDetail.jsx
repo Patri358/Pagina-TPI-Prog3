@@ -1,6 +1,6 @@
 import React from 'react'
 
-const GameDetail = ({ game, cerrarModalDetalles }) => {
+const GameDetail = ({ game, closeModalDetail }) => {
   return (
     <div style={{
       position: 'fixed',
@@ -41,7 +41,7 @@ const GameDetail = ({ game, cerrarModalDetalles }) => {
           borderRadius: '5px',
           cursor: 'pointer',
           width: '100%'
-        }} onClick={cerrarModalDetalles}>
+        }} onClick={closeModalDetail}>
           Cerrar
         </button>
       </div>
