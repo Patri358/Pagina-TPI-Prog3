@@ -1,5 +1,5 @@
 import { DataTypes, DATEONLY } from "sequelize";
-import { sequelize } from "../../../db.js";
+import { sequelize } from "../../db.js";
 
 export const Juegos = sequelize.define("Juegos", {
     id: {
@@ -10,15 +10,19 @@ export const Juegos = sequelize.define("Juegos", {
     title: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        unique: true
     },
     distributor: {
         type: DataTypes.STRING(100),
+        allowNull: false
     },
     sinopsis: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        allowNull: false
     },
     poster: {
         type: DataTypes.STRING(255),
+        allowNull: false
     },
     rating: {
         type: DataTypes.ENUM("Apto para todo público", "Apto para mayores de 10", "Apto para mayores de 18"),
@@ -26,7 +30,8 @@ export const Juegos = sequelize.define("Juegos", {
     },
     launch: {
         type: DataTypes.DATEONLY,
-        defaultValue: DATEONLY
+        defaultValue: DATEONLY,
+        allowNull: false
     },
     price: {
         type: DataTypes.DECIMAL(10, 2),
@@ -38,7 +43,7 @@ export const Juegos = sequelize.define("Juegos", {
     },
 }, { timestamps: false })
 
-/* Datos Juego:
+/* Tabla Juego:
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     distributor VARCHAR (100),

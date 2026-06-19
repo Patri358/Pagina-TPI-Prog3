@@ -8,7 +8,7 @@ const CardCarrito = ({ game }) => {
     const { handleDelete } = useContext(CartContext);
 
     const handleDetail = () => {
-        
+
     }
 
     return (
@@ -18,8 +18,8 @@ const CardCarrito = ({ game }) => {
                 <Card.Title className="text-center">{game.title}</Card.Title>
 
                 <Card.Subtitle className="text-center fs-2 my-3" >
-                    <Badge>
-                        ${game.price}
+                    <Badge bg="success">
+                        {game.price === 0 ? "Gratuito" : `$${game.price}` }
                     </Badge>
                 </Card.Subtitle>
 
@@ -33,8 +33,8 @@ const CardCarrito = ({ game }) => {
                 <hr />
 
                 <Card.Text>
-                    <Badge >
-                        Tags: #{game.tags.join(" #")}
+                    <Badge pill bg="secondary">
+                        Géneros: #{game.Generos.map((genero) => genero.descripcion).join(" #")}
                     </Badge>
                 </Card.Text>
 

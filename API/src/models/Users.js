@@ -1,4 +1,4 @@
-import { sequelize } from "../../../db.js";
+import { sequelize } from "../../db.js";
 import { DataTypes } from "sequelize";
 
 export const Users = sequelize.define("Users", {
@@ -32,7 +32,7 @@ export const Users = sequelize.define("Users", {
 });
 
 
-/* Data Users
+/* Tabla Users
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL,
     nombre_real VARCHAR(255) NOT NULL,

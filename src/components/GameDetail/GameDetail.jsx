@@ -28,8 +28,8 @@ const GameDetail = ({ game, closeModalDetail }) => {
         <img src={game.poster} alt={game.title} style={{ width: '100%', borderRadius: '5px', marginBottom: '15px' }} />
         <p><strong>Distribuidor:</strong> {game.distributor}</p>
         <p><strong>Clasificación:</strong> {game.rating}</p>
-        <p><strong>Sinopsis:</strong> {game.synopsis}</p>
-        <p><strong>Etiquetas:</strong> {game.tags.join(', ')}</p>
+        <p><strong>Sinopsis:</strong> {game.sinopsis}</p>
+        <p><strong>Géneros: </strong>#{game.Generos.map((genero) => genero.descripcion).join(" #")}</p>
         <p><strong>Lanzamiento:</strong> {game.launch}</p>
 
         <button style={{

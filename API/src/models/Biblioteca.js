@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../../../db.js";
+import { sequelize } from "../../db.js";
 
 export const Biblioteca = sequelize.define("Biblioteca", {
 
@@ -24,7 +24,7 @@ export const Biblioteca = sequelize.define("Biblioteca", {
 })
 
 
-/* Data Biblioteca:
+/* Tabla Biblioteca:
     id_usuario_FK INT
     id_juego_FK INT
 

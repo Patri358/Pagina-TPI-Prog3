@@ -22,10 +22,10 @@ const CardDetalle = ({ game }) => {
                 <Card.Text> Categoría: {game.rating} </Card.Text>
 
                 <Card.Text> Fecha de lanzamiento: {game.launch} </Card.Text>
-
+                
                 <Card.Text>
-                    <Badge >
-                        Tags: #{game.tags.join(" #")}
+                    <Badge pill bg="secondary">
+                        Géneros: #{game.Generos.map((genero) => genero.descripcion).join(" #")}
                     </Badge>
                 </Card.Text>
 

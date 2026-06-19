@@ -1,11 +1,12 @@
-import React from 'react'
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import { GamesContext } from '../../context/GamesProvider/GamesContext';
 import { useNavigate } from 'react-router'
-
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { errorToast } from '../../ui/Toast/Toast'
 
-const NewGame = ({ games, onAdd }) => {
+const NewGame = () => {
+
+  const { games, handleAdd } = useContext(GamesContext);
 
   const navigate = useNavigate();
 
@@ -15,15 +16,15 @@ const NewGame = ({ games, onAdd }) => {
     poster: "",
     rating: "",
     sinopsis: "",
-    tags: [],
+    Generos: [],
     launch: "",
     price: "",
   })
 
-  const [error, setError] = useState({})
-
   const tagsValidas = ["Mundo abierto ", "Multijugador ", "Un jugador ", "Rol ", "Exploracion ", "Aventura ", "Accion ", "Ciencia ficción ", "Metroidvania "]
   const ratings = ["Apto para todo público", "Apto para mayores de 10", "Apto para mayores de 18"]
+
+  const [error, setError] = useState({})
 
   const validate = () => {
 
@@ -33,7 +34,7 @@ const NewGame = ({ games, onAdd }) => {
       { error: !formData.poster.trim(), mensaje: "El poster es obligatorio" },
       { error: !formData.rating, mensaje: "La clasificación es obligatoria" },
       { error: !formData.sinopsis, mensaje: "La sinopsis es obligatoria" },
-      { error: !formData.tags.length, mensaje: "Tenes que seleccionar al menos una etiqueta" },
+      { error: !formData.Generos.length, mensaje: "Tenes que seleccionar al menos una etiqueta" },
       { error: !formData.launch.trim(), mensaje: "La fecha de lanzamiento es obligatoria" },
       { error: formData.price < 0, mensaje: "El precio es obligatorio" }
     ].find(error => error.error)
@@ -56,16 +57,16 @@ const NewGame = ({ games, onAdd }) => {
   const handleChangeForm = (event) => {
     const { name, value, checked } = event.target;
 
-    if (name === "tags") {
+    if (name === "Generos") {
       checked ? (
         setFormData({
           ...formData,
-          tags: [...formData.tags, value],
+          Generos: [...formData.Generos, value],
         })
       ) : (
         setFormData({
           ...formData,
-          tags: formData.tags.filter(tag => tag !== value),
+          Generos: formData.Generos.filter(tag => tag !== value),
         })
       )
     }
@@ -87,8 +88,8 @@ const NewGame = ({ games, onAdd }) => {
     event.preventDefault()
 
     if (validate()) {
-      const newGame = formData
-      onAdd(newGame);
+      const newGame = formData;
+      handleAdd(newGame);
       navigate("/Tienda");
     }
   }

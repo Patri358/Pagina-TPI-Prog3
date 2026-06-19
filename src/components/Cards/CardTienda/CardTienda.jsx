@@ -1,10 +1,30 @@
 import { Card, Button, Badge } from "react-bootstrap";
 import { useContext } from "react";
 import { CartContext } from "../../../context/CartProvider/CartContext";
+import { errorToast, successToast } from "../../../ui/Toast/Toast";
 
-const CardTienda = ({ game, onDetails, onDelete }) => {
+const CardTienda = ({ game }) => {
 
     const { handleCart } = useContext(CartContext);
+
+    const onDelete = () => {
+        let id = game.id
+        fetch(`http://localhost:3001/juegos/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    successToast(`Se eliminó ${game.title} de la tienda`)
+                } else {
+                    errorToast("Error al eliminar el juego")
+                }
+            })
+            .catch((error) => errorToast(error))
+    }
+
 
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
@@ -14,7 +34,7 @@ const CardTienda = ({ game, onDetails, onDelete }) => {
 
                 <Card.Subtitle className="text-center fs-2 my-3" >
                     <Badge bg="success">
-                        ${game.price}
+                        {game.price === 0 ? "Gratuito" : `$${game.price}`}
                     </Badge>
                 </Card.Subtitle>
 
@@ -30,18 +50,19 @@ const CardTienda = ({ game, onDetails, onDelete }) => {
 
                 <Card.Text>
                     <Badge pill bg="secondary">
-                        Tags: #{game.tags.join(" #")}
+                        Géneros: #{game.Generos.map((genero) => genero.descripcion).join(" #")}
                     </Badge>
                 </Card.Text>
 
                 <Card.Footer>
                     {/* boton que ve el admin | superadmin */}
-                    <div className="d-flex justify-content-center">
-                        <Button variant="danger" onClick={() => onDelete?.(game)} >Eliminar de la tienda</Button>
+                    <div className="d-flex justify-content-center gap-3">
+                        <Button variant="danger" onClick={onDelete} >Eliminar de la tienda</Button>
+                        <Button variant="success" >Editar juego</Button>
                     </div>
 
-                    <Button style={{ margin: "10px", width: "100%" }} variant="primary" onClick={() => onDetails?.(game)} >Detalles del juego</Button>
-                    <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }}>Comprar juego</Button>
+                    <Button style={{ margin: "10px", width: "100%" }} variant="primary" >Detalles del juego</Button>
+                    <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }}>Añadir al carrito</Button>
                 </Card.Footer>
             </Card.Body>
         </Card >

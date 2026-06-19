@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../../../db";
+import { sequelize } from "../../db.js";
 
 export const Compras = sequelize.define("Compras", {
     id: {
@@ -28,12 +28,11 @@ export const Compras = sequelize.define("Compras", {
     fecha_compra: {
         type: DataTypes.DATEONLY,
         allowNull: false,
-        defaultValue: DataTypes.NOW()
-
+        defaultValue: DataTypes.NOW
     }
-})
+}, { timestamps: false })
 
-/* Data Compras:
+/* Tabla Compras:
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario_FK INT NOT NULL,
     precio DECIMAL(10,2) NOT NULL CHECK (precio >= 0)

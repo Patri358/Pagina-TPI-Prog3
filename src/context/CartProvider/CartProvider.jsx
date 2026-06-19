@@ -34,9 +34,10 @@ const CartProvider = ({ children }) => {
 
         successToast("Compra realizada")
 
-        const idsMisJuegos = myGames.map((juego) => juego.id)
+        // array con todos los ids de mi biblioteca
+        const idsBiblioteca = myGames.map((juego) => juego.id)
 
-        const juegosSinRepetir = cart.filter((juego) => !idsMisJuegos.includes(juego.id))
+        const juegosSinRepetir = cart.filter((juego) => !idsBiblioteca.includes(juego.id))
 
         setMyGames([...myGames, ...juegosSinRepetir])
         setCart([])

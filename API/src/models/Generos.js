@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../../../db";
+import { sequelize } from "../../db.js";
 
 export const Generos = sequelize.define("Generos", {
     id: {
@@ -14,7 +14,7 @@ export const Generos = sequelize.define("Generos", {
     }
 }, { timestamps: false })
 
-/* Datos Generos:
+/* Tabla Generos:
     id INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(100) NOT NULL
 */

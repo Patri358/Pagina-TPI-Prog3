@@ -1,37 +1,40 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../../../db";
-import { Generos } from "./Generos";
-import { Juegos } from "./Juegos";
+import { sequelize } from "../../db.js";
+import { Generos } from "./Generos.js";
+import { Juegos } from "./Juegos.js";
 
 // Tabla intermedia para poner mas de 1 género a un juego
-export const Juegos_Generos = sequelize.define("Juegos_Generos", {
+export const JuegosGeneros = sequelize.define("JuegosGeneros", {
     id_juego_FK: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        references: { model: "Juegos", key: "id" }
+        references: { model: "Juegos", key: "id" },
+        onDelete: "CASCADE"
     },
     id_genero_FK: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
         references: {
             model: "Generos", key: "id"
-        }
+        },
+        onDelete: "CASCADE"
     }
-})
+}, { timestamps: false })
 
-Juego.belongsToMany(Genero, {
-    through: Juego_Genero,
+Juegos.belongsToMany(Generos, {
+    through: JuegosGeneros,
     foreignKey: "id_juego_FK",
     otherKey: "id_genero_FK"
 });
 
-Genero.belongsToMany(Juego, {
-    through: Juegos_Generos,
+Generos.belongsToMany(Juegos, {
+    through: JuegosGeneros,
     foreignKey: "id_genero_FK",
     otherKey: "id_juego_FK"
 });
 
-/* Datos Juego_Genero:
+
+// Si borro el juego, se borran todas las asociaciones a ese juego y si borro un genero se elimina de todas las asociaciones a ese genero 
+
+/* Tabla JuegosGeneros:
 
     id_juego_FK INT,
     id_genero_FK INT,

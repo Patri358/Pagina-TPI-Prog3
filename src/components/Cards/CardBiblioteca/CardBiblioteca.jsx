@@ -14,17 +14,13 @@ const CardBiblioteca = ({ game }) => {
                 <Card.Text>
                     {game.synopsis}
                 </Card.Text>
+
                 <Card.Subtitle className="text-center" style={{ marginBottom: "30px" }}>Distribuidor: {game.distributor}</Card.Subtitle>
 
                 <Card.Text> Categoría: {game.rating} </Card.Text>
 
                 <hr />
 
-                <Card.Text>
-                    <Badge >
-                        Tags: #{game.tags.join(" #")}
-                    </Badge>
-                </Card.Text>
             </Card.Body>
         </Card >
     )

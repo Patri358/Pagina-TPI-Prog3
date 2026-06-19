@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../../../db";
-import { Juegos } from "../Juegos/Juegos";
-import { Compras } from "../Compras/Compras";
+import { sequelize } from "../../db.js";
+import { Juegos } from "./Juegos.js";
+import { Compras } from "./Compras.js";
 
 export const DetalleCompra = sequelize.define("DetalleCompra", {
     id_compra_FK: {
@@ -28,7 +28,7 @@ Juegos.belongsToMany(Compras, {
     onDelete: "RESTRICT"
 });
 
-/* Data DetalleCompra
+/* Tabla DetalleCompra
 
     id_compra_FK INT, 
     id_juego_FK INT,

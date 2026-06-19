@@ -1,9 +1,11 @@
 import { Router } from "express";
+import { Users } from "../models/Users.js";
 
 const router = Router();
 
-router.get("/users", (req, res) => {
-    res.send("Obteniendo usuarios")
+router.get("/users", async (req, res) => {
+    const usuarios = await Users.findAll();
+    res.send(usuarios);
 })
 
 router.get("/users/:id", (req, res) => {
