@@ -1,6 +1,3 @@
-// array juegos
-import { initialGames } from './data/games.js'
-
 // hooks
 import { useState } from 'react';
 
