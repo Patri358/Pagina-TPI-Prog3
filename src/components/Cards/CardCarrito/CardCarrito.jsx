@@ -1,12 +1,12 @@
 import { Card, Button, Badge } from "react-bootstrap";
 import { useContext } from "react";
 import { CartContext } from "../../../context/CartProvider/CartContext";
-import CardDetalle from "../CardDetalle/CardDetalle";
 
-const CardCarrito = ({ game }) => {
+const CardCarrito = ({ game, onDetails }) => {
 
     const { handleDelete } = useContext(CartContext);
 
+    
     const handleDetail = () => {
 
     }
@@ -40,7 +40,7 @@ const CardCarrito = ({ game }) => {
 
                 <Card.Footer>
 
-                    <Button onClick={handleDetail} variant="primary" style={{ margin: "10px", width: "100%" }}>Detalles del juego</Button>
+                    <Button onClick={() => onDetails?.(game)} variant="primary" style={{ margin: "10px", width: "100%" }}>Detalles del juego</Button>
                     <Button onClick={() => handleDelete(game)} variant="danger" style={{ margin: "10px", width: "100%" }}>Eliminar del carrito</Button>
 
                 </Card.Footer>
