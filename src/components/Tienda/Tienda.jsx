@@ -7,7 +7,7 @@ import { GamesContext } from '../../context/GamesProvider/GamesContext.js'
 
 const Tienda = () => {
 
-    const {games} = useContext(GamesContext)
+    const { games } = useContext(GamesContext)
 
     return (
         <div className="d-flex flex-column align-items-center">

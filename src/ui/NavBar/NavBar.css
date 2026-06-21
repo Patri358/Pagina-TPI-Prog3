@@ -1,0 +1,51 @@
+/* Contenedor principal de la barra de navegación */
+.navbar-container {
+  padding: 20px;
+  background-color: #333;
+}
+
+/* Manejo de espacios y alineación de los bloques */
+.navbar-spacer {
+  flex: 1;
+}
+
+.navbar-links-center {
+  flex: 2;
+  justify-content: center;
+}
+
+.navbar-actions-right {
+  flex: 1;
+  text-align: right;
+}
+
+/* Estilos para los enlaces (Links) */
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+/* El enlace de perfil no necesita margen extra en su icono */
+.navbar-link i {
+  font-style: normal; /* Quita la cursiva por defecto de la etiqueta <i> de Bootstrap */
+}
+
+/* Icono específico de Modo Admin */
+.navbar-admin-icon {
+  margin: 10px;
+  font-style: normal;
+}
+
+/* Botón de cerrar sesión */
+.navbar-btn-logout {
+  margin: 10px;
+}
+
+/* Badge del carrito con posición absoluta */
+.navbar-cart-badge {
+  font-size: 0.8rem;
+  position: absolute;
+  right: -20px;
+  top: -11px;
+}

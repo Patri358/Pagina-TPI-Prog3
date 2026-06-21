@@ -1,8 +1,21 @@
 import { useContext, useState, useEffect } from "react"
 import { GamesContext } from "./GamesContext.js"
+import { successToast } from "../../ui/Toast/Toast.jsx"
 
 const GamesProvider = ({ children }) => {
 
+    // generos
+    const [generosDescripcion, setGenerosDescripcion] = useState([])
+
+    useEffect(() => {
+        fetch("http://localhost:3001/generos")
+            .then(res => res.json())
+            .then(data => setGenerosDescripcion(data))
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+    }, [])
+
+    // juegos
     const [games, setGames] = useState([]);
 
     useEffect(() => {
@@ -11,7 +24,6 @@ const GamesProvider = ({ children }) => {
             .then(data => setGames(data))
             .catch(error => console.log(error))
     }, [])
-    const ultimoID = games.at(-1)?.id
 
     // actualizo el front y el back
     const handleDelete = (game) => {
@@ -24,40 +36,37 @@ const GamesProvider = ({ children }) => {
         })
             .then((response) => {
                 if (response.ok) {
+                    setGames((prevGames) => prevGames.filter((g) => g.id !== id));
                     successToast(`Se eliminó ${game.title} de la tienda`)
                 } else {
                     errorToast("Error al eliminar el juego")
                 }
             })
             .catch((error) => errorToast(error))
-
-        setGames(games.filter((g) => g.id !== game.id));
     }
 
     const handleAdd = (newGame) => {
-
-        const completeGame = {
-            ...newGame,
-            ultimoID
-        }
-
         fetch("http://localhost:3001/juegos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(completeGame),
+            body: JSON.stringify(newGame),
         })
-            .then()
-            .then()
+            .then((res) => {
+                return res.json()
+            })
+            .then((newGame) => {
+                successToast(`Se añadió el juego: ${newGame.title}`)
+                setGames((prevGames) => [...prevGames, newGame])
+            })
             .catch((error) => errorToast(error.message))
 
-        setGames((prevGames) => [...prevGames, completeGame])
     }
 
 
     return (
-        <GamesContext.Provider value={{ games, handleAdd }}>
+        <GamesContext.Provider value={{ games, handleAdd, generosDescripcion }}>
             {children}
         </GamesContext.Provider>
     )

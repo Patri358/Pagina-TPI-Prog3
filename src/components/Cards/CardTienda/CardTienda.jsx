@@ -5,26 +5,9 @@ import { errorToast, successToast } from "../../../ui/Toast/Toast";
 
 const CardTienda = ({ game }) => {
 
-    const { handleCart } = useContext(CartContext);
+    const { handleCart, handleDelete } = useContext(CartContext);
 
-    const onDelete = () => {
-        let id = game.id
-        fetch(`http://localhost:3001/juegos/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    successToast(`Se eliminó ${game.title} de la tienda`)
-                } else {
-                    errorToast("Error al eliminar el juego")
-                }
-            })
-            .catch((error) => errorToast(error))
-    }
-
+    const esAdmin = false
 
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
@@ -56,10 +39,12 @@ const CardTienda = ({ game }) => {
 
                 <Card.Footer>
                     {/* boton que ve el admin | superadmin */}
-                    <div className="d-flex justify-content-center gap-3">
-                        <Button variant="danger" onClick={onDelete} >Eliminar de la tienda</Button>
-                        <Button variant="success" >Editar juego</Button>
-                    </div>
+                    {esAdmin && (
+                        <div className="d-flex justify-content-center gap-3">
+                            <Button variant="danger" onClick={() => handleDelete(game)} >Eliminar de la tienda</Button>
+                            <Button variant="success" >Editar juego</Button>
+                        </div>
+                    )}
 
                     <Button style={{ margin: "10px", width: "100%" }} variant="primary" >Detalles del juego</Button>
                     <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }}>Añadir al carrito</Button>

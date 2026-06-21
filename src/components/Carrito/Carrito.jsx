@@ -2,6 +2,7 @@ import { CartContext } from "../../context/CartProvider/CartContext";
 import { useContext, useState } from "react";
 import GameDetail from "../GameDetail/GameDetail";
 import CardCarrito from "../Cards/CardCarrito/CardCarrito";
+import { Container } from "react-bootstrap";
 
 const Carrito = () => {
 

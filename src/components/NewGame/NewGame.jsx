@@ -6,7 +6,7 @@ import { errorToast } from '../../ui/Toast/Toast'
 
 const NewGame = () => {
 
-  const { games, handleAdd } = useContext(GamesContext);
+  const { games, handleAdd, generosDescripcion } = useContext(GamesContext);
 
   const navigate = useNavigate();
 
@@ -139,12 +139,12 @@ const NewGame = () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Etiquetas</Form.Label>
+        <Form.Label>Géneros</Form.Label>
         <div className="d-flex flex-wrap gap-2">
           {
-            tagsValidas.map((tag) => {
+            generosDescripcion?.map((genero) => {
               return (
-                <Form.Check onChange={handleChangeForm} key={tag} name="tags" label={tag} value={tag} />
+                <Form.Check onChange={handleChangeForm} key={genero.id} name="Generos" label={genero.descripcion} value={genero.descripcion} />
               )
             })
           }

@@ -8,8 +8,13 @@ router.get("/users", async (req, res) => {
     res.send(usuarios);
 })
 
-router.get("/users/:id", (req, res) => {
-    const { id } = req.params
+router.get("/users/:id", async (req, res) => {
+    const { email } = req.params
+
+    const User = await Users.findOne({ where: { email } })
+
+    
+
     res.send(`Obteniendo usuario con id: ${id}`)
 })
 
