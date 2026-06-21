@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { Users } from "../models/Users.js";
+import { JWT_SECRET } from "../config.js";
 
 export const loginUser = async (req, res) => {
   try {
@@ -20,15 +22,18 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Email o contraseña incorrectos" });
     }
 
+    const payload = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      rol: user.rol,
+    };
+
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+
     return res.status(200).json({
-      token: "fake-token-12345",
-      user: {
-        id: user.id,
-        username: user.username,
-        nombre_real: user.nombre_real,
-        email: user.email,
-        rol: user.rol
-      },
+      token,
+      user: payload,
     });
   } catch (error) {
     console.error(error);

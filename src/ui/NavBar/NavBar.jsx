@@ -1,13 +1,23 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../context/CartProvider/CartContext';
-import { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import "./NavBar.css"
 
-const NavBar = () => {
-  // Para mostrar la cantidad de juegos en el carro
+const NavBar = ({ onLogout }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const cart = useContext(CartContext).cart
+
+  const hidePaths = ["/login", "/register"];
+  if (hidePaths.includes(location.pathname)) return null;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    onLogout?.();
+    navigate("/login");
+  }
 
   return (
     <nav className="d-flex align-items-center navbar-container">
@@ -42,7 +52,9 @@ const NavBar = () => {
         <Link to="/perfil" className="navbar-link">
           <i className="bi bi-person"> Perfil</i>
         </Link>
-        <Button variant="danger" className="navbar-btn-logout">Cerrar sesión</Button>
+        <Button variant="danger" className="navbar-btn-logout" onClick={handleLogout}>
+          Cerrar sesión
+        </Button>
       </div>
 
     </nav>

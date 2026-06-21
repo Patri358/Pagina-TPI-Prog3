@@ -57,7 +57,9 @@ const Login = ({ onLogin }) => {
         throw new Error(errorData.message || "Login incorrecto");
       }
 
-      await response.json();
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
       onLogin();
       navigate("/tienda");
     } catch (error) {
