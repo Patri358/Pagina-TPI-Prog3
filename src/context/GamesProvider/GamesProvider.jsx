@@ -11,7 +11,6 @@ const GamesProvider = ({ children }) => {
         fetch("http://localhost:3001/generos")
             .then(res => res.json())
             .then(data => setGenerosDescripcion(data))
-            .then(data => console.log(data))
             .catch(err => console.log(err))
     }, [])
 
@@ -64,9 +63,17 @@ const GamesProvider = ({ children }) => {
 
     }
 
+    const [isEditing, setIsEditing] = useState(false)
+    const handleEdit = () => {
+        setIsEditing(true)
+    }
+
+    const handleNotEdit = () => {
+        setIsEditing(false)
+    }
 
     return (
-        <GamesContext.Provider value={{ games, handleAdd, generosDescripcion }}>
+        <GamesContext.Provider value={{ games, handleAdd, handleEdit, handleNotEdit, isEditing, generosDescripcion }}>
             {children}
         </GamesContext.Provider>
     )

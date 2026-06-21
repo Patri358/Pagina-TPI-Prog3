@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../context/CartProvider/CartContext';
 import { Button } from 'react-bootstrap';
 import "./NavBar.css"
+import { GamesContext } from '../../context/GamesProvider/GamesContext';
 
 const NavBar = ({ onLogOut }) => {
   const location = useLocation();
@@ -17,6 +18,12 @@ const NavBar = ({ onLogOut }) => {
     navigate("/login");
   }
 
+  const { handleNotEdit } = useContext(GamesContext)
+
+  const handleAdd = () => {
+    handleNotEdit()
+  }
+
   return (
     <nav className="d-flex align-items-center navbar-container">
 
@@ -26,8 +33,8 @@ const NavBar = ({ onLogOut }) => {
         <Link to="/tienda" className="navbar-link">
           <i className="bi bi-cart3"></i> Tienda
         </Link>
-        <Link to="/newGame" className="navbar-link">
-          <i className="bi bi-plus-circle"></i> Agregar Juego
+        <Link to="/gameForm" className="navbar-link">
+          <i className="bi bi-plus-circle" onClick={handleAdd}></i> Agregar Juego
         </Link>
         <Link to="/biblioteca" className="navbar-link">
           <i className="bi bi-collection"></i> Biblioteca
@@ -45,10 +52,10 @@ const NavBar = ({ onLogOut }) => {
 
       <div className="navbar-actions-right">
         <Link to="*" className="navbar-link">
-          <i className="bi bi-person-gear navbar-admin-icon"> Modo admin</i>
+          <i className="bi bi-person-gear navbar-admin-icon"> Modo admin </i>
         </Link>
         <Link to="/perfil" className="navbar-link">
-          <i className="bi bi-person"> Perfil</i>
+          <i className="bi bi-person"> Perfil </i>
         </Link>
         <Button variant="danger" className="navbar-btn-logout" onClick={handleLogout}>
           Cerrar sesión

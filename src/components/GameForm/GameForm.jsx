@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { errorToast } from '../../ui/Toast/Toast'
 
-const NewGame = () => {
+const GameForm = () => {
 
-  const { games, handleAdd, generosDescripcion } = useContext(GamesContext);
+  const { games, handleAdd, generosDescripcion, isEditing } = useContext(GamesContext);
 
   const navigate = useNavigate();
 
@@ -99,7 +99,7 @@ const NewGame = () => {
   }
 
   return (
-    <Form className="p-4" onSubmit={handleSubmit}>
+    <Form style={{ color: "white" }} className="p-4" onSubmit={handleSubmit}>
       <Form.Group className="mb-3">
         <Form.Label>Título</Form.Label>
         <Form.Control onChange={handleChangeForm} name='title' value={formData.title} placeholder="Ingrese el título..." />
@@ -163,9 +163,18 @@ const NewGame = () => {
         </Form.Group>
       </Row>
 
-      <Button variant="primary" type="submit" className="w-100 mt-2">
-        Agregar Juego
-      </Button>
+      {
+        isEditing ?
+          (<Button variant="primary" type="submit" className="w-100 mt-2">
+            Editar Juego
+          </Button>) 
+          :
+          (<Button variant="primary" type="submit" className="w-100 mt-2">
+            Agregar Juego
+          </Button>)
+      }
+
+
       <Button onClick={handleCancel} variant="danger" type="button" className="w-100 mt-2">
         Cancelar
       </Button>
@@ -173,4 +182,4 @@ const NewGame = () => {
   )
 };
 
-export default NewGame;
+export default GameForm;

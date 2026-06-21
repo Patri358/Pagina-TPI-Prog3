@@ -1,11 +1,24 @@
 import { Card, Button, Badge } from "react-bootstrap";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../../../context/CartProvider/CartContext";
 import { errorToast, successToast } from "../../../ui/Toast/Toast";
+import { useNavigate } from "react-router-dom";
+import { GamesContext } from "../../../context/GamesProvider/GamesContext";
+import useModal from "../../../services/useModal/useModal";
 
-const CardTienda = ({ game, abrirModal }) => {
+const CardTienda = ({ game }) => {
+
+    const navigate = useNavigate()
 
     const { handleCart } = useContext(CartContext);
+    const { handleEdit } = useContext(GamesContext);
+
+    const handleEditGame = () => {
+        handleEdit()
+        navigate("/gameForm")
+    }
+
+    const { handleAbrir, handleCerrar, estadoModal } = useModal()
 
     const esAdmin = true
 
@@ -41,8 +54,8 @@ const CardTienda = ({ game, abrirModal }) => {
                     {/* boton que ve el admin | superadmin */}
                     {esAdmin && (
                         <div className="d-flex justify-content-center gap-3">
-                            <Button variant="danger" onClick={abrirModal}>Eliminar de la tienda</Button>
-                            <Button variant="success" >Editar juego</Button>
+                            <Button variant="danger">Eliminar de la tienda</Button>
+                            <Button variant="success" onClick={handleEditGame} >Editar juego</Button>
                         </div>
                     )}
 
