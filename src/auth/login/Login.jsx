@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContainer from "../authContainer/AuthContainer.jsx";
 import { errorToast } from "../../ui/Toast/Toast.jsx";
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -60,7 +60,8 @@ const Login = ({ onLogin }) => {
       const data = await response.json();
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      onLogin();
+      // setea el estado en true
+      onLogIn();
       navigate("/tienda");
     } catch (error) {
       errorToast(error.message);

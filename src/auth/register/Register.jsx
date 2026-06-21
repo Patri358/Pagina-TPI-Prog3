@@ -10,12 +10,23 @@ const Register = () => {
   const [nombreReal, setNombreReal] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [validatePass, setValidatePass] = useState("")
 
   const handleRegister = async (event) => {
     event.preventDefault();
 
-    if (!username || !nombreReal || !email || !password) {
+    if (!username || !nombreReal || !email || !password, !validatePass) {
       errorToast("Completa todos los campos");
+      return;
+    }
+
+    if (password.length < 8) {
+      errorToast("La contraseña debe tener 8 caracteres");
+      return;
+    }
+
+    if (password !== validatePass) {
+      errorToast("No coinciden las contraseñas");
       return;
     }
 
@@ -78,6 +89,14 @@ const Register = () => {
             placeholder="Ingresar contraseña"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+          />
+        </FormGroup>
+        <FormGroup className="mb-4">
+          <Form.Control
+            type="password"
+            placeholder="Validar la contraseña"
+            onChange={(e) => setValidatePass(e.target.value)}
+            value={validatePass}
           />
         </FormGroup>
 

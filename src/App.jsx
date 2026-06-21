@@ -28,8 +28,23 @@ const App = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
 
+  // para que se mantenga la sesión
+  useEffect( () => {
+    if(localStorage.getItem("token")){
+      setLoggedIn(true)
+    }
+  }, [])
+
+  const handleLogOut = () => {
+    setLoggedIn(false)
+  }
+
+  const handleLogIn = () => {
+    setLoggedIn(true)
+  }
+ 
   return (
-    <div data-bs-theme="dark" className="min-vh-100 bg-body text-body">
+<div data-bs-theme="dark" className="min-vh-100 w-100 m-0 p-0 bg-body flex-column" style={{ overflowX: 'hidden' }}>
 
       <GamesProvider>
         <BibliotecaProvider>
@@ -38,12 +53,12 @@ const App = () => {
             <BrowserRouter>
               <ToastContainer />
 
-              <NavBar />
+              {loggedIn && <NavBar onLogOut={handleLogOut} />}
               <Routes>
                 <Route path='/' element={<Navigate to="/login" />} />
-                <Route path='/login' element={<Login onLogin={() => setLoggedIn(true)} />} />
+                <Route path='/login' element={<Login onLogIn={handleLogIn} />} />
                 <Route path='/register' element={<Register />} />
-                <Route path='/perfil' element= {<Perfil />}/>
+                <Route path='/perfil' element={<Perfil />} />
                 <Route path="/tienda" element={<Tienda />} />
                 <Route path='/carrito' element={<Carrito />} />
                 <Route path='/detalle' element={<CardDetalle />} />

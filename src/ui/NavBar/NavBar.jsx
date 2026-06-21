@@ -4,18 +4,16 @@ import { CartContext } from '../../context/CartProvider/CartContext';
 import { Button } from 'react-bootstrap';
 import "./NavBar.css"
 
-const NavBar = ({ onLogout }) => {
+const NavBar = ({ onLogOut }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const cart = useContext(CartContext).cart
 
-  const hidePaths = ["/login", "/register"];
-  if (hidePaths.includes(location.pathname)) return null;
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    onLogout?.();
+    // setea el estado en false
+    onLogOut?.();
     navigate("/login");
   }
 
