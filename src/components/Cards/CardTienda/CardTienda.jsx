@@ -1,10 +1,10 @@
 import { Card, Button, Badge } from "react-bootstrap";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CartContext } from "../../../context/CartProvider/CartContext";
-import { errorToast, successToast } from "../../../ui/Toast/Toast";
 import { useNavigate } from "react-router-dom";
 import { GamesContext } from "../../../context/GamesProvider/GamesContext";
 import useModal from "../../../services/useModal/useModal";
+import ModalDelete from "../../../ui/ModalDelete/ModalDelete";
 
 const CardTienda = ({ game }) => {
 
@@ -23,9 +23,15 @@ const CardTienda = ({ game }) => {
     const esAdmin = true
 
     return (
-        <Card text="white" key={game.id} style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
+        <Card text="white" style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
+
             <Card.Img variant="top" src={game.poster} />
+
+            { 
+            estadoModal ? <ModalDelete game={game} onCerrar={handleCerrar}></ModalDelete> : (
             <Card.Body>
+
+
                 <Card.Title className="text-center">{game.title}</Card.Title>
 
                 <Card.Subtitle className="text-center fs-2 my-3" >
@@ -53,8 +59,8 @@ const CardTienda = ({ game }) => {
                 <Card.Footer>
                     {/* boton que ve el admin | superadmin */}
                     {esAdmin && (
-                        <div className="d-flex justify-content-center gap-3">
-                            <Button variant="danger">Eliminar de la tienda</Button>
+                        <div className="d-flex justify-content-center gap-4">
+                            <Button variant="danger" onClick={handleAbrir} >Eliminar de la tienda</Button>
                             <Button variant="success" onClick={handleEditGame} >Editar juego</Button>
                         </div>
                     )}
@@ -63,6 +69,8 @@ const CardTienda = ({ game }) => {
                     <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }}>Añadir al carrito</Button>
                 </Card.Footer>
             </Card.Body>
+
+            )}
         </Card >
     )
 }

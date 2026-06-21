@@ -1,7 +1,19 @@
+import { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { GamesContext } from '../../context/GamesProvider/GamesContext';
 
-const ModalGame = ({ game }) => {
+const ModalDelete = ({ game, onCerrar }) => {
+
+    const { handleDelete } = useContext(GamesContext);
+
+    const handleEliminar = () => {
+        handleDelete(game)
+    }
+
+    const handleCerrar = () => {
+        onCerrar()
+    }
 
     return (
         <div
@@ -14,12 +26,12 @@ const ModalGame = ({ game }) => {
                 </Modal.Header>
 
                 <Modal.Footer>
-                    <Button variant="primary">Cerrar</Button>
-                    <Button variant="danger">Eliminar</Button>
+                    <Button variant="primary" onClick={handleCerrar}>Cerrar</Button>
+                    <Button variant="danger" onClick={handleEliminar}>Eliminar</Button>
                 </Modal.Footer>
             </Modal.Dialog>
         </div>
     );
 };
 
-export default ModalGame;
+export default ModalDelete;

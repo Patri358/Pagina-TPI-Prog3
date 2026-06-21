@@ -73,7 +73,7 @@ const GamesProvider = ({ children }) => {
     }
 
     return (
-        <GamesContext.Provider value={{ games, handleAdd, handleEdit, handleNotEdit, isEditing, generosDescripcion }}>
+        <GamesContext.Provider value={{ games, handleAdd, handleDelete, handleEdit, handleNotEdit, isEditing, generosDescripcion }}>
             {children}
         </GamesContext.Provider>
     )
