@@ -17,7 +17,7 @@ const Carrito = () => {
             <div>
                 {cart.map((game) => {
                     return (
-                        <CardCarrito key={game.id} game={game} onDetails={openDetails}/>
+                        <CardCarrito key={game.id} game={game} onDetails={openDetails} />
                     )
                 })}
 
@@ -29,7 +29,7 @@ const Carrito = () => {
                 {gameDetail && (
                     <GameDetail
                         game={gameDetail}
-                        closeModalDetail={closeDetails}/>
+                        closeModalDetail={closeDetails} />
                 )
 
                 }
