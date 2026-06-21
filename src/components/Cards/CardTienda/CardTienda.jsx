@@ -3,11 +3,11 @@ import { useContext } from "react";
 import { CartContext } from "../../../context/CartProvider/CartContext";
 import { errorToast, successToast } from "../../../ui/Toast/Toast";
 
-const CardTienda = ({ game }) => {
+const CardTienda = ({ game, abrirModal }) => {
 
-    const { handleCart, handleDelete } = useContext(CartContext);
+    const { handleCart } = useContext(CartContext);
 
-    const esAdmin = false
+    const esAdmin = true
 
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
@@ -41,7 +41,7 @@ const CardTienda = ({ game }) => {
                     {/* boton que ve el admin | superadmin */}
                     {esAdmin && (
                         <div className="d-flex justify-content-center gap-3">
-                            <Button variant="danger" onClick={() => handleDelete(game)} >Eliminar de la tienda</Button>
+                            <Button variant="danger" onClick={abrirModal}>Eliminar de la tienda</Button>
                             <Button variant="success" >Editar juego</Button>
                         </div>
                     )}

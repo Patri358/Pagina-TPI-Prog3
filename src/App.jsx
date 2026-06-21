@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CartProvider from './context/CartProvider/CartProvider.jsx';
 import BibliotecaProvider from './context/BibliotecaProvider/BibliotecaProvider.jsx';
 import GamesProvider from './context/GamesProvider/GamesProvider.jsx';
+import Perfil from './components/Perfil/Perfil.jsx';
 
 const App = () => {
 
@@ -42,6 +43,7 @@ const App = () => {
                 <Route path='/' element={<Navigate to="/login" />} />
                 <Route path='/login' element={<Login onLogin={() => setLoggedIn(true)} />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/perfil' element= {<Perfil />}/>
                 <Route path="/tienda" element={<Tienda />} />
                 <Route path='/carrito' element={<Carrito />} />
                 <Route path='/detalle' element={<CardDetalle />} />

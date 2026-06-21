@@ -39,7 +39,7 @@ const NavBar = () => {
         <Link to="*" className="navbar-link">
           <i className="bi bi-person-gear navbar-admin-icon"> Modo admin</i>
         </Link>
-        <Link to="*" className="navbar-link">
+        <Link to="/perfil" className="navbar-link">
           <i className="bi bi-person"> Perfil</i>
         </Link>
         <Button variant="danger" className="navbar-btn-logout">Cerrar sesión</Button>
