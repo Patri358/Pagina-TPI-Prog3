@@ -166,16 +166,9 @@ const GameForm = () => {
         </Form.Group>
       </Row>
 
-      {
-        isEditing ?
-          (<Button variant="primary" type="submit" className="w-100 mt-2">
-            Editar Juego
-          </Button>)
-          :
-          (<Button variant="primary" type="submit" className="w-100 mt-2">
-            Agregar Juego
-          </Button>)
-      }
+      <Button variant="primary" type="submit" className="w-100 mt-2">
+        {isEditing ? "Editar Juego" : "Agregar Juego"}
+      </Button>
 
       <Button onClick={handleCancel} variant="danger" type="button" className="w-100 mt-2">
         Cancelar

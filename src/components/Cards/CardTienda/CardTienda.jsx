@@ -6,7 +6,7 @@ import { GamesContext } from "../../../context/GamesProvider/GamesContext";
 import useModal from "../../../services/useModal/useModal";
 import ModalDelete from "../../../ui/ModalDelete/ModalDelete";
 
-const CardTienda = ({ game }) => {
+const CardTienda = ({ game, rol }) => {
 
     const navigate = useNavigate()
 
@@ -20,7 +20,7 @@ const CardTienda = ({ game }) => {
 
     const { handleAbrir, handleCerrar, estadoModal } = useModal()
 
-    const esAdmin = true
+    const esAdmin = rol === "admin" || rol === "superAdmin"
 
     return (
         <Card text="white" style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>

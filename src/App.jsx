@@ -65,7 +65,7 @@ const App = () => {
                 <Route path='/login' element={loggedIn ? <Navigate to="/tienda" replace /> : <Login onLogIn={handleLogIn} />} />
                 <Route path='/register' element={loggedIn ? <Navigate to="/tienda" replace /> : <Register />} />
                 <Route path='/perfil' element={<Protected isLogged={loggedIn}> <Perfil perfil={user} /> </Protected>} />
-                <Route path="/tienda" element={<Protected isLogged={loggedIn}> <Tienda /> </Protected>} />
+                <Route path="/tienda" element={<Protected isLogged={loggedIn} > <Tienda rolUsuario={user.rol} /> </Protected>} />
                 <Route path='/carrito' element={<Protected isLogged={loggedIn}> <Carrito /> </Protected>} />
                 <Route path='/detalle' element={<Protected isLogged={loggedIn}> <CardDetalle /> </Protected>} />
                 <Route path='/gameForm' element={<Protected isLogged={loggedIn}>  <GameForm /> </Protected>} />

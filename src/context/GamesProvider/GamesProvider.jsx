@@ -69,15 +69,16 @@ const GamesProvider = ({ children }) => {
     }
 
     const navigate = useNavigate();
-    
+
     const [isEditing, setIsEditing] = useState(false)
     const handleEdit = () => {
-        setIsEditing(true)        
+        setIsEditing(true)
         navigate("/gameForm")
     }
 
     const handleNotEdit = () => {
         setIsEditing(false)
+        navigate("/gameForm")
     }
 
     return (
