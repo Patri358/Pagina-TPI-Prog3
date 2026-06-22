@@ -16,10 +16,6 @@ router.get("/users/:email", async (req, res) => {
     res.json(User)
 })
 
-router.post("/users", (req, res) => {
-    res.send(`Creando usuario`)
-})
-
 router.put("/users/:id", (req, res) => {
     const { id } = req.params
     res.send(`Actualizando usuario con id: ${id}`)
