@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 // routes
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Protected from './routing/Protected/Protected.jsx';
 
 // componentes
 import Tienda from './components/Tienda/Tienda.jsx';
@@ -13,6 +14,8 @@ import Carrito from "./components/Carrito/Carrito.jsx";
 import Login from "./auth/login/Login.jsx"
 import Register from "./auth/register/Register.jsx"
 import CardDetalle from './components/Cards/CardDetalle/CardDetalle.jsx';
+import Perfil from './components/Perfil/Perfil.jsx';
+import NotFound from './components/NotFound/NotFound.jsx';
 
 // toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -23,23 +26,16 @@ import CartProvider from './context/CartProvider/CartProvider.jsx';
 import BibliotecaProvider from './context/BibliotecaProvider/BibliotecaProvider.jsx';
 import GamesProvider from './context/GamesProvider/GamesProvider.jsx';
 
-
-import Perfil from './components/Perfil/Perfil.jsx';
-
 const App = () => {
 
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(() => {
+    const usuarioGuardado = localStorage.getItem("user")
+    return usuarioGuardado ? JSON.parse(usuarioGuardado) : {}
+  })
 
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  // para que se mantenga la sesión
-  useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("user") || "{}"
-    if (localStorage.getItem("token")) {
-      setLoggedIn(true)
-      setUser(JSON.parse(usuarioGuardado))
-    }
-  }, [])
+  const [loggedIn, setLoggedIn] = useState(() => {
+    return localStorage.getItem("token") ? true : false
+  });
 
   const handleLogOut = () => {
     setUser({})
@@ -65,16 +61,16 @@ const App = () => {
               {loggedIn && <NavBar onLogOut={handleLogOut} />}
 
               <Routes>
-                <Route path='/' element={<Navigate to="/login" />} />
-                <Route path='/login' element={<Login onLogIn={handleLogIn} />} />
-                <Route path='/register' element={<Register />} />
-                <Route path='/perfil' element={<Perfil perfil={user} />} />
-                <Route path="/tienda" element={<Tienda />} />
-                <Route path='/carrito' element={<Carrito />} />
-                <Route path='/detalle' element={<CardDetalle />} />
-                <Route path='/gameForm' element={<GameForm />} />
-                <Route path='/biblioteca' element={<Biblioteca />} />
-                <Route path='*' element={<Navigate to="/login" />} />
+                <Route path='/' element={loggedIn ? <Navigate to="/tienda" replace /> : <Navigate to="/login" replace />} />
+                <Route path='/login' element={loggedIn ? <Navigate to="/tienda" replace /> : <Login onLogIn={handleLogIn} />} />
+                <Route path='/register' element={loggedIn ? <Navigate to="/tienda" replace /> : <Register />} />
+                <Route path='/perfil' element={<Protected isLogged={loggedIn}> <Perfil perfil={user} /> </Protected>} />
+                <Route path="/tienda" element={<Protected isLogged={loggedIn}> <Tienda /> </Protected>} />
+                <Route path='/carrito' element={<Protected isLogged={loggedIn}> <Carrito /> </Protected>} />
+                <Route path='/detalle' element={<Protected isLogged={loggedIn}> <CardDetalle /> </Protected>} />
+                <Route path='/gameForm' element={<Protected isLogged={loggedIn}>  <GameForm /> </Protected>} />
+                <Route path='/biblioteca' element={<Protected isLogged={loggedIn}> <Biblioteca /> </Protected>} />
+                <Route path='*' element={<NotFound isLog={loggedIn} />} />
               </Routes>
 
             </GamesProvider>
