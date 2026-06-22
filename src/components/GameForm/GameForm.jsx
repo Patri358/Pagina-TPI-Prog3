@@ -72,10 +72,14 @@ const GameForm = () => {
     }
 
     else if (name === "price") {
+
+      // para que no parsee un string vacio
+      const valorParseado = value === "" ? "" : parseFloat(value)
+
       setFormData({
         ...formData,
         // isNaN es para que si escribe una letra no tire el error NaN y lo reemplaza por 0
-        [name]: isNaN(value) ? 0 : parseFloat(value)
+        [name]: isNaN(valor) ? 0 : valorParseado
       })
     }
 
@@ -167,13 +171,12 @@ const GameForm = () => {
         isEditing ?
           (<Button variant="primary" type="submit" className="w-100 mt-2">
             Editar Juego
-          </Button>) 
+          </Button>)
           :
           (<Button variant="primary" type="submit" className="w-100 mt-2">
             Agregar Juego
           </Button>)
       }
-
 
       <Button onClick={handleCancel} variant="danger" type="button" className="w-100 mt-2">
         Cancelar

@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react"
 import { GamesContext } from "./GamesContext.js"
 import { successToast } from "../../ui/Toast/Toast.jsx"
+import { useNavigate } from "react-router-dom"
 
 const GamesProvider = ({ children }) => {
 
@@ -63,9 +64,12 @@ const GamesProvider = ({ children }) => {
 
     }
 
+    const navigate = useNavigate();
+    
     const [isEditing, setIsEditing] = useState(false)
     const handleEdit = () => {
-        setIsEditing(true)
+        setIsEditing(true)        
+        navigate("/gameForm")
     }
 
     const handleNotEdit = () => {

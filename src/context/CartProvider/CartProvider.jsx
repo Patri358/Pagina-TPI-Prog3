@@ -32,6 +32,11 @@ const CartProvider = ({ children }) => {
     const handleCompra = (event) => {
         event.preventDefault()
 
+        if(total === 0){
+            errorToast("Carrito vacio");
+            return;
+        }
+
         successToast("Compra realizada")
 
         // array con todos los ids de mi biblioteca

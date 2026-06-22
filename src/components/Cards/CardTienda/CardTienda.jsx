@@ -31,7 +31,6 @@ const CardTienda = ({ game }) => {
 
             <Card.Body>
 
-
                 <Card.Title className="text-center">{game.title}</Card.Title>
 
                 <Card.Subtitle className="text-center fs-2 my-3" >
