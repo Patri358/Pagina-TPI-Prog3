@@ -57,8 +57,12 @@ const GamesProvider = ({ children }) => {
                 return res.json()
             })
             .then((newGame) => {
-                successToast(`Se añadió el juego: ${newGame.title}`)
-                setGames((prevGames) => [...prevGames, newGame])
+                const gameWithGenres = {
+                    ...newGame,
+                    Generos: newGame.Generos ?? []
+                }
+                successToast(`Se añadió el juego: ${gameWithGenres.title}`)
+                setGames((prevGames) => [...prevGames, gameWithGenres])
             })
             .catch((error) => errorToast(error.message))
 

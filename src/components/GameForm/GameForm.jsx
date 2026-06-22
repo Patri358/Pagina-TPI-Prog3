@@ -78,8 +78,7 @@ const GameForm = () => {
 
       setFormData({
         ...formData,
-        // isNaN es para que si escribe una letra no tire el error NaN y lo reemplaza por 0
-        [name]: isNaN(valor) ? 0 : valorParseado
+        [name]: value === "" ? "" : isNaN(valorParseado) ? 0 : valorParseado
       })
     }
 

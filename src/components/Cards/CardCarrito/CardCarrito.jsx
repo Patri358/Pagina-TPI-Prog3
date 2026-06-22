@@ -34,7 +34,9 @@ const CardCarrito = ({ game, onDetails }) => {
 
                 <Card.Text>
                     <Badge pill bg="secondary">
-                        Géneros: #{game.Generos.map((genero) => genero.descripcion).join(" #")}
+                        Géneros: #{(game.Generos ?? [])
+                            .map((genero) => typeof genero === "string" ? genero : genero.descripcion)
+                            .join(" #")}
                     </Badge>
                 </Card.Text>
 

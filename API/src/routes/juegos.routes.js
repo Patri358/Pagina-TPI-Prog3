@@ -21,19 +21,46 @@ router.get("/juegos", async (req, res) => {
 
 router.post("/juegos", async (req, res) => {
 
-  const { title, distributor, sinopsis, poster, rating, launch, price } = req.body
+  const { title, distributor, sinopsis, poster, rating, launch, price, Generos: generosArray } = req.body
 
-  const newGame = await Juegos.create({
-    title,
-    distributor,
-    sinopsis,
-    poster,
-    rating,
-    launch,
-    price
-  })
+  try {
+    const newGame = await Juegos.create({
+      title,
+      distributor,
+      sinopsis,
+      poster,
+      rating,
+      launch,
+      price
+    })
 
-  res.json(newGame)
+    // Si hay géneros, buscar sus IDs y crear las asociaciones
+    if (generosArray && generosArray.length > 0) {
+      const generosDB = await Generos.findAll({
+        where: {
+          descripcion: generosArray
+        }
+      })
+
+      if (generosDB.length > 0) {
+        await newGame.addGeneros(generosDB)
+      }
+    }
+
+    // Devolver el juego con sus géneros incluidos
+    const gameWithGenres = await Juegos.findByPk(newGame.id, {
+      include: {
+        model: Generos,
+        through: {
+          attributes: []
+        }
+      }
+    })
+
+    res.json(gameWithGenres)
+  } catch (error) {
+    res.status(500).json({ message: "Error al crear el juego", error: error.message })
+  }
 })
 
 router.put("/juegos/:id", (req, res) => {

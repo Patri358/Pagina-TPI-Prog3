@@ -1,4 +1,4 @@
-import { Card } from "react-bootstrap";
+import { Card, Badge, Button } from "react-bootstrap";
 
 const CardDetalle = ({ game }) => {
 
@@ -15,7 +15,7 @@ const CardDetalle = ({ game }) => {
                 </Card.Subtitle>
 
                 <Card.Text>
-                    {game.synopsis}
+                    {game.sinopsis || game.synopsis}
                 </Card.Text>
                 <Card.Subtitle className="text-center" style={{ marginBottom: "30px" }}>Distribuidor: {game.distributor}</Card.Subtitle>
 
@@ -25,7 +25,9 @@ const CardDetalle = ({ game }) => {
                 
                 <Card.Text>
                     <Badge pill bg="secondary">
-                        Géneros: #{game.Generos.map((genero) => genero.descripcion).join(" #")}
+                        Géneros: #{(game.Generos ?? [])
+                            .map((genero) => typeof genero === "string" ? genero : genero.descripcion)
+                            .join(" #")}
                     </Badge>
                 </Card.Text>
 
