@@ -27,8 +27,8 @@ const CardTienda = ({ game }) => {
 
             <Card.Img variant="top" src={game.poster} />
 
-            { 
-            estadoModal ? <ModalDelete game={game} onCerrar={handleCerrar}></ModalDelete> : (
+            {estadoModal && <ModalDelete game={game} onCerrar={handleCerrar}></ModalDelete>}
+
             <Card.Body>
 
 
@@ -70,7 +70,6 @@ const CardTienda = ({ game }) => {
                 </Card.Footer>
             </Card.Body>
 
-            )}
         </Card >
     )
 }

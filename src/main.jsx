@@ -10,16 +10,15 @@ import GamesProvider from './context/GamesProvider/GamesProvider.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GamesProvider>
-      <BibliotecaProvider>
-        <CartProvider>
-          <BrowserRouter>
 
+    <BibliotecaProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <GamesProvider>
             <App />
-
-          </BrowserRouter>
-        </CartProvider>
-      </BibliotecaProvider>
-    </GamesProvider>
+          </GamesProvider>
+        </BrowserRouter>
+      </CartProvider>
+    </BibliotecaProvider>
   </StrictMode >,
 )

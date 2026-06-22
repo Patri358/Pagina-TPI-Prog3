@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const useModal = () => {
+const useModal = (valorInicial = false) => {
 
-    const [estadoModal, setEstadoModal] = useState(false)
+    const [estadoModal, setEstadoModal] = useState(valorInicial)
 
     const handleAbrir = () => {
         setEstadoModal(true)

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { GamesContext } from '../../context/GamesProvider/GamesContext';
 
-const ModalDelete = ({ game, onCerrar }) => {
+const ModalDelete = ({ game, onCerrar, show }) => {
 
     const { handleDelete } = useContext(GamesContext);
 
@@ -16,21 +16,18 @@ const ModalDelete = ({ game, onCerrar }) => {
     }
 
     return (
-        <div
-            className="modal show"
-            style={{ display: 'block', position: 'initial' }}
-        >
+        <Modal show={!show} onHide={onCerrar} data-bs-theme="dark" style={{ color: "white" }}>
             <Modal.Dialog style={{ color: "white" }}>
                 <Modal.Header closeButton>
-                    <Modal.Title>¿Desea eliminar {game.title} de la tienda?</Modal.Title>
+                    <Modal.Title closeButton>¿Desea eliminar {game.title} de la tienda?</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleCerrar}>Cerrar</Button>
+                    <Button variant="primary" onClick={onCerrar}>Cerrar</Button>
                     <Button variant="danger" onClick={handleEliminar}>Eliminar</Button>
                 </Modal.Footer>
             </Modal.Dialog>
-        </div>
+        </Modal >
     );
 };
 
