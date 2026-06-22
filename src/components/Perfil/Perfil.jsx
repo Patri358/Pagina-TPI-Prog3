@@ -1,8 +1,13 @@
-const Perfil = () => {
+const Perfil = ({ perfil }) => {
+    
+    // datos del usuario
+    console.log(perfil);
 
-    return(
-        <h2>Perfil</h2>
-    )
-}
+    const esAdmin = perfil.rol === "admin" || perfil.rol === "superadmin"
+    return (
+        <div>
+        </div>
+    );
+};
 
-export default Perfil
+export default Perfil;

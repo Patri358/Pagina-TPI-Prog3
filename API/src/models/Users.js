@@ -29,7 +29,7 @@ export const Users = sequelize.define("Users", {
         allowNull: false,
         defaultValue: "user"
     }
-});
+}, { timestamps: false });
 
 
 /* Tabla Users
