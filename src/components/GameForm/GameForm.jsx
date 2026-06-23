@@ -28,6 +28,7 @@ const GameForm = () => {
   const validate = () => {
 
     const errores = [
+      // por si está vacio el campo
       { error: !formData.title.trim(), mensaje: "El título es obligatorio" },
       { error: !formData.distributor.trim(), mensaje: "El distribuidor es obligatorio" },
       { error: !formData.poster.trim(), mensaje: "El poster es obligatorio" },
@@ -43,6 +44,7 @@ const GameForm = () => {
       return
     }
 
+    // verifica si el juego está en la tienda por titulo
     const EnTienda = games.some((juego) => juego.title.toLowerCase() === formData.title.toLowerCase())
     if (EnTienda && !isEditing) {
       let errorTitulo = "El juego ingresado ya está en la pagina"
@@ -56,6 +58,7 @@ const GameForm = () => {
   const handleChangeForm = (event) => {
     const { name, value, checked } = event.target;
 
+    // si está chequeado se agrega y si no está chequeado pero está en la lista lo saca
     if (name === "Generos") {
       checked ? (
         setFormData({
@@ -71,7 +74,6 @@ const GameForm = () => {
     }
 
     else if (name === "price") {
-
       // para que no parsee un string vacio
       const valorParseado = value === "" ? "" : parseFloat(value)
 

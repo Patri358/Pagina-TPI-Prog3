@@ -17,7 +17,6 @@ const useModal = (valorInicial = false) => {
         handleCerrar,
         estadoModal
     }
-
 }
 
 export default useModal;

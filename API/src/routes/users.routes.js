@@ -16,12 +16,12 @@ router.get("/users/:email", async (req, res) => {
     res.json(User)
 })
 
-router.put("/users/:id", (req, res) => {
+router.put("/users/:id", async (req, res) => {
     const { id } = req.params
     res.send(`Actualizando usuario con id: ${id}`)
 })
 
-router.delete("/users/:id", (req, res) => {
+router.delete("/users/:id", async (req, res) => {
     const { id } = req.params
     res.send(`Borrando usuario con id: ${id}`)
 })
