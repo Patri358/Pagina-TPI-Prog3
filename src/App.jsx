@@ -29,6 +29,15 @@ import GamesProvider from './context/GamesProvider/GamesProvider.jsx';
 
 const App = () => {
 
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    fetch("http://localhost:3001/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data))
+      .catch((err) => console.error(err))
+  }, [])
+
   const [user, setUser] = useState(() => {
     const usuarioGuardado = localStorage.getItem("user")
     return usuarioGuardado ? JSON.parse(usuarioGuardado) : null
@@ -73,7 +82,7 @@ const App = () => {
                 <Route path='/detalle' element={<Protected isLogged={loggedIn}> <CardDetalle /> </Protected>} />
                 <Route path='/biblioteca' element={<Protected isLogged={loggedIn}> <Biblioteca /> </Protected>} />
                 <Route path='/gameForm' element={<Protected isLogged={loggedIn && esAdmin}>  <GameForm /> </Protected>} />
-                <Route path='/modoAdmin' element={<Protected isLogged={loggedIn && esAdmin}>  <ModoAdmin /> </Protected>} />
+                <Route path='/modoAdmin' element={<Protected isLogged={loggedIn && esAdmin}>  <ModoAdmin usuarios={users} /> </Protected>} />
                 <Route path='*' element={<NotFound isLog={loggedIn} />} />
               </Routes>
 
