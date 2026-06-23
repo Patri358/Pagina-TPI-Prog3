@@ -1,6 +1,13 @@
+import { useEffect } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 
 const Perfil = ({ perfil }) => {
+
+    // historico compras
+    const handleHistorico = () => {
+        useEffect("http://localhost/3001/compras")
+    }
+
     return (
         // Container centra la tarjeta en la pantalla
         <Container className="d-flex justify-content-center my-4">
@@ -12,7 +19,7 @@ const Perfil = ({ perfil }) => {
             >
                 <Card.Body className="d-flex flex-column align-items-center gap-2">
                     <Card.Title className="m-0">
-                    {perfil?.username}
+                        {perfil?.username}
                     </Card.Title>
                     <Card.Text className="m-0 text-muted">
                         Email: {perfil?.email}

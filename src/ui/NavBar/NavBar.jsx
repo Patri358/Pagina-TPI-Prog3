@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import "./NavBar.css"
 import { GamesContext } from '../../context/GamesProvider/GamesContext';
 
-const NavBar = ({ onLogOut }) => {
+const NavBar = ({ onLogOut, tienePermiso }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const cart = useContext(CartContext).cart
@@ -33,9 +33,11 @@ const NavBar = ({ onLogOut }) => {
         <Link to="/tienda" className="navbar-link">
           <i className="bi bi-cart3"></i> Tienda
         </Link>
-        <Link to="/gameForm" className="navbar-link">
-          <i className="bi bi-plus-circle" onClick={handleAdd}></i> Agregar Juego
-        </Link>
+        {
+          tienePermiso && <Link to="/gameForm" onClick={handleAdd} className="navbar-link">
+            <i className="bi bi-plus-circle"></i> Agregar Juego
+          </Link>
+        }
         <Link to="/biblioteca" className="navbar-link">
           <i className="bi bi-collection"></i> Biblioteca
         </Link>
@@ -51,9 +53,11 @@ const NavBar = ({ onLogOut }) => {
       </div>
 
       <div className="navbar-actions-right">
-        <Link to="*" className="navbar-link">
-          <i className="bi bi-person-gear navbar-admin-icon"> Modo admin </i>
-        </Link>
+        {tienePermiso &&
+          <Link to="/modoAdmin" className="navbar-link">
+            <i className="bi bi-person-gear navbar-admin-icon"> Modo admin </i>
+          </Link>
+        }
         <Link to="/perfil" className="navbar-link">
           <i className="bi bi-person"> Perfil </i>
         </Link>

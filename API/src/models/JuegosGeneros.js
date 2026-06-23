@@ -6,29 +6,33 @@ import { Juegos } from "./Juegos.js";
 // Tabla intermedia para poner mas de 1 género a un juego
 export const JuegosGeneros = sequelize.define("JuegosGeneros", {
     id_juego_FK: {
+        primaryKey: true,
         type: DataTypes.INTEGER,
         references: { model: "Juegos", key: "id" },
-        onDelete: "CASCADE"
     },
     id_genero_FK: {
+        primaryKey: true,
         type: DataTypes.INTEGER,
         references: {
             model: "Generos", key: "id"
         },
-        onDelete: "CASCADE"
     }
 }, { timestamps: false })
 
 Juegos.belongsToMany(Generos, {
     through: JuegosGeneros,
     foreignKey: "id_juego_FK",
-    otherKey: "id_genero_FK"
+    otherKey: "id_genero_FK",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
 });
 
 Generos.belongsToMany(Juegos, {
     through: JuegosGeneros,
     foreignKey: "id_genero_FK",
-    otherKey: "id_juego_FK"
+    otherKey: "id_juego_FK",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
 });
 
 

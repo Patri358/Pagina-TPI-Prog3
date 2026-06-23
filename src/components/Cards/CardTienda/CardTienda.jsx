@@ -6,7 +6,7 @@ import { GamesContext } from "../../../context/GamesProvider/GamesContext";
 import useModal from "../../../services/useModal/useModal";
 import ModalDelete from "../../../ui/ModalDelete/ModalDelete";
 
-const CardTienda = ({ game, rol }) => {
+const CardTienda = ({ game, tienePermiso }) => {
 
     const navigate = useNavigate()
 
@@ -19,8 +19,6 @@ const CardTienda = ({ game, rol }) => {
     }
 
     const { handleAbrir, handleCerrar, estadoModal } = useModal()
-
-    const esAdmin = rol === "admin" || rol === "superAdmin"
 
     return (
         <Card text="white" style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
@@ -59,7 +57,7 @@ const CardTienda = ({ game, rol }) => {
 
                 <Card.Footer>
                     {/* boton que ve el admin | superadmin */}
-                    {esAdmin && (
+                    {tienePermiso && (
                         <div className="d-flex justify-content-center gap-4">
                             <Button variant="danger" onClick={handleAbrir} >Eliminar de la tienda</Button>
                             <Button variant="success" onClick={handleEditGame} >Editar juego</Button>

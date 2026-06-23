@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../db.js";
+import { Users } from "./Users.js";
 
 export const Compras = sequelize.define("Compras", {
     id: {
@@ -14,10 +15,6 @@ export const Compras = sequelize.define("Compras", {
             model: "Users", key: "id"
         }
     },
-    detalle_compra_FK: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
     precio: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
@@ -31,6 +28,12 @@ export const Compras = sequelize.define("Compras", {
         defaultValue: DataTypes.NOW
     }
 }, { timestamps: false })
+
+// un usuario puede tener muchas compras
+Users.hasMany(Compras, { foreignKey: "id_usuario_FK", onDelete: "RESTRICT" })
+
+// una compra pertenece a un solo usuario
+Compras.belongsTo(Users, { foreignKey: "id_usuario_FK" })
 
 /* Tabla Compras:
     id INT PRIMARY KEY AUTO_INCREMENT,

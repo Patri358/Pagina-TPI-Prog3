@@ -64,6 +64,7 @@ router.post("/juegos", async (req, res) => {
 })
 
 router.put("/juegos/:id", (req, res) => {
+  const { id } = req.params
   res.send(`Juego con el id ${id} actualizado`)
 })
 

@@ -1,4 +1,4 @@
-import { DataTypes, DATEONLY } from "sequelize";
+import { DataTypes } from "sequelize";
 import { sequelize } from "../../db.js";
 
 export const Juegos = sequelize.define("Juegos", {
@@ -30,7 +30,7 @@ export const Juegos = sequelize.define("Juegos", {
     },
     launch: {
         type: DataTypes.DATEONLY,
-        defaultValue: DATEONLY,
+        defaultValue: DataTypes.NOW,
         allowNull: false
     },
     price: {

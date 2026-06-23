@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../db.js";
+import { Users } from "./Users.js"
+import { Juegos } from "./Juegos.js";
 
 export const Biblioteca = sequelize.define("Biblioteca", {
 
@@ -9,8 +11,7 @@ export const Biblioteca = sequelize.define("Biblioteca", {
         references: {
             model: "Users",
             key: "id"
-        },
-        onDelete: "RESTRICT"
+        }
     },
     id_juego_FK: {
         type: DataTypes.INTEGER,
@@ -18,11 +19,27 @@ export const Biblioteca = sequelize.define("Biblioteca", {
         references: {
             model: "Juegos",
             key: "id"
-        },
-        onDelete: "RESTRICT"
+        }
     },
+}, { timestamps: false })
+
+// los usuarios pueden tener muchos juegos
+Users.belongsToMany(Juegos, {
+    through: Biblioteca,
+    foreignKey: "id_usuario_FK",
+    otherKey: "id_juego_FK",
+    onDelete: "RESTRICT"
 })
 
+// los juegos pueden estar en la biblioteca de muchos usuarios
+Juegos.belongsToMany(Users, {
+    through: Biblioteca,
+    foreignKey: "id_juego_FK",
+    otherKey: "id_usuario_FK",
+    // obligatorio por si el juego se borra
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+})
 
 /* Tabla Biblioteca:
     id_usuario_FK INT

@@ -1,13 +1,13 @@
 import express from "express";
 
 // models
-import "./models/Biblioteca.js";
-import "./models/Compras.js";
-import "./models/DetalleCompra.js";
-import "./models/Generos.js";
-import "./models/JuegosGeneros.js"
 import "./models/Juegos.js";
 import "./models/Users.js";
+import "./models/Compras.js";
+import "./models/Generos.js";
+import "./models/JuegosGeneros.js"
+import "./models/Biblioteca.js";
+import "./models/DetalleCompra.js";
 
 // routes
 import authRoutes from "./routes/auth.routes.js";

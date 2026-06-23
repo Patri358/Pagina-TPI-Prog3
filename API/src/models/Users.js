@@ -25,9 +25,9 @@ export const Users = sequelize.define("Users", {
         unique: true,
     },
     rol: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.ENUM("user", "admin", "superAdmin"),
         allowNull: false,
-        defaultValue: "user"
+        defaultValue: "user",
     }
 }, { timestamps: false });
 
@@ -38,5 +38,5 @@ export const Users = sequelize.define("Users", {
     nombre_real VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL, 
     email VARCHAR(100) UNIQUE NOT NULL,
-    rol VARCHAR(20) NOT NULL DEFAULT ("user") 
+    rol ENUM("user","admin","superAdmin") NOT NULL DEFAULT ("user") 
 */

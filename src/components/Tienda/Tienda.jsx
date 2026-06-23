@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { GamesContext } from '../../context/GamesProvider/GamesContext.js'
 
-const Tienda = ({ rolUsuario }) => {
+const Tienda = ({ tienePermiso }) => {
 
     const { games } = useContext(GamesContext)
 
@@ -15,7 +15,7 @@ const Tienda = ({ rolUsuario }) => {
                 <CardGame
                     key={game.id}
                     game={game}
-                    rol={rolUsuario}
+                    tienePermiso={tienePermiso}
                 />
             ))}
         </div>

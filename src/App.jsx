@@ -16,6 +16,7 @@ import Register from "./auth/register/Register.jsx"
 import CardDetalle from './components/Cards/CardDetalle/CardDetalle.jsx';
 import Perfil from './components/Perfil/Perfil.jsx';
 import NotFound from './components/NotFound/NotFound.jsx';
+import ModoAdmin from './components/ModoAdmin/ModoAdmin.jsx';
 
 // toastify
 import { ToastContainer, toast } from 'react-toastify';
@@ -30,7 +31,7 @@ const App = () => {
 
   const [user, setUser] = useState(() => {
     const usuarioGuardado = localStorage.getItem("user")
-    return usuarioGuardado ? JSON.parse(usuarioGuardado) : {}
+    return usuarioGuardado ? JSON.parse(usuarioGuardado) : null
   })
 
   const [loggedIn, setLoggedIn] = useState(() => {
@@ -38,7 +39,7 @@ const App = () => {
   });
 
   const handleLogOut = () => {
-    setUser({})
+    setUser(null)
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     setLoggedIn(false)
@@ -49,6 +50,8 @@ const App = () => {
     setLoggedIn(true)
   }
 
+  const esAdmin = user?.rol === "admin" || user?.rol === "superAdmin"
+
   return (
     <div data-bs-theme="dark" className="min-vh-100 w-100 m-0 p-0 bg-body flex-column" style={{ overflowX: 'hidden' }}>
       <BrowserRouter>
@@ -58,18 +61,19 @@ const App = () => {
             <GamesProvider>
 
               <ToastContainer />
-              {loggedIn && <NavBar onLogOut={handleLogOut} />}
+              {loggedIn && <NavBar onLogOut={handleLogOut} tienePermiso={esAdmin} />}
 
               <Routes>
                 <Route path='/' element={loggedIn ? <Navigate to="/tienda" replace /> : <Navigate to="/login" replace />} />
                 <Route path='/login' element={loggedIn ? <Navigate to="/tienda" replace /> : <Login onLogIn={handleLogIn} />} />
                 <Route path='/register' element={loggedIn ? <Navigate to="/tienda" replace /> : <Register />} />
                 <Route path='/perfil' element={<Protected isLogged={loggedIn}> <Perfil perfil={user} /> </Protected>} />
-                <Route path="/tienda" element={<Protected isLogged={loggedIn} > <Tienda rolUsuario={user.rol} /> </Protected>} />
+                <Route path="/tienda" element={<Protected isLogged={loggedIn} > <Tienda tienePermiso={esAdmin} /> </Protected>} />
                 <Route path='/carrito' element={<Protected isLogged={loggedIn}> <Carrito /> </Protected>} />
                 <Route path='/detalle' element={<Protected isLogged={loggedIn}> <CardDetalle /> </Protected>} />
-                <Route path='/gameForm' element={<Protected isLogged={loggedIn}>  <GameForm /> </Protected>} />
                 <Route path='/biblioteca' element={<Protected isLogged={loggedIn}> <Biblioteca /> </Protected>} />
+                <Route path='/gameForm' element={<Protected isLogged={loggedIn && esAdmin}>  <GameForm /> </Protected>} />
+                <Route path='/modoAdmin' element={<Protected isLogged={loggedIn && esAdmin}>  <ModoAdmin /> </Protected>} />
                 <Route path='*' element={<NotFound isLog={loggedIn} />} />
               </Routes>
 
