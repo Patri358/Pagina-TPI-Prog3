@@ -21,7 +21,6 @@ const GameForm = () => {
     price: "",
   })
 
-  const tagsValidas = ["Mundo abierto ", "Multijugador ", "Un jugador ", "Rol ", "Exploracion ", "Aventura ", "Accion ", "Ciencia ficción ", "Metroidvania "]
   const ratings = ["Apto para todo público", "Apto para mayores de 10", "Apto para mayores de 18"]
 
   const [error, setError] = useState({})
@@ -45,7 +44,7 @@ const GameForm = () => {
     }
 
     const EnTienda = games.some((juego) => juego.title.toLowerCase() === formData.title.toLowerCase())
-    if (EnTienda) {
+    if (EnTienda && !isEditing) {
       let errorTitulo = "El juego ingresado ya está en la pagina"
       errorToast(errorTitulo)
       return
