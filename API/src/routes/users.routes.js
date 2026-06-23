@@ -4,8 +4,13 @@ import { Users } from "../models/Users.js";
 const router = Router();
 
 router.get("/users", async (req, res) => {
-    const usuarios = await Users.findAll();
-    res.send(usuarios);
+    try {
+        const usuarios = await Users.findAll();
+        res.json(usuarios);
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ mensaje: "Error en el servidor al traer los usuarios" })
+    }
 })
 
 router.get("/users/:email", async (req, res) => {
@@ -13,6 +18,10 @@ router.get("/users/:email", async (req, res) => {
         const { email } = req.params
 
         const User = await Users.findOne({ where: { email } })
+
+        if (!User) {
+            return res.status(404).json({ mensaje: "Usuario no encontrado" })
+        }
 
         res.json(User)
 

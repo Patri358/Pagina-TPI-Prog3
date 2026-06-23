@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react'
-import { GamesContext } from '../../context/GamesProvider/GamesContext';
+import { GamesContext } from '../../../context/GamesProvider/GamesContext';
 import { useNavigate } from 'react-router'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import { errorToast } from '../../ui/Toast/Toast'
+import { errorToast } from '../../../ui/Toast/Toast'
 
 const GameForm = () => {
 

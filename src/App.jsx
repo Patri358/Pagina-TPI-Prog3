@@ -8,7 +8,7 @@ import Protected from './routing/Protected/Protected.jsx';
 // componentes
 import Tienda from './components/Tienda/Tienda.jsx';
 import NavBar from './ui/NavBar/NavBar.jsx';
-import GameForm from './components/GameForm/GameForm.jsx';
+import GameForm from './components/Admin/gameForm/GameForm.jsx';
 import Biblioteca from './components/Biblioteca/Biblioteca.jsx';
 import Carrito from "./components/Carrito/Carrito.jsx";
 import Login from "./auth/login/Login.jsx"
@@ -16,7 +16,7 @@ import Register from "./auth/register/Register.jsx"
 import CardDetalle from './components/Cards/CardDetalle/CardDetalle.jsx';
 import Perfil from './components/Perfil/Perfil.jsx';
 import NotFound from './components/NotFound/NotFound.jsx';
-import ModoAdmin from './components/ModoAdmin/ModoAdmin.jsx';
+import ModoAdmin from './components/Admin/ModoAdmin/ModoAdmin.jsx';
 
 // toastify
 import { ToastContainer, toast } from 'react-toastify';

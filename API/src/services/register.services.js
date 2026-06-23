@@ -21,6 +21,7 @@ export const registerUser = async (req, res) => {
             nombre_real,
             email,
             password: hashedPassword,
+            rol: "user"
         });
 
         return res.status(201).json({
@@ -30,6 +31,7 @@ export const registerUser = async (req, res) => {
                 username: newUser.username,
                 nombre_real: newUser.nombre_real,
                 email: newUser.email,
+                rol: newUser.rol
             },
         });
     } catch (error) {

@@ -1,14 +1,18 @@
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import UserCard from '../userCard/userCard';
+import UserCard from '../../userCard/userCard';
 import { useContext, useState, useEffect } from 'react';
-import { GamesContext } from '../../context/GamesProvider/GamesContext';
-import { errorToast, successToast } from '../../ui/Toast/Toast';
+import { GamesContext } from '../../../context/GamesProvider/GamesContext';
+import { errorToast, successToast } from '../../../ui/Toast/Toast';
+import GenerosLista from '../generosLista/GenerosLista';
+import JuegosLista from '../juegosLista/JuegosLista';
+import { Button } from 'react-bootstrap';
 
 const ModoAdmin = ({ esSuperAdmin }) => {
 
-    const [users, setUsers] = useState([])
+    // usuarios
 
+    const [users, setUsers] = useState([])
     // trae todos los usuarios
     useEffect(() => {
         fetch("http://localhost:3001/users")
@@ -16,8 +20,6 @@ const ModoAdmin = ({ esSuperAdmin }) => {
             .then((data) => setUsers(data))
             .catch((err) => console.error(err))
     }, [])
-
-    const { generosDescripcion, games } = useContext(GamesContext)
 
     const handleUpdateRol = (nuevoRol, usuarioId) => {
         fetch(`http://localhost:3001/users/${usuarioId}/rol`, {
@@ -56,18 +58,26 @@ const ModoAdmin = ({ esSuperAdmin }) => {
                 setUsers((prevUsuarios) => prevUsuarios.filter((u) => u.id !== id))
                 successToast(`Usuario con el id ${id} eliminado`)
             })
+    }
+
+    // generos
+    const { generosDescripcion, setGenerosDescripcion, games } = useContext(GamesContext)
+
+    const [agregarGenero, setAgregarGenero] = useState(false)
+
+    const handleAgregarGenero = () => {
 
     }
 
+    const handleDeleteGenero = () => {
+        fetch("http://localhost:3001/generos")
+    }
+
     return (
-        <Tabs
-            defaultActiveKey="users"
-            id="ventanas-admin"
-            className="mb-3"
-            fill
-        >
+        <Tabs defaultActiveKey="users" id="ventanas-admin" className="mb-3" fill>
+
             <Tab eventKey="users" title="Usuarios">
-                <div className='p-3'>
+                <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
                     {
                         users.map((usuario) => {
                             return (
@@ -78,31 +88,37 @@ const ModoAdmin = ({ esSuperAdmin }) => {
                 </div>
             </Tab>
 
-
             <Tab eventKey="generos" title="Géneros">
-                {
-                    generosDescripcion.map((genero) => {
-                        return (
-                            <div key={genero.id}>
-                                <h2 style={{ color: "white" }}>{genero.descripcion}</h2>
-                            </div>
-                        )
-                    })
-                }
+                <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
+                    <Button variant="primary" style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
+                        Agregar Género
+                    </Button>
+                    {
+                        generosDescripcion.map((genero) => {
+                            return (
+                                <GenerosLista key={genero.id} descripcion={genero.descripcion} />
+                            )
+                        })
+                    }
+                </div>
             </Tab>
 
             <Tab eventKey="juegos" title="Juegos">
-                {
-                    games.map((game) => {
-                        return (
-                            <div key={game.id}>
-                                <h2 style={{ color: "white" }}>{game.title}</h2>
-                            </div>
-                        )
-                    })
-                }
+                <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
+                    <Button variant="primary" style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
+                        Agregar Juego
+                    </Button>
+                    {
+                        games.map((game) => {
+                            return (
+                                <JuegosLista key={game.id} game={game} />
+                            )
+                        })
+                    }
+                </div>
             </Tab>
-        </Tabs>
+
+        </Tabs >
     );
 }
 
