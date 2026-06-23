@@ -3,6 +3,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import UserCard from '../userCard/userCard';
 import { useContext, useState, useEffect } from 'react';
 import { GamesContext } from '../../context/GamesProvider/GamesContext';
+import { errorToast, successToast } from '../../ui/Toast/Toast';
 
 const ModoAdmin = ({ esSuperAdmin }) => {
 
@@ -18,22 +19,44 @@ const ModoAdmin = ({ esSuperAdmin }) => {
 
     const { generosDescripcion, games } = useContext(GamesContext)
 
-    // para cambiar el rol
     const handleUpdateRol = (nuevoRol, usuarioId) => {
-        setUsers((prevUsuarios) => prevUsuarios.map((u) => {
-            return u.id === usuarioId ? {
-                ...u,
-                rol: nuevoRol
-            } : u
-        }))
-
-        fetch(`http://localhost:3001/users/${usuarioId}/rol`,{
+        fetch(`http://localhost:3001/users/${usuarioId}/rol`, {
             headers: {
                 "Content-Type": "application/json"
             },
-            method:"PUT",
-            body: JSON.stringify({rol: nuevoRol})
+            method: "PUT",
+            body: JSON.stringify({ rol: nuevoRol })
         })
+            .then((res) => {
+                if (!res.ok) {
+                    errorToast(`Error al actualizar el rol del usuario ${usuarioId}`)
+                    return
+                }
+                // si la respuesta es ok actualizo el front
+                setUsers((prevUsuarios) => prevUsuarios.map((u) => {
+                    return u.id === usuarioId ? {
+                        ...u,
+                        rol: nuevoRol
+                    } : u
+                }))
+
+            })
+    }
+
+    const handleDeleteUser = (id) => {
+        fetch(`http://localhost:3001/users/${id}`, {
+            method: "DELETE"
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    errorToast("Error al eliminar el usuario")
+                    return
+                }
+                // actualizo el front si todo es ok
+                setUsers((prevUsuarios) => prevUsuarios.filter((u) => u.id !== id))
+                successToast(`Usuario con el id ${id} eliminado`)
+            })
+
     }
 
     return (
@@ -48,7 +71,7 @@ const ModoAdmin = ({ esSuperAdmin }) => {
                     {
                         users.map((usuario) => {
                             return (
-                                <UserCard key={usuario.id} user={usuario} esSuperAdmin={esSuperAdmin} onUpdateRol={handleUpdateRol} />
+                                <UserCard key={usuario.id} user={usuario} esSuperAdmin={esSuperAdmin} onUpdateRol={handleUpdateRol} onDeleteUser={handleDeleteUser} />
                             )
                         })
                     }
