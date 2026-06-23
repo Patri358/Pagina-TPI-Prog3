@@ -36,6 +36,7 @@ const GamesProvider = ({ children }) => {
         })
             .then((response) => {
                 if (response.ok) {
+                    // si la respuesta es ok elimina el juego por id
                     setGames((prevGames) => prevGames.filter((g) => g.id !== id));
                     successToast(`Se eliminó ${game.title} de la tienda`)
                 } else {
@@ -62,6 +63,7 @@ const GamesProvider = ({ children }) => {
                     Generos: newGame.Generos ?? []
                 }
                 successToast(`Se añadió el juego: ${gameWithGenres.title}`)
+                // actualiza el front
                 setGames((prevGames) => [...prevGames, gameWithGenres])
             })
             .catch((error) => errorToast(error.message))
@@ -73,7 +75,6 @@ const GamesProvider = ({ children }) => {
     const [isEditing, setIsEditing] = useState(false)
     const handleEdit = () => {
         setIsEditing(true)
-        navigate("/gameForm")
     }
 
     const handleNotEdit = () => {

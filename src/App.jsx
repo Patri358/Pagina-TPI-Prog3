@@ -29,29 +29,22 @@ import GamesProvider from './context/GamesProvider/GamesProvider.jsx';
 
 const App = () => {
 
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    fetch("http://localhost:3001/users")
-      .then((res) => res.json())
-      .then((data) => setUsers(data))
-      .catch((err) => console.error(err))
-  }, [])
-
   const [user, setUser] = useState(() => {
     const usuarioGuardado = localStorage.getItem("user")
     return usuarioGuardado ? JSON.parse(usuarioGuardado) : null
   })
 
+  // trae el token del localStorage
   const [loggedIn, setLoggedIn] = useState(() => {
     return localStorage.getItem("token") ? true : false
   });
 
   const handleLogOut = () => {
-    setUser(null)
+    // elimina el localStorage y setea los estados en null
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     setLoggedIn(false)
+    setUser(null)
   }
 
   const handleLogIn = (data) => {
@@ -60,6 +53,7 @@ const App = () => {
   }
 
   const esAdmin = user?.rol === "admin" || user?.rol === "superAdmin"
+  const esSuperAdmin = user?.rol === "superAdmin"
 
   return (
     <div data-bs-theme="dark" className="min-vh-100 w-100 m-0 p-0 bg-body flex-column" style={{ overflowX: 'hidden' }}>
@@ -82,7 +76,7 @@ const App = () => {
                 <Route path='/detalle' element={<Protected isLogged={loggedIn}> <CardDetalle /> </Protected>} />
                 <Route path='/biblioteca' element={<Protected isLogged={loggedIn}> <Biblioteca /> </Protected>} />
                 <Route path='/gameForm' element={<Protected isLogged={loggedIn && esAdmin}>  <GameForm /> </Protected>} />
-                <Route path='/modoAdmin' element={<Protected isLogged={loggedIn && esAdmin}>  <ModoAdmin usuarios={users} /> </Protected>} />
+                <Route path='/modoAdmin' element={<Protected isLogged={loggedIn && esAdmin}>  <ModoAdmin esSuperAdmin={esSuperAdmin} /> </Protected>} />
                 <Route path='*' element={<NotFound isLog={loggedIn} />} />
               </Routes>
 

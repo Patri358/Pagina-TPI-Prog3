@@ -18,6 +18,7 @@ const CardTienda = ({ game, tienePermiso }) => {
         navigate("/gameForm")
     }
 
+    // llamo al customHook
     const { handleAbrir, handleCerrar, estadoModal } = useModal()
 
     return (
