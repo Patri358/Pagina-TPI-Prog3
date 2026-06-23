@@ -27,10 +27,14 @@ const ModoAdmin = ({ esSuperAdmin }) => {
             } : u
         }))
 
-        // hacer el fetch acá
+        fetch(`http://localhost:3001/users/${usuarioId}/rol`,{
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method:"PUT",
+            body: JSON.stringify({rol: nuevoRol})
+        })
     }
-
-
 
     return (
         <Tabs
