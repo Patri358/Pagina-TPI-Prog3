@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Juegos } from "../models/Juegos.js";
 import { Generos } from "../models/Generos.js";
 import { JuegosGeneros } from "../models/JuegosGeneros.js";
+import { verificarAutenticacion } from "../middlewares/verificarRol.js";
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.get("/juegos", async (req, res) => {
   })
 
   res.json(juegos)
-});
+}, verificarAutenticacion);
 
 router.post("/juegos", async (req, res) => {
 
@@ -61,7 +62,7 @@ router.post("/juegos", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error al crear el juego", error: error.message })
   }
-})
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
 
 router.put("/juegos/:id", (req, res) => {
   const { id } = req.params
@@ -81,6 +82,6 @@ router.delete("/juegos/:id", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar el juego", error: error.message });
   }
-});
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"));
 
 export default router;

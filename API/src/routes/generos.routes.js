@@ -13,7 +13,7 @@ router.get("/generos", async (req, res) => {
         return res.status(500).json({ mensaje: "Error del servidor al traer los géneros" })
     }
 
-})
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
 
 router.post("/generos", (req, res) => {
     try {
@@ -37,6 +37,6 @@ router.put("/generos/:id", (req, res) => {
 router.delete("/generos/:id", (req, res) => {
     const { id } = req.params;
     res.send(`Género con el id ${id} eliminado`)
-})
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
 
 export default router;

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Users } from "../models/Users.js";
+import { verificarAutenticacion, verificarPermisos } from "../middlewares/verificarRol.js";
 
 const router = Router();
 
@@ -11,7 +12,7 @@ router.get("/users", async (req, res) => {
         console.error(err)
         return res.status(500).json({ mensaje: "Error en el servidor al traer los usuarios" })
     }
-})
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
 
 router.get("/users/:email", async (req, res) => {
     try {
@@ -31,7 +32,7 @@ router.get("/users/:email", async (req, res) => {
     }
 
 
-})
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
 
 router.put("/users/:id/rol", async (req, res) => {
 
@@ -65,7 +66,7 @@ router.put("/users/:id/rol", async (req, res) => {
         console.error(err)
         return res.status(500).json({ mensaje: "Error en el servidor al actualizar usuario" })
     }
-})
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
 
 router.delete("/users/:id", async (req, res) => {
     try {
@@ -85,6 +86,6 @@ router.delete("/users/:id", async (req, res) => {
         console.error(err)
         return res.status(500).json({ mensaje: "Error en el servidor al eliminar usuario" })
     }
-})
+}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
 
 export default router;
