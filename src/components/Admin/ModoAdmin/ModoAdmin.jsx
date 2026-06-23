@@ -7,8 +7,10 @@ import { errorToast, successToast } from '../../../ui/Toast/Toast';
 import GenerosLista from '../generosLista/GenerosLista';
 import JuegosLista from '../juegosLista/JuegosLista';
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const ModoAdmin = ({ esSuperAdmin }) => {
+    const navigate = useNavigate();
 
     // usuarios
 
@@ -66,12 +68,23 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     const [agregarGenero, setAgregarGenero] = useState(false)
 
     const handleAgregarGenero = () => {
+        setAgregarGenero(true)
+    }
 
+    const handleCancelarAgregar = () => {
+        setAgregarGenero(false)
     }
 
     const handleDeleteGenero = () => {
         fetch("http://localhost:3001/generos")
     }
+
+    // juegos
+
+    const handleAddGame = () => {
+        navigate("/gameForm")
+    }
+
 
     return (
         <Tabs defaultActiveKey="users" id="ventanas-admin" className="mb-3" fill>
@@ -90,13 +103,19 @@ const ModoAdmin = ({ esSuperAdmin }) => {
 
             <Tab eventKey="generos" title="Géneros">
                 <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
-                    <Button variant="primary" style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
+                    <Button onClick={handleAgregarGenero} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
                         Agregar Género
                     </Button>
                     {
+                        agregarGenero &&
+                        <Button onClick={handleCancelarAgregar} variant='danger' style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
+                            Cancelar
+                        </Button>
+                    }
+                    {
                         generosDescripcion.map((genero) => {
                             return (
-                                <GenerosLista key={genero.id} descripcion={genero.descripcion} />
+                                <GenerosLista key={genero.id} descripcion={genero.descripcion} estaAgregando={agregarGenero} />
                             )
                         })
                     }
@@ -105,7 +124,7 @@ const ModoAdmin = ({ esSuperAdmin }) => {
 
             <Tab eventKey="juegos" title="Juegos">
                 <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
-                    <Button variant="primary" style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
+                    <Button onClick={handleAddGame} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
                         Agregar Juego
                     </Button>
                     {
