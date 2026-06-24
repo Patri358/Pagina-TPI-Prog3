@@ -1,46 +1,63 @@
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config.js";
 
-// verifica si está logueado
+// verifica si está autenticado
 export const verificarAutenticacion = (req, res, next) => {
 
-    // esto busca el token en el header
-    const authHeader = req.headers.authorization
-    const token = authHeader && authHeader.split(" ")[1];
+    // Busca el token
+    const authHeader = req.headers.authorization;
+
+    // verifica si se pasó el token y empieza con Bearer 
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+            mensaje: "El token no existe o tiene un formato inválido"
+        });
+    }
+
+    // elimina la palabra Bearer
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
-        return res.status(401).json({ mensaje: "Acceso invalido. Token no encontrado" })
+        return res.status(401).json({
+            mensaje: "Acceso inválido. Token no encontrado"
+        });
     }
 
     try {
-        // esto tiene todos los atributos del usuario
-        const tokenDecodificado = jwt.verify(token, JWT_SECRET)
 
-        // aca se guardan los datos del usuario
-        req.user = tokenDecodificado
+        const tokenDecodificado = jwt.verify(token, JWT_SECRET);
 
-        // se pasa al siguiente controlador
-        next()
+        // guarda los datos del usuario
+        req.user = tokenDecodificado;
 
+        // pasa a verificarPermisos
+        next();
     } catch (err) {
-        return res.status(403).json({ mensaje: "Token invalido o vencido" })
+        return res.status(403).json({
+            mensaje: "Token inválido o vencido"
+        });
     }
-}
+};
 
-// verifica si tiene permisos
+// verifica si tiene el rol requerido
 export const verificarPermisos = (...rolesRequeridos) => {
     return (req, res, next) => {
-        // esto devuelve si está autenticado o si no tiene el rol que se necesita
+
+        // controla si se guarda el usuario
         if (!req.user || !req.user.rol) {
-            return res.status(401).json({ mensaje: "El usuario no está autenticado o no posee el rol requerido" })
+            return res.status(401).json({
+                mensaje: "El usuario no está autenticado o no posee un rol válido"
+            });
         }
 
-        // esto verifica si el rol coincide con alguno de los parametros
+        // verifica si tiene el rol que se especifica
         if (!rolesRequeridos.includes(req.user.rol)) {
-            return res.status(403).json({ mensaje: "El usuario no tiene los permisos necesarios" })
+            return res.status(403).json({
+                mensaje: "El usuario no tiene los permisos necesarios para realizar esta acción"
+            });
         }
 
         // pasa al controlador
         next();
-    }
-}
+    };
+};

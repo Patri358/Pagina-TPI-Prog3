@@ -1,91 +1,20 @@
 import { Router } from "express";
 import { Users } from "../models/Users.js";
+import { findUsuarios, findUsuarioEmail, actualizarUsuarioRol, eliminarUsuario } from "../services/users.services.js";
 import { verificarAutenticacion, verificarPermisos } from "../middlewares/verificarRol.js";
 
 const router = Router();
 
-router.get("/users", async (req, res) => {
-    try {
-        const usuarios = await Users.findAll();
-        res.json(usuarios);
-    } catch (err) {
-        console.error(err)
-        return res.status(500).json({ mensaje: "Error en el servidor al traer los usuarios" })
-    }
-}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
+// solo los admin y superAdmin logueados pueden traer a los usuarios
+router.get("/users", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), findUsuarios)
 
-router.get("/users/:email", async (req, res) => {
-    try {
-        const { email } = req.params
+// si está logueado puede traer al usuario
+router.get("/users/:email", verificarAutenticacion, findUsuarioEmail)
 
-        const User = await Users.findOne({ where: { email } })
+// solo los superAdmin logueados pueden editar usuarios
+router.put("/users/:id/rol",verificarAutenticacion, verificarPermisos("superAdmin"), actualizarUsuarioRol)
 
-        if (!User) {
-            return res.status(404).json({ mensaje: "Usuario no encontrado" })
-        }
-
-        res.json(User)
-
-    } catch (err) {
-        console.error(err)
-        return res.status(500).json({ mensaje: "Error en el servidor al traer el usuario" })
-    }
-
-
-}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
-
-router.put("/users/:id/rol", async (req, res) => {
-
-    try {
-        const { id } = req.params
-
-        const { rol } = req.body
-
-        if (!rol) {
-            return res.status(400).json({ mensaje: "El rol es obligatorio" })
-        }
-
-        const rolesObligatorios = ["user", "admin", "superAdmin"]
-        if (!rolesObligatorios.includes(rol)) {
-            return res.status(400).json({ mensaje: "Los roles deben ser: user, admin o superAdmin" })
-        }
-
-        const User = await Users.findByPk(id)
-
-        if (!User) {
-            return res.status(404).json({ mensaje: "Usuario no encontrado" })
-        }
-
-        User.rol = rol
-
-        await User.save()
-
-        return res.json({ mensaje: `Rol actualizado a ${rol}` })
-
-    } catch (err) {
-        console.error(err)
-        return res.status(500).json({ mensaje: "Error en el servidor al actualizar usuario" })
-    }
-}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
-
-router.delete("/users/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        const Usuario = await Users.findByPk(id);
-
-        if (!Usuario) {
-            return res.status(404).json({ mensaje: "Usuario no encontrado" })
-        }
-
-        await Usuario.destroy();
-
-        res.json({ mensaje: `Usuario con el id: ${id} eliminado` })
-
-    } catch (err) {
-        console.error(err)
-        return res.status(500).json({ mensaje: "Error en el servidor al eliminar usuario" })
-    }
-}, verificarAutenticacion, verificarPermisos("admin", "superAdmin"))
+// solo los superAdmin logueados pueden borrar usuarios
+router.delete("/users/:id", verificarAutenticacion, verificarPermisos("superAdmin"), eliminarUsuario)
 
 export default router;

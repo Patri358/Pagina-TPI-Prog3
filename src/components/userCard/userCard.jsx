@@ -1,6 +1,10 @@
 import { Card, Button, Badge, Form } from "react-bootstrap";
+import useModal from "../../services/useModal/useModal";
+import ModalDelete from "../../ui/ModalDelete/ModalDelete";
 
 const UserCard = ({ user, esSuperAdmin, onUpdateRol, onDeleteUser }) => {
+
+    const { handleAbrir: handleAbrirUsuario, handleCerrar: handleCerrarUsuario, estadoModal: estadoModalUsuario } = useModal()
 
     const badgeColor = user.rol === "admin" || user.rol === "superAdmin" ? "danger" : "primary";
 
@@ -35,6 +39,11 @@ const UserCard = ({ user, esSuperAdmin, onUpdateRol, onDeleteUser }) => {
                         }
                     </div>
 
+                    {/* Modal para eliminar al usuario */}
+                    {
+                        estadoModalUsuario && <ModalDelete show={estadoModalUsuario} onCerrar={handleCerrarUsuario} onConfirmar={() => { onDeleteUser(user.id) }} titulo={`¿Desea eliminar al usuario ${user.username}?`} />
+                    }
+
                     <Card.Text className="text-muted small">
                         ID: {user.id}
                         <br />
@@ -46,7 +55,7 @@ const UserCard = ({ user, esSuperAdmin, onUpdateRol, onDeleteUser }) => {
                 </div>
                 {
                     esSuperAdmin &&
-                    <Button onClick={() => { onDeleteUser(user.id) }} variant="outline-danger" size="sm" className="w-100 mt-3">
+                    <Button onClick={handleAbrirUsuario} variant="outline-danger" size="sm" className="w-100 mt-3">
                         Eliminar usuario
                     </Button>
                 }
