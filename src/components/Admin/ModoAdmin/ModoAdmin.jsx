@@ -13,7 +13,7 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [agregarGenero, setAgregarGenero] = useState(false);
-    const { generosDescripcion, games } = useContext(GamesContext);
+    const { generosDescripcion, setGenerosDescripcion, games } = useContext(GamesContext);
 
     const traerToken = () => {
         return localStorage.getItem("token");
@@ -122,7 +122,12 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     const handleAgregarGenero = () => setAgregarGenero(true);
     const handleCancelarAgregar = () => setAgregarGenero(false);
 
-    const handleDeleteGenero = () => {
+    const handleDeleteGenero = (id) => {
+
+        if (!id) {
+            errorToast("ID inválido")
+            return;
+        }
 
         const token = traerToken();
 
@@ -131,15 +136,32 @@ const ModoAdmin = ({ esSuperAdmin }) => {
             return;
         }
 
-        fetch("http://localhost:3001/generos", {
+        fetch(`http://localhost:3001/generos/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("No se pudo eliminar el género");
+                }
+                // por si el backend responde sin el json
+                return res.json().catch(() => ({}));
+            })
+            .then(() => {
+                successToast("Género borrado")
+                setGenerosDescripcion((prevGeneros) => prevGeneros.filter((G) => G.id !== id))
+            })
+            .catch((err) => {
+                console.error(err)
+                errorToast(err || "Error en el servidor al borrar el género")
+            })
 
-        });
     };
 
+
+    // juegos
     const handleAddGame = () => {
         navigate("/gameForm");
     };
@@ -147,42 +169,31 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     return (
         <Tabs defaultActiveKey="users" id="ventanas-admin" className="mb-3" fill>
 
+            {/* usuarios */}
             <Tab eventKey="users" title="Usuarios">
                 <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
                     {users.map((usuario) => (
-                        <UserCard
-                            key={usuario.id}
-                            user={usuario}
-                            esSuperAdmin={esSuperAdmin}
-                            onUpdateRol={handleUpdateRol}
-                            onDeleteUser={handleDeleteUser}
-                        />
+                        <UserCard key={usuario.id} user={usuario} esSuperAdmin={esSuperAdmin} onUpdateRol={handleUpdateRol} onDeleteUser={handleDeleteUser} />
                     ))}
                 </div>
             </Tab>
 
+            {/* generos  */}
             <Tab eventKey="generos" title="Géneros">
                 <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
-                    <Button onClick={handleAgregarGenero} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
-                        Agregar Género
+                    <Button onClick={agregarGenero ? handleCancelarAgregar : handleAgregarGenero} variant={agregarGenero ? "danger" : "primary"} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
+                        {
+                            agregarGenero ? "Cancelar" : "Agregar Género"
+                        }
                     </Button>
 
-                    {agregarGenero && (
-                        <Button onClick={handleCancelarAgregar} variant='danger' style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
-                            Cancelar
-                        </Button>
-                    )}
-
                     {generosDescripcion.map((genero) => (
-                        <GenerosLista
-                            key={genero.id}
-                            descripcion={genero.descripcion}
-                            estaAgregando={agregarGenero}
-                        />
+                        <GenerosLista key={genero.id} id={genero.id} descripcion={genero.descripcion} estaAgregando={agregarGenero} onDeleteGenero={handleDeleteGenero} />
                     ))}
                 </div>
             </Tab>
 
+            {/* juegos */}
             <Tab eventKey="juegos" title="Juegos">
                 <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
                     <Button onClick={handleAddGame} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>

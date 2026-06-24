@@ -180,18 +180,18 @@ const GamesProvider = ({ children, loggedIn }) => {
     }
 
     return (
-        <GamesContext.Provider value={{ 
-            games, 
-            handleAdd, 
-            handleDelete, 
-            handleEdit, 
-            handleUpdate, 
-            handleNotEdit, 
-            isEditing, 
-            selectedGame, 
-            resetEditing, 
-            generosDescripcion, 
-            setGenerosDescripcion 
+        <GamesContext.Provider value={{
+            games,
+            handleAdd,
+            handleDelete,
+            handleEdit,
+            handleUpdate,
+            handleNotEdit,
+            isEditing,
+            selectedGame,
+            resetEditing,
+            generosDescripcion,
+            setGenerosDescripcion
         }}>
             {children}
         </GamesContext.Provider>

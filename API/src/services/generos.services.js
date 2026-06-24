@@ -38,6 +38,20 @@ export const actualizarGenero = async (req, res) => {
 }
 
 export const borrarGenero = async (req, res) => {
-    const { id } = req.params;
-    res.send(`Género con el id ${id} eliminado`)
+    try {
+        const { id } = req.params
+
+        const genero = await Generos.findByPk(id)
+
+        if (!genero) {
+            return res.status(404).json({ mensaje: "Género no encontrado" })
+        }
+
+        await genero.destroy()
+
+        return res.json({ mensaje: "Género borrado con éxito" })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ mensaje: "Error en el servidor al borrar el género" })
+    }
 }

@@ -39,8 +39,6 @@ const CartProvider = ({ children }) => {
 
         event.preventDefault()
 
-        successToast("Compra realizada")
-
         // array con todos los ids de mi biblioteca
         const idsBiblioteca = myGames.map((juego) => juego.id)
 

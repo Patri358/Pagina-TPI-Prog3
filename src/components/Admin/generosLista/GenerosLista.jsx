@@ -1,8 +1,16 @@
 import { Button, Form } from 'react-bootstrap';
+import useModal from '../../../services/useModal/useModal';
+import ModalDelete from '../../../ui/ModalDelete/ModalDelete';
 
-const GenerosLista = ({ descripcion, estaAgregando }) => {
+const GenerosLista = ({ id, descripcion, estaAgregando, onDeleteGenero }) => {
+
+    const { handleAbrir: handleAbrirGenero, handleCerrar: handleCerrarGenero, estadoModal: estadoModalGenero } = useModal()
+
     return (
         <div style={{ width: "100%" }}>
+            {
+                estadoModalGenero && <ModalDelete onCerrar={handleCerrarGenero} onConfirmar={() => onDeleteGenero(id)} show={estadoModalGenero} titulo={`¿Desea eliminar el género: ${descripcion}?`} />
+            }
             {estaAgregando ? (
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px", width: "100%", maxWidth: "400px", margin: "0 auto", marginBottom: "20px" }}>
                     <Form.Control
@@ -23,7 +31,7 @@ const GenerosLista = ({ descripcion, estaAgregando }) => {
                             </h2>
                         </div>
                         <div style={{ width: "50%", textAlign: "left", display: "flex", alignItems: "center" }}>
-                            <Button variant="danger" size="sm">Eliminar</Button>
+                            <Button onClick={handleAbrirGenero} variant="danger" size="sm">Eliminar</Button>
                             <Button style={{ marginLeft: "10px" }} size="sm">Editar</Button>
                         </div>
                     </div>
