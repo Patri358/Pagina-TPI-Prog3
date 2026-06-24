@@ -3,7 +3,7 @@ import { Generos } from "../models/Generos.js";
 import { findGeneros, createGenero, actualizarGenero, borrarGenero } from "../services/generos.services.js";
 import { verificarAutenticacion, verificarPermisos } from "../middlewares/verificarRol.js";
 
-const router = Router();
+const router = Router(); 
 
 // traer todos los géneros
 router.get("/generos", findGeneros)
