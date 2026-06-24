@@ -33,8 +33,16 @@ export const verificarAutenticacion = (req, res, next) => {
 }
 
 // verifica si tiene permisos
+// verifica si tiene permisos
 export const verificarPermisos = (...rolesRequeridos) => {
+    // ❌ NO pongas los console.log acá afuera, porque acá "req" no existe.
+
     return (req, res, next) => {
+        //  CORRECTO: Acá adentro "req", "res" y "next" sí existen
+        console.log("=== CONTROL DE PERMISOS ===");
+        console.log("Rol que viene del Token:", req.user?.rol);
+        console.log("Roles permitidos en esta ruta:", rolesRequeridos);
+
         // esto devuelve si está autenticado o si no tiene el rol que se necesita
         if (!req.user || !req.user.rol) {
             return res.status(401).json({ mensaje: "El usuario no está autenticado o no posee el rol requerido" })

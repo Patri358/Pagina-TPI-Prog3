@@ -9,12 +9,12 @@ const router = Router();
 router.get("/generos", findGeneros)
 
 // crear un género
-router.post("/generos", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), createGenero)
+router.post("/generos", createGenero)
 
 // actualizar un género
-router.put("/generos/:id", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), actualizarGenero)
+router.put("/generos/:id", actualizarGenero)
 
 // borrar un género
-router.delete("/generos/:id", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), borrarGenero)
+router.delete("/generos/:id", borrarGenero)
 
 export default router;

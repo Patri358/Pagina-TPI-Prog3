@@ -26,7 +26,7 @@ export const loginUser = async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      rol: user.rol,
+      rol: user.rol ? user.rol.trim() : user.rol,
     };
 
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });

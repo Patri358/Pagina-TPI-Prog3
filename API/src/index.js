@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 // models
 import "./models/Juegos.js";
@@ -21,22 +22,19 @@ import usersRoutes from "./routes/users.routes.js";
 import { PORT } from "./config.js";
 import { sequelize } from "../db.js"
 
-import cors from "cors";
-
 const app = express();
 
 try {
     app.use(express.json());
 
-    app.use((req, res, next) => {
-        res.header("Access-Control-Allow-Origin", "*")
-        res.header("Access-Control-Allow-Headers", "*")
-        res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-        next()
-    })
-    app.use(cors());
 
-    // rutas
+    app.use(cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    }));
+
+
     app.use(authRoutes);
     app.use(bibiotecaRoutes);
     app.use(comprasRoutes);
@@ -46,7 +44,6 @@ try {
     app.use(usersRoutes);
 
     await sequelize.sync();
-
     app.listen(PORT);
 
     console.log(`Servidor escuchando en el puerto ${PORT}`);
