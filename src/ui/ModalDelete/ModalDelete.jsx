@@ -1,21 +1,17 @@
-import { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { GamesContext } from '../../context/GamesProvider/GamesContext';
 
-const ModalDelete = ({ game, onCerrar, show }) => {
-
-    const { handleDelete } = useContext(GamesContext);
+const ModalDelete = ({ onCerrar, onConfirmar, show, titulo }) => {
 
     const handleEliminar = () => {
-        handleDelete(game)
         onCerrar()
+        onConfirmar()
     }
 
     return (
         <Modal show={show} onHide={onCerrar} data-bs-theme="dark" style={{ color: "white" }} centered>
             <Modal.Header closeButton>
-                <Modal.Title>¿Desea eliminar {game.title} de la tienda?</Modal.Title>
+                <Modal.Title>{titulo}</Modal.Title>
             </Modal.Header>
 
             <Modal.Footer>

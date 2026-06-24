@@ -5,11 +5,20 @@ import { useNavigate } from "react-router-dom"
 
 const GamesProvider = ({ children }) => {
 
+    // token
+    const traerToken = () => {
+        return localStorage.getItem("token")
+    }
+
     // generos
     const [generosDescripcion, setGenerosDescripcion] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:3001/generos")
+        fetch("http://localhost:3001/generos", {
+            headers: {
+                "Authorization": `Bearer ${traerToken()}`
+            }
+        })
             .then(res => res.json())
             .then(data => setGenerosDescripcion(data))
             .catch(err => console.log(err))
@@ -19,10 +28,14 @@ const GamesProvider = ({ children }) => {
     const [games, setGames] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3001/juegos")
+        fetch("http://localhost:3001/juegos", {
+            headers: {
+                "Authorization": `Bearer ${traerToken()}`
+            }
+        })
             .then(res => res.json())
             .then(data => setGames(data))
-            .catch(error => console.log(error))
+            .catch(err => console.log(err))
     }, [])
 
     // actualizo el front y el back
@@ -31,7 +44,8 @@ const GamesProvider = ({ children }) => {
         fetch(`http://localhost:3001/juegos/${id}`, {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${traerToken()}`
             },
         })
             .then((response) => {
@@ -40,7 +54,7 @@ const GamesProvider = ({ children }) => {
                     setGames((prevGames) => prevGames.filter((g) => g.id !== id));
                     successToast(`Se eliminó ${game.title} de la tienda`)
                 } else {
-                    errorToast("Error al eliminar el juego")
+                    errorToast("Sin permisos o token expirado")
                 }
             })
             .catch((error) => errorToast(error))
@@ -51,6 +65,7 @@ const GamesProvider = ({ children }) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${traerToken()}`
             },
             body: JSON.stringify(newGame),
         })

@@ -6,7 +6,13 @@ export const verificarAutenticacion = (req, res, next) => {
 
     // esto busca el token en el header
     const authHeader = req.headers.authorization
-    const token = authHeader && authHeader.split(" ")[1];
+
+    // verifica si existe y es valido
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ mensaje: "El token no existe o tiene un formato invalido" });
+    }
+
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
         return res.status(401).json({ mensaje: "Acceso invalido. Token no encontrado" })
@@ -18,7 +24,6 @@ export const verificarAutenticacion = (req, res, next) => {
 
         // aca se guardan los datos del usuario
         req.user = tokenDecodificado
-
         // se pasa al siguiente controlador
         next()
 

@@ -3,7 +3,7 @@ import { Generos } from "../models/Generos.js";
 export const findGeneros = async (req, res) => {
     try {
         const generos = await Generos.findAll()
-        res.send(generos);
+        res.json(generos);
 
     } catch (err) {
         console.error(err)

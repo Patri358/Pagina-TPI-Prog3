@@ -6,7 +6,7 @@ const BibliotecaProvider = ({ children }) => {
     const [myGames, setMyGames] = useState([]);
 
     return (
-        <BibliotecaContext.Provider value={{myGames, setMyGames}}>
+        <BibliotecaContext.Provider value={{ myGames, setMyGames }}>
             {children}
         </BibliotecaContext.Provider>
     )

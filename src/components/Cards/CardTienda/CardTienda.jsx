@@ -12,7 +12,7 @@ const CardTienda = ({ game, tienePermiso }) => {
     const navigate = useNavigate()
 
     const { handleCart } = useContext(CartContext);
-    const { handleEdit } = useContext(GamesContext);
+    const { handleEdit, handleDelete } = useContext(GamesContext);
 
     const handleEditGame = () => {
         handleEdit()
@@ -29,7 +29,7 @@ const CardTienda = ({ game, tienePermiso }) => {
             <Card.Img variant="top" src={game.poster} />
 
             {/* Modal de confirmar eliminar */}
-            {estadoModalEliminar && <ModalDelete game={game} onCerrar={handleCerrarEliminar} show={estadoModalEliminar} />}
+            {estadoModalEliminar && <ModalDelete game={game} onCerrar={handleCerrarEliminar} onConfirmar={() => handleDelete(game)} show={estadoModalEliminar} titulo={`¿Desea eliminar ${game.title} de la tienda?`} />}
 
             {/* Modal de detalle del juego */}{
                 estadoModalDetalle && <ModalDetalle game={game} onCerrar={handleCerrarDetalle} show={estadoModalDetalle} />

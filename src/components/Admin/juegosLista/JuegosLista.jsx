@@ -9,14 +9,14 @@ const JuegosLista = ({ game }) => {
     const { handleDelete } = useContext(GamesContext);
 
     // modal
-    const { handleAbrir: handleAbrirEliminar, handleCerrar: handleCerrarEliminar, estadoModal: estadoModalEliminar } = useModal()
+    const { handleAbrir: handleAbrirEliminar, handleCerrar: handleCerrarEliminar, estadoModal: estadoModalEliminar } = useModal();
 
     return (
         <div style={{ width: "100%" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "15px", width: "100%" }}>
 
                 {
-                    estadoModalEliminar && <ModalDelete game={game} onCerrar={handleCerrarEliminar} show={estadoModalEliminar}/>
+                    estadoModalEliminar && <ModalDelete onCerrar={handleCerrarEliminar} onConfirmar={() => handleDelete(game) } show={estadoModalEliminar} titulo={`¿Desea eliminar ${game.title} de la tienda?`} />
                 }
 
                 <div style={{ width: "50%", textAlign: "right" }}>
@@ -26,7 +26,7 @@ const JuegosLista = ({ game }) => {
                 </div>
 
                 <div style={{ width: "50%", textAlign: "left", display: "flex", alignItems: "center" }}>
-                    <Button onClick={() => handleDelete(game)} variant="danger" size="sm">Eliminar</Button>
+                    <Button onClick={handleAbrirEliminar} variant="danger" size="sm">Eliminar</Button>
                     <Button style={{ marginLeft: "10px" }} size="sm">Editar</Button>
                 </div>
 
