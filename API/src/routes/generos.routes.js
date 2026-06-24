@@ -2,7 +2,7 @@ import { Router } from "express";
 import { Generos } from "../models/Generos.js";
 import { verificarAutenticacion, verificarPermisos } from "../middlewares/verificarRol.js";
 
-const router = Router();
+const router = Router(); 
 
 router.get("/generos", async (req, res) => {
     try {
