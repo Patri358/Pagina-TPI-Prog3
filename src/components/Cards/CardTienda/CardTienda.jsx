@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GamesContext } from "../../../context/GamesProvider/GamesContext";
 import useModal from "../../../services/useModal/useModal";
 import ModalDelete from "../../../ui/ModalDelete/ModalDelete";
+import ModalDetalle from "../../../ui/modalDetalle/ModalDetalle";
 
 const CardTienda = ({ game, tienePermiso }) => {
 
@@ -18,8 +19,8 @@ const CardTienda = ({ game, tienePermiso }) => {
         navigate("/gameForm")
     }
 
-    // llamo al customHook
-    const { handleAbrir, handleCerrar, estadoModal } = useModal()
+    // llamo al customHook del modal
+    const { handleAbrir: handleAbrirEliminar, handleCerrar: handleCerrarEliminar, estadoModal: estadoModalEliminar } = useModal()
     const { handleAbrir: handleAbrirDetalle, handleCerrar: handleCerrarDetalle, estadoModal: estadoModalDetalle } = useModal()
 
     return (
@@ -27,31 +28,12 @@ const CardTienda = ({ game, tienePermiso }) => {
 
             <Card.Img variant="top" src={game.poster} />
 
-            {estadoModal && <ModalDelete game={game} onCerrar={handleCerrar}></ModalDelete>}
+            {/* Modal de confirmar eliminar */}
+            {estadoModalEliminar && <ModalDelete game={game} onCerrar={handleCerrarEliminar} show={estadoModalEliminar} />}
 
-            <Modal show={estadoModalDetalle} onHide={handleCerrarDetalle} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{game.title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <img src={game.poster} alt={game.title} style={{ width: '100%', borderRadius: '5px', marginBottom: '15px' }} />
-                    <p><strong>Distribuidor:</strong> {game.distributor}</p>
-                    <p><strong>Clasificación:</strong> {game.rating}</p>
-                    <p><strong>Sinopsis:</strong> {game.sinopsis || game.synopsis}</p>
-                    <p><strong>Géneros:</strong> #{(game.Generos ?? [])
-                        .map((genero) => typeof genero === "string" ? genero : genero.descripcion)
-                        .join(" #")}</p>
-                    <p><strong>Lanzamiento:</strong> {game.launch}</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCerrarDetalle}>
-                        Cerrar
-                    </Button>
-                    <Button variant="primary" onClick={() => { handleCart(game); handleCerrarDetalle(); }}>
-                        Añadir al carrito
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            {/* Modal de detalle del juego */}{
+                estadoModalDetalle && <ModalDetalle game={game} onCerrar={handleCerrarDetalle} show={estadoModalDetalle} />
+            }
 
             <Card.Body>
 
@@ -85,12 +67,12 @@ const CardTienda = ({ game, tienePermiso }) => {
                     {/* boton que ve el admin | superadmin */}
                     {tienePermiso && (
                         <div className="d-flex justify-content-center gap-4">
-                            <Button variant="danger" onClick={handleAbrir} >Eliminar de la tienda</Button>
+                            <Button variant="danger" onClick={handleAbrirEliminar} >Eliminar de la tienda</Button>
                             <Button variant="success" onClick={handleEditGame} >Editar juego</Button>
                         </div>
                     )}
 
-                <Button style={{ margin: "10px", width: "100%" }} variant="primary" onClick={handleAbrirDetalle}>Detalles del juego</Button>
+                    <Button style={{ margin: "10px", width: "100%" }} variant="primary" onClick={handleAbrirDetalle}>Detalles del juego</Button>
                     <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }}>Añadir al carrito</Button>
                 </Card.Footer>
             </Card.Body>

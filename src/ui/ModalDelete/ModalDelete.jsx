@@ -9,25 +9,20 @@ const ModalDelete = ({ game, onCerrar, show }) => {
 
     const handleEliminar = () => {
         handleDelete(game)
-    }
-
-    const handleCerrar = () => {
         onCerrar()
     }
 
     return (
-        <Modal show={!show} onHide={onCerrar} data-bs-theme="dark" style={{ color: "white" }}>
-            <Modal.Dialog style={{ color: "white" }}>
-                <Modal.Header closeButton>
-                    <Modal.Title closeButton>¿Desea eliminar {game.title} de la tienda?</Modal.Title>
-                </Modal.Header>
+        <Modal show={show} onHide={onCerrar} data-bs-theme="dark" style={{ color: "white" }} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>¿Desea eliminar {game.title} de la tienda?</Modal.Title>
+            </Modal.Header>
 
-                <Modal.Footer>
-                    <Button variant="primary" onClick={onCerrar}>Cerrar</Button>
-                    <Button variant="danger" onClick={handleEliminar}>Eliminar</Button>
-                </Modal.Footer>
-            </Modal.Dialog>
-        </Modal >
+            <Modal.Footer>
+                <Button variant="secondary" onClick={onCerrar}>Cerrar</Button>
+                <Button variant="danger" onClick={handleEliminar}>Eliminar</Button>
+            </Modal.Footer>
+        </Modal>
     );
 };
 
