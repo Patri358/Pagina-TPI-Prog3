@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { CartContext } from "../../../context/CartProvider/CartContext";
 import { useNavigate } from "react-router-dom";
 import { GamesContext } from "../../../context/GamesProvider/GamesContext";
+import { BibliotecaContext } from "../../../context/BibliotecaProvider/BibliotecaContext";
 import useModal from "../../../services/useModal/useModal";
 import ModalDelete from "../../../ui/ModalDelete/ModalDelete";
 import ModalDetalle from "../../../ui/modalDetalle/ModalDetalle";
@@ -13,6 +14,10 @@ const CardTienda = ({ game, tienePermiso }) => {
 
     const { handleCart } = useContext(CartContext);
     const { handleEdit, handleDelete } = useContext(GamesContext);
+    const { myGames } = useContext(BibliotecaContext)
+
+    // verifica si algun id coincide con este juego
+    const yaComprado = myGames.some((juego) => juego.id === game.id)
 
     const handleEditGame = () => {
         handleEdit()
@@ -41,7 +46,9 @@ const CardTienda = ({ game, tienePermiso }) => {
 
                 <Card.Subtitle className="text-center fs-2 my-3" >
                     <Badge bg="success">
-                        {game.price === 0 ? "Gratuito" : `$${game.price}`}
+                        {
+                            yaComprado ? "Comprado" : (game.price === 0 ? "Gratuito" : `$${game.price}`)
+                        }
                     </Badge>
                 </Card.Subtitle>
 
@@ -64,7 +71,7 @@ const CardTienda = ({ game, tienePermiso }) => {
                 </Card.Text>
 
                 <Card.Footer>
-                    {/* boton que ve el admin | superadmin */}
+                    {/* botones que ve el admin | superadmin */}
                     {tienePermiso && (
                         <div className="d-flex justify-content-center gap-4">
                             <Button variant="danger" onClick={handleAbrirEliminar} >Eliminar de la tienda</Button>
@@ -73,7 +80,12 @@ const CardTienda = ({ game, tienePermiso }) => {
                     )}
 
                     <Button style={{ margin: "10px", width: "100%" }} variant="primary" onClick={handleAbrirDetalle}>Detalles del juego</Button>
-                    <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }}>Añadir al carrito</Button>
+
+                    <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }} disabled={yaComprado}>
+                        {
+                            yaComprado ? "Juego en la biblioteca" : "Añadir al carrito"
+                        }    
+                    </Button>
                 </Card.Footer>
             </Card.Body>
 

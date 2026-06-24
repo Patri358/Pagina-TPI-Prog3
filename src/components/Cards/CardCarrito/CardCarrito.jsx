@@ -1,15 +1,10 @@
 import { Card, Button, Badge } from "react-bootstrap";
-import { useContext } from "react";
-import { CartContext } from "../../../context/CartProvider/CartContext";
+import ModalDetalle from "../../../ui/modalDetalle/ModalDetalle.jsx"
+import useModal from "../../../services/useModal/useModal";
 
-const CardCarrito = ({ game, onDetails }) => {
+const CardCarrito = ({ game }) => {
 
-    const { handleDelete } = useContext(CartContext);
-
-    
-    const handleDetail = () => {
-
-    }
+    const { handleAbrir: handleAbrirDetalle, handleCerrar: handleCerrarDetalle, estadoModal: estadoModalDetalle } = useModal()
 
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', margin: "30px" }} className='mx-3'>
@@ -17,9 +12,13 @@ const CardCarrito = ({ game, onDetails }) => {
             <Card.Body>
                 <Card.Title className="text-center">{game.title}</Card.Title>
 
+                {
+                    estadoModalDetalle && <ModalDetalle game={game} onCerrar={handleCerrarDetalle} show={estadoModalDetalle} />
+                }
+
                 <Card.Subtitle className="text-center fs-2 my-3" >
                     <Badge bg="success">
-                        {game.price === 0 ? "Gratuito" : `$${game.price}` }
+                        {game.price === 0 ? "Gratuito" : `$${game.price}`}
                     </Badge>
                 </Card.Subtitle>
 
@@ -41,10 +40,7 @@ const CardCarrito = ({ game, onDetails }) => {
                 </Card.Text>
 
                 <Card.Footer>
-
-                    <Button onClick={() => onDetails?.(game)} variant="primary" style={{ margin: "10px", width: "100%" }}>Detalles del juego</Button>
-                    <Button onClick={() => handleDelete(game)} variant="danger" style={{ margin: "10px", width: "100%" }}>Eliminar del carrito</Button>
-
+                    <Button onClick={handleAbrirDetalle} variant="primary" style={{ margin: "10px", width: "100%" }}>Detalles del juego</Button>
                 </Card.Footer>
             </Card.Body>
         </Card >

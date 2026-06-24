@@ -20,14 +20,12 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     };
 
     // usuarios
-
     useEffect(() => {
         const token = traerToken();
-        console.log("Token enviado en la petición:", `Bearer ${token}`);
 
         fetch("http://localhost:3001/users", {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${traerToken()}`
             }
         })
             .then((res) => {
@@ -37,15 +35,15 @@ const ModoAdmin = ({ esSuperAdmin }) => {
                 return res.json();
             })
             .then((data) => {
-                console.log("Datos recibidos del backend:", data);
+                // verifica si devuelve un array
                 if (Array.isArray(data)) {
                     setUsers(data);
                 } else {
-                    console.error("El backend no devolvió un Array, devolvió esto:", data);
+                    console.error("Error en el backend, datos corruptos: ", data);
                 }
             })
             .catch((err) => {
-                console.error("Error atrapado en el fetch de usuarios:", err);
+                console.error("Error en el fetch de usuarios:", err);
             });
     }, []);
 
@@ -53,7 +51,8 @@ const ModoAdmin = ({ esSuperAdmin }) => {
         fetch(`http://localhost:3001/users/${usuarioId}/rol`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${traerToken()}`
             },
             body: JSON.stringify({ rol: nuevoRol })
         })
@@ -73,7 +72,10 @@ const ModoAdmin = ({ esSuperAdmin }) => {
 
     const handleDeleteUser = (id) => {
         fetch(`http://localhost:3001/users/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${traerToken()}`
+            }
         })
             .then((res) => {
                 if (!res.ok) {
@@ -92,7 +94,10 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     const handleCancelarAgregar = () => setAgregarGenero(false);
 
     const handleDeleteGenero = () => {
-        fetch("http://localhost:3001/generos");
+        fetch("http://localhost:3001/generos", {
+            method: "DELETE",
+            "Authorization": `Bearer ${traerToken()}`
+        });
     };
 
     const handleAddGame = () => {

@@ -7,12 +7,16 @@ import { actualizarJuego, borrarJuego, crearJuego, findJuegos } from "../service
 
 const router = Router();
 
-router.get("/juegos", findJuegos);
+// si está logueado puede traer los juegos
+router.get("/juegos", verificarAutenticacion, findJuegos);
 
-router.post("/juegos", crearJuego)
+// solo los admin y superAdmin logueados pueden crear juegos
+router.post("/juegos", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), crearJuego);
 
-router.put("/juegos/:id", actualizarJuego)
+// solo los admin y superAdmin logueados pueden editar juegos
+router.put("/juegos/:id", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), actualizarJuego);
 
-router.delete("/juegos/:id", borrarJuego)
+// solo los admin y superAdmin logueados pueden borrar juegos
+router.delete("/juegos/:id", verificarAutenticacion, verificarPermisos("admin","superAdmin"), borrarJuego);
 
 export default router;

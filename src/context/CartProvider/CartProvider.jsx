@@ -4,9 +4,12 @@ import { BibliotecaContext } from "../../context/BibliotecaProvider/BibliotecaCo
 import { successToast, errorToast } from "../../ui/Toast/Toast.jsx";
 
 export const calcularTotal = (cart) => {
-    return cart.reduce((acc, item) => {
+    const total = cart.reduce((acc, item) => {
         return acc + item.price;
     }, 0)
+
+    // redondea a 2 decimales
+    return Number(total.toFixed(2))
 }
 
 const CartProvider = ({ children }) => {
@@ -30,15 +33,11 @@ const CartProvider = ({ children }) => {
     const { myGames, setMyGames } = useContext(BibliotecaContext);
 
     const handleCompra = (event) => {
+
         event.preventDefault()
 
-        if(total === 0){
-            errorToast("Carrito vacio");
-            return;
-        }
-
         successToast("Compra realizada")
-        
+
         // array con todos los ids de mi biblioteca
         const idsBiblioteca = myGames.map((juego) => juego.id)
 

@@ -1,4 +1,6 @@
 import { Juegos } from "../models/Juegos.js";
+import { Generos } from "../models/Generos.js";
+import { JuegosGeneros } from "../models/JuegosGeneros.js";
 
 export const findJuegos = async (req, res) => {
     const juegos = await Juegos.findAll({

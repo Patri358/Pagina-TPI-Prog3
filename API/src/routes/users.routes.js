@@ -5,12 +5,16 @@ import { verificarAutenticacion, verificarPermisos } from "../middlewares/verifi
 
 const router = Router();
 
-router.get("/users", findUsuarios)
+// solo los admin y superAdmin logueados pueden traer a los usuarios
+router.get("/users", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), findUsuarios)
 
-router.get("/users/:email", findUsuarioEmail)
+// si está logueado puede traer al usuario
+router.get("/users/:email", verificarAutenticacion, findUsuarioEmail)
 
-router.put("/users/:id/rol", actualizarUsuarioRol)
+// solo los superAdmin logueados pueden editar usuarios
+router.put("/users/:id/rol",verificarAutenticacion, verificarPermisos("superAdmin"), actualizarUsuarioRol)
 
-router.delete("/users/:id", eliminarUsuario)
+// solo los superAdmin logueados pueden borrar usuarios
+router.delete("/users/:id", verificarAutenticacion, verificarPermisos("superAdmin"), eliminarUsuario)
 
 export default router;
