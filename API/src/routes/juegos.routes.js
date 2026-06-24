@@ -2,7 +2,7 @@ import { Router } from "express";
 import { Juegos } from "../models/Juegos.js";
 import { Generos } from "../models/Generos.js";
 import { JuegosGeneros } from "../models/JuegosGeneros.js";
-import { verificarAutenticacion } from "../middlewares/verificarRol.js";
+import { verificarAutenticacion, verificarPermisos } from "../middlewares/verificarRol.js";
 
 const router = Router();
 
