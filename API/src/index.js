@@ -11,7 +11,6 @@ import "./models/Biblioteca.js";
 
 // routes
 import authRoutes from "./routes/auth.routes.js";
-import bibiotecaRoutes from "./routes/biblioteca.routes.js";
 import comprasRoutes from "./routes/compras.routes.js";
 import generosRoutes from "./routes/generos.routes.js";
 import juegosRoutes from "./routes/juegos.routes.js"
@@ -32,9 +31,7 @@ try {
         allowedHeaders: ["Content-Type", "Authorization"]
     }));
 
-
     app.use(authRoutes);
-    app.use(bibiotecaRoutes);
     app.use(comprasRoutes);
     app.use(generosRoutes);
     app.use(juegosRoutes);

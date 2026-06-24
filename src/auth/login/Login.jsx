@@ -58,13 +58,11 @@ const Login = ({ onLogIn, }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
       // setea el estado en true y paso los datos del usuario
-      onLogIn(data.user);
+      onLogIn(data.user, data.token);
       navigate("/tienda");
     } catch (error) {
-      errorToast(error.message);
+      errorToast(error.mensaje);
     }
   };
 
