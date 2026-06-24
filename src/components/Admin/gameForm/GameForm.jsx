@@ -1,25 +1,27 @@
 import { useState, useContext, useEffect } from 'react'
 import { GamesContext } from '../../../context/GamesProvider/GamesContext';
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { errorToast } from '../../../ui/Toast/Toast'
 
+const initialFormData = {
+  title: "",
+  distributor: "",
+  poster: "",
+  rating: "",
+  sinopsis: "",
+  Generos: [],
+  launch: "",
+  price: "",
+}
+
 const GameForm = () => {
 
-  const { games, handleAdd, generosDescripcion, isEditing } = useContext(GamesContext);
+  const { games, handleAdd, handleUpdate, generosDescripcion, isEditing, selectedGame, resetEditing } = useContext(GamesContext);
 
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    title: "",
-    distributor: "",
-    poster: "",
-    rating: "",
-    sinopsis: "",
-    Generos: [],
-    launch: "",
-    price: "",
-  })
+  const [formData, setFormData] = useState(initialFormData)
 
   const ratings = ["Apto para todo público", "Apto para mayores de 10", "Apto para mayores de 18"]
 
@@ -45,7 +47,12 @@ const GameForm = () => {
     }
 
     // verifica si el juego está en la tienda por titulo
-    const EnTienda = games.some((juego) => juego.title.toLowerCase() === formData.title.toLowerCase())
+    const EnTienda = games.some((juego) => {
+      if (isEditing && selectedGame && juego.id === selectedGame.id) {
+        return false
+      }
+      return juego.title.toLowerCase() === formData.title.toLowerCase()
+    })
     if (EnTienda && !isEditing) {
       let errorTitulo = "El juego ingresado ya está en la pagina"
       errorToast(errorTitulo)
@@ -88,17 +95,35 @@ const GameForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (isEditing && selectedGame) {
+      setFormData({
+        id: selectedGame.id,
+        title: selectedGame.title || "",
+        distributor: selectedGame.distributor || "",
+        poster: selectedGame.poster || "",
+        rating: selectedGame.rating || "",
+        sinopsis: selectedGame.sinopsis || selectedGame.synopsis || "",
+        Generos: (selectedGame.Generos ?? []).map((genero) => typeof genero === "string" ? genero : genero.descripcion),
+        launch: selectedGame.launch ? selectedGame.launch.toString().slice(0, 10) : "",
+        price: selectedGame.price ?? ""
+      })
+    } else {
+      setFormData(initialFormData)
+    }
+  }, [isEditing, selectedGame])
+
   const handleSubmit = (event) => {
     event.preventDefault()
 
     if (validate()) {
-      const newGame = formData;
-      handleAdd(newGame);
-      navigate("/Tienda");
+      const action = isEditing ? handleUpdate(formData) : handleAdd(formData)
+      action.then(() => navigate("/Tienda")).catch(() => {})
     }
   }
 
   const handleCancel = () => {
+    resetEditing()
     navigate("/Tienda")
   }
 
@@ -130,7 +155,15 @@ const GameForm = () => {
           {
             ratings.map((rating) => {
               return (
-                <Form.Check onChange={handleChangeForm} key={rating} name="rating" label={rating} value={rating} type='radio' />
+                <Form.Check
+                  onChange={handleChangeForm}
+                  checked={formData.rating === rating}
+                  key={rating}
+                  name="rating"
+                  label={rating}
+                  value={rating}
+                  type='radio'
+                />
               )
             })
           }
@@ -148,7 +181,14 @@ const GameForm = () => {
           {
             generosDescripcion?.map((genero) => {
               return (
-                <Form.Check onChange={handleChangeForm} key={genero.id} name="Generos" label={genero.descripcion} value={genero.descripcion} />
+                <Form.Check
+                  onChange={handleChangeForm}
+                  checked={formData.Generos.includes(genero.descripcion)}
+                  key={genero.id}
+                  name="Generos"
+                  label={genero.descripcion}
+                  value={genero.descripcion}
+                />
               )
             })
           }

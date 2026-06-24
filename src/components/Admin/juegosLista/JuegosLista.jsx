@@ -1,12 +1,18 @@
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { GamesContext } from "../../../context/GamesProvider/GamesContext";
 import useModal from "../../../services/useModal/useModal";
 import ModalDelete from "../../../ui/ModalDelete/ModalDelete";
 
 const JuegosLista = ({ game }) => {
+    const navigate = useNavigate();
+    const { handleDelete, handleEdit } = useContext(GamesContext);
 
-    const { handleDelete } = useContext(GamesContext);
+    const handleEditGame = () => {
+        handleEdit(game)
+        navigate("/gameForm")
+    }
 
     // modal
     const { handleAbrir: handleAbrirEliminar, handleCerrar: handleCerrarEliminar, estadoModal: estadoModalEliminar } = useModal();
@@ -27,7 +33,7 @@ const JuegosLista = ({ game }) => {
 
                 <div style={{ width: "50%", textAlign: "left", display: "flex", alignItems: "center" }}>
                     <Button onClick={handleAbrirEliminar} variant="danger" size="sm">Eliminar</Button>
-                    <Button style={{ marginLeft: "10px" }} size="sm">Editar</Button>
+                    <Button style={{ marginLeft: "10px" }} size="sm" onClick={handleEditGame}>Editar</Button>
                 </div>
 
             </div>

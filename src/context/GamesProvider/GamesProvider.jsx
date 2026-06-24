@@ -30,7 +30,9 @@ const GamesProvider = ({ children }) => {
     }, [])
 
     const [games, setGames] = useState([]);
-    
+    const [isEditing, setIsEditing] = useState(false);
+    const [selectedGame, setSelectedGame] = useState(null);
+
     //Trae los juegos del back
     useEffect(() => {
         fetch("http://localhost:3001/juegos", {
@@ -74,7 +76,7 @@ const GamesProvider = ({ children }) => {
 
     // agregar un juego
     const handleAdd = (newGame) => {
-        fetch("http://localhost:3001/juegos", {
+        return fetch("http://localhost:3001/juegos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -95,19 +97,67 @@ const GamesProvider = ({ children }) => {
                 }
                 successToast(`Se añadió el juego: ${gameWithGenres.title}`)
                 setGames((prevGames) => [...prevGames, gameWithGenres])
+                return gameWithGenres;
             })
-            .catch((error) => errorToast(error.message))
+            .catch((error) => {
+                errorToast(error.message)
+                throw error
+            })
     }
 
+    const handleUpdate = (updatedGame) => {
+        const id = updatedGame.id || selectedGame?.id;
+        if (!id) {
+            errorToast("No se pudo identificar el juego a editar");
+            return Promise.reject(new Error("No se pudo identificar el juego a editar"));
+        }
 
-    const [isEditing, setIsEditing] = useState(false)
-    
-    const handleEdit = () => {
+        return fetch(`http://localhost:3001/juegos/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${traerToken()}`
+            },
+            body: JSON.stringify(updatedGame),
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(res.status === 403 || res.status === 401
+                        ? "Sin permisos o sesión expirada"
+                        : `Error del servidor: ${res.status}`
+                    );
+                }
+                return res.json()
+            })
+            .then((updatedGameData) => {
+                const gameWithGenres = {
+                    ...updatedGameData,
+                    Generos: updatedGameData.Generos ?? []
+                }
+                setGames((prevGames) => prevGames.map((game) => game.id === gameWithGenres.id ? gameWithGenres : game))
+                setIsEditing(false)
+                setSelectedGame(null)
+                successToast(`Se actualizó el juego: ${gameWithGenres.title}`)
+                return gameWithGenres;
+            })
+            .catch((error) => {
+                errorToast(error.message)
+                throw error
+            })
+    }
+
+    const handleEdit = (game) => {
+        setSelectedGame(game)
         setIsEditing(true)
     }
 
-    const handleNotEdit = () => {
+    const resetEditing = () => {
         setIsEditing(false)
+        setSelectedGame(null)
+    }
+
+    const handleNotEdit = () => {
+        resetEditing()
         navigate("/gameForm")
     }
 
@@ -117,8 +167,11 @@ const GamesProvider = ({ children }) => {
             handleAdd, 
             handleDelete, 
             handleEdit, 
+            handleUpdate, 
             handleNotEdit, 
             isEditing, 
+            selectedGame, 
+            resetEditing, 
             generosDescripcion, 
             setGenerosDescripcion 
         }}>

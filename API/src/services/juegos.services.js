@@ -61,9 +61,52 @@ export const crearJuego = async (req, res) => {
 }
 
 
-export const actualizarJuego = (req, res) => {
+export const actualizarJuego = async (req, res) => {
     const { id } = req.params
-    res.send(`Juego con el id ${id} actualizado`)
+    const { title, distributor, sinopsis, poster, rating, launch, price, Generos: generosArray } = req.body
+
+    try {
+        const juego = await Juegos.findByPk(id)
+        if (!juego) {
+            return res.status(404).json({ message: "Juego no encontrado" })
+        }
+
+        await juego.update({
+            title,
+            distributor,
+            sinopsis,
+            poster,
+            rating,
+            launch,
+            price
+        })
+
+        if (Array.isArray(generosArray)) {
+            if (generosArray.length > 0) {
+                const generosDB = await Generos.findAll({
+                    where: {
+                        descripcion: generosArray
+                    }
+                })
+                await juego.setGeneros(generosDB)
+            } else {
+                await juego.setGeneros([])
+            }
+        }
+
+        const updatedGame = await Juegos.findByPk(id, {
+            include: {
+                model: Generos,
+                through: {
+                    attributes: []
+                }
+            }
+        })
+
+        res.json(updatedGame)
+    } catch (error) {
+        res.status(500).json({ message: "Error al actualizar el juego", error: error.message })
+    }
 }
 
 export const borrarJuego = async (req, res) => {

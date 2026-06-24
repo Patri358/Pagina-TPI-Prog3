@@ -20,7 +20,7 @@ const CardTienda = ({ game, tienePermiso }) => {
     const yaComprado = myGames.some((juego) => juego.id === game.id)
 
     const handleEditGame = () => {
-        handleEdit()
+        handleEdit(game)
         navigate("/gameForm")
     }
 
