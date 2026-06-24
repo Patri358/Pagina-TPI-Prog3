@@ -17,14 +17,6 @@ const CardBiblioteca = ({ game }) => {
                     <Button variant="success" onClick={handlePlay}>Jugar</Button>
                 </Card.Subtitle>
 
-                <Card.Text>
-                    {game.synopsis}
-                </Card.Text>
-
-                <Card.Subtitle className="text-center" style={{ marginBottom: "30px" }}>Distribuidor: {game.distributor}</Card.Subtitle>
-
-                <Card.Text> Categoría: {game.rating} </Card.Text>
-
                 <hr />
 
             </Card.Body>

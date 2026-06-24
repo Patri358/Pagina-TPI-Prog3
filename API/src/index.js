@@ -8,13 +8,11 @@ import "./models/Compras.js";
 import "./models/Generos.js";
 import "./models/JuegosGeneros.js"
 import "./models/Biblioteca.js";
-import "./models/DetalleCompra.js";
 
 // routes
 import authRoutes from "./routes/auth.routes.js";
 import bibiotecaRoutes from "./routes/biblioteca.routes.js";
 import comprasRoutes from "./routes/compras.routes.js";
-import detalleComprasRoutes from "./routes/detalleCompras.routes.js";
 import generosRoutes from "./routes/generos.routes.js";
 import juegosRoutes from "./routes/juegos.routes.js"
 import usersRoutes from "./routes/users.routes.js";
@@ -38,7 +36,6 @@ try {
     app.use(authRoutes);
     app.use(bibiotecaRoutes);
     app.use(comprasRoutes);
-    app.use(detalleComprasRoutes);
     app.use(generosRoutes);
     app.use(juegosRoutes);
     app.use(usersRoutes);

@@ -40,6 +40,15 @@ Juegos.belongsToMany(Compras, {
     onUpdate: "CASCADE"
 });
 
+
+// una compra puede tener muchos DetalleCompra pero un DetalleCompra apunta a una sola compra
+Compras.hasMany(DetalleCompra, { foreignKey: "id_compra_FK" });
+DetalleCompra.belongsTo(Compras, { foreignKey: "id_compra_FK" });
+
+// un juego puede aparecer en muchos detalleCompra pero un detalleCompra apunta a un solo juego
+Juegos.hasMany(DetalleCompra, { foreignKey: "id_juego_FK" });
+DetalleCompra.belongsTo(Juegos, { foreignKey: "id_juego_FK" });
+
 /* Tabla DetalleCompra
 
     id_compra_FK INT, 

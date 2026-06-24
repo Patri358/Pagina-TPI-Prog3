@@ -14,6 +14,9 @@ export const calcularTotal = (cart) => {
 
 const CartProvider = ({ children }) => {
 
+    // trae el token del localStorage
+    const traerToken = () => localStorage.getItem("token");
+
     const [cart, setCart] = useState([])
 
     const handleCart = (game) => {
@@ -44,8 +47,34 @@ const CartProvider = ({ children }) => {
         // para no añadir los juegos que están en biblioteca
         const juegosSinRepetir = cart.filter((juego) => !idsBiblioteca.includes(juego.id))
 
-        setMyGames([...myGames, ...juegosSinRepetir])
-        setCart([])
+        fetch("http://localhost:3001/compras", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${traerToken()}`
+            },
+            body: JSON.stringify({
+                total: total,
+                // enviamos solo los ids sin repetir
+                juegosId: juegosSinRepetir.map(juego => juego.id)
+            })
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("No se pudo procesar la compra en el servidor");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                // si la respuesta es ok se guardan en la biblioteca
+                setMyGames([...myGames, ...juegosSinRepetir]);
+                setCart([]);
+                successToast("¡Compra realizada con éxito!");
+            })
+            .catch((err) => {
+                console.error(err);
+                errorToast("Hubo un error al procesar el pago");
+            });
     }
 
     const total = calcularTotal(cart)
