@@ -23,9 +23,14 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     useEffect(() => {
         const token = traerToken();
 
+        if (!token || token === "null" || token === "undefined") {
+            errorToast("Sesión inválida o expirada.");
+            return;
+        }
+
         fetch("http://localhost:3001/users", {
             headers: {
-                "Authorization": `Bearer ${traerToken()}`
+                "Authorization": `Bearer ${token}`
             }
         })
             .then((res) => {
@@ -43,16 +48,24 @@ const ModoAdmin = ({ esSuperAdmin }) => {
                 }
             })
             .catch((err) => {
-                console.error("Error en el fetch de usuarios:", err);
+                errorToast("Error en el fetch de usuarios:", err)
             });
     }, []);
 
     const handleUpdateRol = (nuevoRol, usuarioId) => {
+
+        const token = traerToken();
+
+        if (!token || token === "null" || token === "undefined") {
+            errorToast("Sesión inválida o expirada.");
+            return;
+        }
+
         fetch(`http://localhost:3001/users/${usuarioId}/rol`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${traerToken()}`
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({ rol: nuevoRol })
         })
@@ -66,25 +79,41 @@ const ModoAdmin = ({ esSuperAdmin }) => {
                     prevUsuarios.map((u) =>
                         u.id === usuarioId ? { ...u, rol: nuevoRol } : u
                     )
-                );
-            });
+                )
+            })
+            .catch((err) => {
+                errorToast("Error al actualizar el rol: ", err)
+            })
     };
 
     const handleDeleteUser = (id) => {
+        const token = traerToken();
+
+        if (!token || token === "null" || token === "undefined") {
+            errorToast("Sesión inválida o expirada.");
+            return;
+        }
+
         fetch(`http://localhost:3001/users/${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer ${traerToken()}`
+                "Authorization": `Bearer ${token}`
             }
         })
             .then((res) => {
                 if (!res.ok) {
-                    errorToast("Error al eliminar el usuario");
-                    return;
+                    throw new Error("Error al eliminar el usuario o permisos insuficientes");
                 }
-                // Actualizo el front si todo es ok
+                return res.json().catch(() => ({}));
+            })
+            .then(() => {
+                // actualizo el front si todo está ok
                 setUsers((prevUsuarios) => prevUsuarios.filter((u) => u.id !== id));
-                successToast(`Usuario con el id ${id} eliminado`);
+                successToast(`Usuario eliminado con éxito`);
+            })
+            .catch((err) => {
+                console.error("Error al eliminar usuario: ", err);
+                errorToast(err.message || "Error en el servidor");
             });
     };
 
@@ -94,9 +123,20 @@ const ModoAdmin = ({ esSuperAdmin }) => {
     const handleCancelarAgregar = () => setAgregarGenero(false);
 
     const handleDeleteGenero = () => {
+
+        const token = traerToken();
+
+        if (!token || token === "null" || token === "undefined") {
+            errorToast("Sesión inválida o expirada.");
+            return;
+        }
+
         fetch("http://localhost:3001/generos", {
             method: "DELETE",
-            "Authorization": `Bearer ${traerToken()}`
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+
         });
     };
 

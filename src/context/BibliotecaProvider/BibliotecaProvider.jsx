@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import { BibliotecaContext } from "./BibliotecaContext";
 
-const BibliotecaProvider = ({ children }) => {
+const BibliotecaProvider = ({ children, loggedIn }) => {
     const traerToken = () => localStorage.getItem("token");
 
     const [myGames, setMyGames] = useState([]);
 
     useEffect(() => {
+
+        // para limpiar la biblioteca si cierra sesion
+        if(!loggedIn){
+            setMyGames([])
+            return;
+        }
+
         const token = traerToken();
 
+        // esto es para que al entrar la pagina por primera vez no tire error
+        // se ponen entre comillas porque el localStorage guarda strings
+        if (!token || token === "null" || token === "undefined") {
+            return;
+        }
+
         fetch("http://localhost:3001/compras", {
-            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
@@ -43,7 +55,7 @@ const BibliotecaProvider = ({ children }) => {
             .catch((err) => {
                 console.error("Error al cargar la biblioteca:", err);
             });
-    }, []);
+    }, [loggedIn]);
 
     return (
         <BibliotecaContext.Provider value={{ myGames, setMyGames }}>

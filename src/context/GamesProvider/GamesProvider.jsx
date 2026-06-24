@@ -3,20 +3,30 @@ import { GamesContext } from "./GamesContext.js"
 import { errorToast, successToast } from "../../ui/Toast/Toast.jsx"
 import { useNavigate } from "react-router-dom"
 
-const GamesProvider = ({ children }) => {
+const GamesProvider = ({ children, loggedIn }) => {
     const navigate = useNavigate();
 
     const traerToken = () => {
         return localStorage.getItem("token")
     }
 
-
     const [generosDescripcion, setGenerosDescripcion] = useState([])
 
     useEffect(() => {
+
+        if (!loggedIn) {
+            return;
+        }
+
+        const token = traerToken();
+
+        if (!token || token === "null" || token === "undefined") {
+            return;
+        }
+
         fetch("http://localhost:3001/generos", {
             headers: {
-                "Authorization": `Bearer ${traerToken()}`
+                "Authorization": `Bearer ${token}`
             }
         })
             .then(res => {
@@ -27,7 +37,8 @@ const GamesProvider = ({ children }) => {
             })
             .then(data => setGenerosDescripcion(data))
             .catch(err => errorToast(`Error al traer géneros: ${err.message}`))
-    }, [])
+        // solo si está logueado
+    }, [loggedIn])
 
     const [games, setGames] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -35,9 +46,16 @@ const GamesProvider = ({ children }) => {
 
     //Trae los juegos del back
     useEffect(() => {
+        const token = traerToken();
+
+        if (!token || token === "null" || token === "undefined") {
+            setGames([])
+            return;
+        }
+
         fetch("http://localhost:3001/juegos", {
             headers: {
-                "Authorization": `Bearer ${traerToken()}`
+                "Authorization": `Bearer ${token}`
             }
         })
             .then(res => {
@@ -48,7 +66,7 @@ const GamesProvider = ({ children }) => {
             })
             .then(data => setGames(data))
             .catch(err => console.error("Error al traer juegos: ", err))
-    }, [])
+    }, [loggedIn])
 
     // eliminar un juego
     const handleDelete = (game) => {
@@ -62,8 +80,8 @@ const GamesProvider = ({ children }) => {
         })
             .then((res) => {
                 if (!res.ok) {
-                    throw new Error(res.status === 403 || res.status === 401 
-                        ? "Sin permisos o sesión expirada" 
+                    throw new Error(res.status === 403 || res.status === 401
+                        ? "Sin permisos o sesión expirada"
                         : `Error del servidor: ${res.status}`
                     );
                 }

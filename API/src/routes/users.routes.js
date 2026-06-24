@@ -12,7 +12,7 @@ router.get("/users", verificarAutenticacion, verificarPermisos("admin", "superAd
 router.get("/users/:email", verificarAutenticacion, findUsuarioEmail)
 
 // solo los superAdmin logueados pueden editar usuarios
-router.put("/users/:id/rol",verificarAutenticacion, verificarPermisos("superAdmin"), actualizarUsuarioRol)
+router.put("/users/:id/rol", verificarAutenticacion, verificarPermisos("superAdmin"), actualizarUsuarioRol)
 
 // solo los superAdmin logueados pueden borrar usuarios
 router.delete("/users/:id", verificarAutenticacion, verificarPermisos("superAdmin"), eliminarUsuario)

@@ -47,7 +47,13 @@ const App = () => {
     setUser(null)
   }
 
-  const handleLogIn = (data) => {
+  // Login le pasa el token y los datos del usuario cuando se loguea
+  const handleLogIn = (data, token) => {
+    // guardo el usuario y el token
+    localStorage.setItem("user", JSON.stringify(data))
+    localStorage.setItem("token", token)
+
+    // actualizo los estados
     setUser(data)
     setLoggedIn(true)
   }
@@ -59,9 +65,9 @@ const App = () => {
     <div data-bs-theme="dark" className="min-vh-100 w-100 m-0 p-0 bg-body flex-column" style={{ overflowX: 'hidden' }}>
       <BrowserRouter>
 
-        <BibliotecaProvider>
+        <BibliotecaProvider loggedIn={loggedIn}>
           <CartProvider>
-            <GamesProvider>
+            <GamesProvider loggedIn={loggedIn}>
 
               <ToastContainer />
               {loggedIn && <NavBar onLogOut={handleLogOut} tienePermiso={esAdmin} />}
