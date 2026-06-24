@@ -1,4 +1,4 @@
-import { Card, Button, Badge } from "react-bootstrap";
+import { Card, Button, Badge, Modal } from "react-bootstrap";
 import { useContext } from "react";
 import { CartContext } from "../../../context/CartProvider/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ const CardTienda = ({ game, tienePermiso }) => {
 
     // llamo al customHook
     const { handleAbrir, handleCerrar, estadoModal } = useModal()
+    const { handleAbrir: handleAbrirDetalle, handleCerrar: handleCerrarDetalle, estadoModal: estadoModalDetalle } = useModal()
 
     return (
         <Card text="white" style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
@@ -27,6 +28,30 @@ const CardTienda = ({ game, tienePermiso }) => {
             <Card.Img variant="top" src={game.poster} />
 
             {estadoModal && <ModalDelete game={game} onCerrar={handleCerrar}></ModalDelete>}
+
+            <Modal show={estadoModalDetalle} onHide={handleCerrarDetalle} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{game.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <img src={game.poster} alt={game.title} style={{ width: '100%', borderRadius: '5px', marginBottom: '15px' }} />
+                    <p><strong>Distribuidor:</strong> {game.distributor}</p>
+                    <p><strong>Clasificación:</strong> {game.rating}</p>
+                    <p><strong>Sinopsis:</strong> {game.sinopsis || game.synopsis}</p>
+                    <p><strong>Géneros:</strong> #{(game.Generos ?? [])
+                        .map((genero) => typeof genero === "string" ? genero : genero.descripcion)
+                        .join(" #")}</p>
+                    <p><strong>Lanzamiento:</strong> {game.launch}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCerrarDetalle}>
+                        Cerrar
+                    </Button>
+                    <Button variant="primary" onClick={() => { handleCart(game); handleCerrarDetalle(); }}>
+                        Añadir al carrito
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
             <Card.Body>
 
@@ -65,7 +90,7 @@ const CardTienda = ({ game, tienePermiso }) => {
                         </div>
                     )}
 
-                    <Button style={{ margin: "10px", width: "100%" }} variant="primary" >Detalles del juego</Button>
+                <Button style={{ margin: "10px", width: "100%" }} variant="primary" onClick={handleAbrirDetalle}>Detalles del juego</Button>
                     <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }}>Añadir al carrito</Button>
                 </Card.Footer>
             </Card.Body>
