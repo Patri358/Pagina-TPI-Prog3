@@ -33,8 +33,34 @@ export const createGenero = async (req, res) => {
 }
 
 export const actualizarGenero = async (req, res) => {
-    const { id } = req.params;
-    res.send(`Género con el id ${id} actualizado`)
+    try {
+
+        const { id } = req.params;
+        const { descripcion } = req.body;
+
+        // verifica si hay descripcion
+        if (!descripcion || descripcion.trim().length === 0) {
+            return res.status(400).json({ mensaje: "La descripcion es obligatoria" })
+        }
+
+        // busca por id
+        const genero = await Generos.findByPk(id)
+
+        // verifica si existe
+        if (!genero) {
+            return res.status(404).json({ mensaje: "Genero no encontrado" })
+        }
+
+        // elimino los espacios en blanco
+        genero.descripcion = descripcion.trim();
+        await genero.save();
+
+        return res.status(201).json({ mensaje: "Genero actualizado" })
+
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ mensaje: "Error en el servidor al actualizar el genero" })
+    }
 }
 
 export const borrarGenero = async (req, res) => {

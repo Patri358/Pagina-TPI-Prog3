@@ -13,7 +13,7 @@ const GenerosTab = () => {
         return localStorage.getItem("token");
     };
 
-    const handleDeleteGenero = (id) => {
+    const handleDelete = (id) => {
 
         if (!id) {
             errorToast("ID inválido")
@@ -116,6 +116,65 @@ const GenerosTab = () => {
             })
     }
 
+    // logica actualizar
+    const handleUpdate = (id, nuevaDescripcion) => {
+        if (!id) {
+            errorToast("ID inválido");
+            return;
+        }
+
+        const token = traerToken();
+        if (!token || token === "null" || token === "undefined") {
+            errorToast("Sesión inválida o expirada.");
+            return;
+        }
+
+        // elimina los espacios en blanco
+        const textoLimpio = nuevaDescripcion.trim();
+
+        if (textoLimpio.length === 0) {
+            errorToast("La descripción no puede estar vacía");
+            return;
+        }
+
+        // esto es para ver si coincide el id y la descripcion
+        const seRepite = generosDescripcion.some(
+            (G) => G.id !== id && G.descripcion.toLowerCase().trim() === textoLimpio.toLowerCase()
+        );
+
+        if (seRepite) {
+            errorToast("Ya existe otro género con ese nombre");
+            return;
+        }
+
+        fetch(`http://localhost:3001/generos/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ descripcion: textoLimpio })
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("No se pudo actualizar el genero");
+                }
+            })
+            .then(() => {
+                successToast("Género actualizado");
+                // lo que hace es buscar si el id coincide con el que se está actualizando y si coincide le cambia la descripcion
+                setGenerosDescripcion((prevGeneros) =>
+                    prevGeneros.map((G) =>
+                        G.id === id ? { ...G, descripcion: textoLimpio } : G
+                    )
+                );
+            })
+            .catch((err) => {
+                console.error(err);
+                errorToast(err.message || "Error al actualizar el género");
+            });
+    };
+
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
             <Button onClick={agregarGenero ? handleCancelar : handleMostrar} variant={agregarGenero ? "danger" : "primary"} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
@@ -126,19 +185,13 @@ const GenerosTab = () => {
 
             {agregarGenero && (
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px", width: "100%", marginBottom: "20px" }}>
-                    <Form.Control
-                        type="text"
-                        placeholder="Ingrese el nombre del nuevo género"
-                        size="sm"
-                        value={nuevoGenero}
-                        onChange={handleDescripcion}
-                    />
+                    <Form.Control type="text" placeholder="Ingrese el nombre del nuevo género" size="sm" value={nuevoGenero} onChange={handleDescripcion} />
                     <Button onClick={handleGuardar} variant="success" size="sm">Guardar</Button>
                 </div>
             )}
 
             {generosDescripcion.map((genero) => (
-                <GenerosLista key={genero.id} id={genero.id} descripcion={genero.descripcion} onDeleteGenero={handleDeleteGenero} />
+                <GenerosLista key={genero.id} id={genero.id} descripcion={genero.descripcion} onDeleteGenero={handleDelete} onUpdateGenero={handleUpdate} />
             ))}
         </div>
     )
