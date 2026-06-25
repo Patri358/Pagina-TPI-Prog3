@@ -1,6 +1,6 @@
 import { Card, Button, Badge, Form } from "react-bootstrap";
-import useModal from "../../services/useModal/useModal";
-import ModalDelete from "../../ui/ModalDelete/ModalDelete";
+import useModal from "../../../services/useModal/useModal";
+import ModalDelete from "../../../ui/ModalDelete/ModalDelete";
 
 const UserCard = ({ user, esSuperAdmin, onUpdateRol, onDeleteUser }) => {
 
