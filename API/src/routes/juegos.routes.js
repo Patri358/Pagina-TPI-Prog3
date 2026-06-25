@@ -17,6 +17,6 @@ router.post("/juegos", verificarAutenticacion, verificarPermisos("admin", "super
 router.put("/juegos/:id", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), actualizarJuego);
 
 // solo los admin y superAdmin logueados pueden borrar juegos
-router.delete("/juegos/:id", verificarAutenticacion, verificarPermisos("admin","superAdmin"), borrarJuego);
+router.delete("/juegos/:id", verificarAutenticacion, verificarPermisos("admin", "superAdmin"), borrarJuego);
 
 export default router;

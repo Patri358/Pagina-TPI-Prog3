@@ -7,7 +7,6 @@ import "./models/Users.js";
 import "./models/Compras.js";
 import "./models/Generos.js";
 import "./models/JuegosGeneros.js"
-import "./models/Biblioteca.js";
 
 // routes
 import authRoutes from "./routes/auth.routes.js";

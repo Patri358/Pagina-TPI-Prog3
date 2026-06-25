@@ -1,198 +1,26 @@
-import { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import { Button } from 'react-bootstrap';
-import UserCard from '../../userCard/userCard';
-import GenerosLista from '../generosLista/GenerosLista';
-import JuegosLista from '../juegosLista/JuegosLista';
-import { GamesContext } from '../../../context/GamesProvider/GamesContext';
-import { errorToast, successToast } from '../../../ui/Toast/Toast';
+import { Tab, Tabs } from 'react-bootstrap';
+import UsersTab from '../Tabs/usersTab/UsersTab';
+import GenerosTab from '../Tabs/generosTab/GenerosTab';
+import JuegosTab from '../Tabs/juegosTab/JuegosTab';
 
 const ModoAdmin = ({ esSuperAdmin }) => {
-    const navigate = useNavigate();
-    const [users, setUsers] = useState([]);
-    const [agregarGenero, setAgregarGenero] = useState(false);
-    const { generosDescripcion, games } = useContext(GamesContext);
 
-    const traerToken = () => {
-        return localStorage.getItem("token");
-    };
-
-    // usuarios
-    useEffect(() => {
-        const token = traerToken();
-
-        if (!token || token === "null" || token === "undefined") {
-            errorToast("Sesión inválida o expirada.");
-            return;
-        }
-
-        fetch("http://localhost:3001/users", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(`Error HTTP: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then((data) => {
-                // verifica si devuelve un array
-                if (Array.isArray(data)) {
-                    setUsers(data);
-                } else {
-                    console.error("Error en el backend, datos corruptos: ", data);
-                }
-            })
-            .catch((err) => {
-                errorToast("Error en el fetch de usuarios:", err)
-            });
-    }, []);
-
-    const handleUpdateRol = (nuevoRol, usuarioId) => {
-
-        const token = traerToken();
-
-        if (!token || token === "null" || token === "undefined") {
-            errorToast("Sesión inválida o expirada.");
-            return;
-        }
-
-        fetch(`http://localhost:3001/users/${usuarioId}/rol`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ rol: nuevoRol })
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    errorToast(`Error al actualizar el rol del usuario ${usuarioId}`);
-                    return;
-                }
-                // Si la respuesta es ok, actualizo el front
-                setUsers((prevUsuarios) =>
-                    prevUsuarios.map((u) =>
-                        u.id === usuarioId ? { ...u, rol: nuevoRol } : u
-                    )
-                )
-            })
-            .catch((err) => {
-                errorToast("Error al actualizar el rol: ", err)
-            })
-    };
-
-    const handleDeleteUser = (id) => {
-        const token = traerToken();
-
-        if (!token || token === "null" || token === "undefined") {
-            errorToast("Sesión inválida o expirada.");
-            return;
-        }
-
-        fetch(`http://localhost:3001/users/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error("Error al eliminar el usuario o permisos insuficientes");
-                }
-                return res.json().catch(() => ({}));
-            })
-            .then(() => {
-                // actualizo el front si todo está ok
-                setUsers((prevUsuarios) => prevUsuarios.filter((u) => u.id !== id));
-                successToast(`Usuario eliminado con éxito`);
-            })
-            .catch((err) => {
-                console.error("Error al eliminar usuario: ", err);
-                errorToast(err.message || "Error en el servidor");
-            });
-    };
-
-    // generos
-
-    const handleAgregarGenero = () => setAgregarGenero(true);
-    const handleCancelarAgregar = () => setAgregarGenero(false);
-
-    const handleDeleteGenero = () => {
-
-        const token = traerToken();
-
-        if (!token || token === "null" || token === "undefined") {
-            errorToast("Sesión inválida o expirada.");
-            return;
-        }
-
-        fetch("http://localhost:3001/generos", {
-            method: "DELETE",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-
-        });
-    };
-
-    const handleAddGame = () => {
-        navigate("/gameForm");
-    };
 
     return (
         <Tabs defaultActiveKey="users" id="ventanas-admin" className="mb-3" fill>
 
+
             <Tab eventKey="users" title="Usuarios">
-                <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
-                    {users.map((usuario) => (
-                        <UserCard
-                            key={usuario.id}
-                            user={usuario}
-                            esSuperAdmin={esSuperAdmin}
-                            onUpdateRol={handleUpdateRol}
-                            onDeleteUser={handleDeleteUser}
-                        />
-                    ))}
-                </div>
+                <UsersTab esSuperAdmin={esSuperAdmin} />
             </Tab>
 
+
             <Tab eventKey="generos" title="Géneros">
-                <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
-                    <Button onClick={handleAgregarGenero} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
-                        Agregar Género
-                    </Button>
-
-                    {agregarGenero && (
-                        <Button onClick={handleCancelarAgregar} variant='danger' style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
-                            Cancelar
-                        </Button>
-                    )}
-
-                    {generosDescripcion.map((genero) => (
-                        <GenerosLista
-                            key={genero.id}
-                            descripcion={genero.descripcion}
-                            estaAgregando={agregarGenero}
-                        />
-                    ))}
-                </div>
+                <GenerosTab />
             </Tab>
 
             <Tab eventKey="juegos" title="Juegos">
-                <div style={{ display: "flex", flexDirection: "column", gap: "15px", padding: "20px 10px", maxWidth: "450px", margin: "0 auto" }}>
-                    <Button onClick={handleAddGame} style={{ alignSelf: "center", paddingLeft: "30px", paddingRight: "30px", marginBottom: "10px" }}>
-                        Agregar Juego
-                    </Button>
-
-                    {games.map((game) => (
-                        <JuegosLista key={game.id} game={game} />
-                    ))}
-                </div>
+                <JuegosTab />
             </Tab>
 
         </Tabs>

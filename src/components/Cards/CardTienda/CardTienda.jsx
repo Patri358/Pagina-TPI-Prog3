@@ -84,7 +84,7 @@ const CardTienda = ({ game, tienePermiso }) => {
                     <Button onClick={() => handleCart(game)} variant="light" style={{ margin: "10px", width: "100%" }} disabled={yaComprado}>
                         {
                             yaComprado ? "Juego en la biblioteca" : "Añadir al carrito"
-                        }    
+                        }
                     </Button>
                 </Card.Footer>
             </Card.Body>
