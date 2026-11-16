@@ -29,9 +29,9 @@ const CardTienda = ({ game, tienePermiso }) => {
     const { handleAbrir: handleAbrirDetalle, handleCerrar: handleCerrarDetalle, estadoModal: estadoModalDetalle } = useModal()
 
     return (
-        <Card text="white" style={{ width: '28rem', marginTop: "30px" }} className='mx-3'>
+        <Card text="white" style={{ width: '100%' }} className='h-100 d-flex flex-column'>
 
-            <Card.Img variant="top" src={game.poster} />
+            <Card.Img variant="top" src={game.poster} style={{ width: '100%', aspectRatio: '3 / 4', objectFit: 'cover' }} />
 
             {/* Modal de confirmar eliminar */}
             {estadoModalEliminar && <ModalDelete game={game} onCerrar={handleCerrarEliminar} onConfirmar={() => handleDelete(game)} show={estadoModalEliminar} titulo={`¿Desea eliminar ${game.title} de la tienda?`} />}
@@ -40,7 +40,7 @@ const CardTienda = ({ game, tienePermiso }) => {
                 estadoModalDetalle && <ModalDetalle game={game} onCerrar={handleCerrarDetalle} show={estadoModalDetalle} />
             }
 
-            <Card.Body>
+            <Card.Body className="d-flex flex-column flex-grow-1">
 
                 <Card.Title className="text-center">{game.title}</Card.Title>
 
@@ -70,7 +70,7 @@ const CardTienda = ({ game, tienePermiso }) => {
                     </Badge>
                 </Card.Text>
 
-                <Card.Footer>
+                <Card.Footer className="mt-auto">
                     {/* botones que ve el admin | superadmin */}
                     {tienePermiso && (
                         <div className="d-flex justify-content-center gap-4">

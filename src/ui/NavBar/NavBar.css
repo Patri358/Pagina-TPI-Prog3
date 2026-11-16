@@ -2,6 +2,9 @@
 .navbar-container {
   padding: 20px;
   background-color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
 }
 
 /* Manejo de espacios y alineación de los bloques */

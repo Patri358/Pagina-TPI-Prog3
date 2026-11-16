@@ -1,14 +1,18 @@
 import { Card, Button, Badge } from "react-bootstrap";
+import { useContext } from "react";
 import ModalDetalle from "../../../ui/modalDetalle/ModalDetalle.jsx"
 import useModal from "../../../services/useModal/useModal";
+import { CartContext } from "../../../context/CartProvider/CartContext.js";
 
 const CardCarrito = ({ game }) => {
+
+    const { handleDelete } = useContext(CartContext);
 
     const { handleAbrir: handleAbrirDetalle, handleCerrar: handleCerrarDetalle, estadoModal: estadoModalDetalle } = useModal()
 
     return (
         <Card text="white" key={game.id} style={{ width: '28rem', margin: "30px" }} className='mx-3'>
-            <Card.Img variant="top" src={game.poster} />
+            <Card.Img variant="top" src={game.poster} style={{ width: '100%', aspectRatio: '3 / 4', objectFit: 'cover' }} />
             <Card.Body>
                 <Card.Title className="text-center">{game.title}</Card.Title>
 
@@ -41,6 +45,7 @@ const CardCarrito = ({ game }) => {
 
                 <Card.Footer>
                     <Button onClick={handleAbrirDetalle} variant="primary" style={{ margin: "10px", width: "100%" }}>Detalles del juego</Button>
+                    <Button onClick={() => handleDelete(game)} variant="danger" style={{ margin: "10px", width: "100%" }}>Quitar del carrito</Button>
                 </Card.Footer>
             </Card.Body>
         </Card >

@@ -9,7 +9,7 @@ const Tienda = ({ tienePermiso }) => {
     const { games } = useContext(GamesContext)
 
     return (
-        <div className="d-flex flex-column align-items-center">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '30px', width: '100%', padding: '30px' }}>
             {games.map((game) => (
                 <CardGame
                     key={game.id}

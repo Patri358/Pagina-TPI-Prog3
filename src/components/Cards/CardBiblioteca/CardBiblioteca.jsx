@@ -8,16 +8,16 @@ const CardBiblioteca = ({ game }) => {
     }
     
     return (
-        <Card text="white" key={game.id} style={{ width: '28rem', margin: "30px" }} className='mx-3'>
-            <Card.Img variant="top" src={game.poster} />
-            <Card.Body>
+        <Card text="white" key={game.id} style={{ width: '20rem', margin: "30px" }} className='mx-3 h-100 d-flex flex-column'>
+            <Card.Img variant="top" src={game.poster} style={{ width: '100%', aspectRatio: '3 / 4', objectFit: 'cover' }} />
+            <Card.Body className="d-flex flex-column flex-grow-1">
                 <Card.Title className="text-center">{game.title}</Card.Title>
 
                 <Card.Subtitle className="text-center fs-2 my-3" >
                     <Button variant="success" onClick={handlePlay}>Jugar</Button>
                 </Card.Subtitle>
 
-                <hr />
+                <hr className="mt-auto" />
 
             </Card.Body>
         </Card >

@@ -62,7 +62,7 @@ const App = () => {
   const esSuperAdmin = user?.rol === "superAdmin"
 
   return (
-    <div data-bs-theme="dark" className="min-vh-100 w-100 m-0 p-0 bg-body flex-column" style={{ overflowX: 'hidden' }}>
+    <div data-bs-theme="dark" className="min-vh-100 w-100 m-0 p-0 bg-body flex-column" style={{ overflowX: 'clip' }}>
       <BrowserRouter>
 
         <BibliotecaProvider loggedIn={loggedIn}>

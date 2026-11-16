@@ -10,17 +10,19 @@ const Biblioteca = () => {
   const { myGames } = useContext(BibliotecaContext);
 
   return (
-    <Container className="d-flex flex-column align-items-center justify-content-center text-center">
+    <Container className="text-center">
       <h1 className="text-white">Mi Biblioteca</h1>
 
       {myGames.length === 0 ? (
         <p className="text-white">No tenés juegos comprados</p>
       ) : (
-        myGames.map((game) => {
-          return (
-            <CardBiblioteca key={game.id} game={game} />
-          )
-        })
+        <div className="d-flex flex-row flex-wrap justify-content-center align-items-stretch">
+          {myGames.map((game) => {
+            return (
+              <CardBiblioteca key={game.id} game={game} />
+            )
+          })}
+        </div>
       )}
     </Container>
   )
